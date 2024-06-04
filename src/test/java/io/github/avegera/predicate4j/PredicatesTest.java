@@ -325,4 +325,160 @@ class PredicatesTest {
             }
         }
     }
+
+    @Nested
+    @DisplayName("Boolean predicate")
+    class BooleanPredicate {
+
+        @Nested
+        @DisplayName("isTrue()")
+        class IsTrue {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrue {
+
+                @Test
+                @DisplayName("boolean is true")
+                void booleanIsTrue() {
+                    Predicate<Boolean> predicate = isTrue();
+                    assertThat(predicate).accepts(true);
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalse {
+
+                @Test
+                @DisplayName("boolean is false")
+                void booleanIsFalse() {
+                    Predicate<Boolean> predicate = isTrue();
+                    assertThat(predicate).rejects(false);
+                }
+
+                @Test
+                @DisplayName("boolean is null")
+                void booleanIsNull() {
+                    Predicate<Boolean> predicate = isTrue();
+                    assertThat(predicate).rejects((Boolean) null);
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName("notTrue()")
+        class NotTrue {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrue {
+
+                @Test
+                @DisplayName("boolean is false")
+                void booleanIsFalse() {
+                    Predicate<Boolean> predicate = notTrue();
+                    assertThat(predicate).accepts(false);
+                }
+
+                @Test
+                @DisplayName("boolean is null")
+                void booleanIsNull() {
+                    Predicate<Boolean> predicate = notTrue();
+                    assertThat(predicate).accepts((Boolean) null);
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalse {
+
+                @Test
+                @DisplayName("boolean is true")
+                void booleanIsTrue() {
+                    Predicate<Boolean> predicate = notTrue();
+                    assertThat(predicate).rejects(true);
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName("isFalse()")
+        class IsFalse {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrue {
+
+                @Test
+                @DisplayName("boolean is false")
+                void booleanIsFalse() {
+                    Predicate<Boolean> predicate = isFalse();
+                    assertThat(predicate).accepts(false);
+                }
+
+                @Test
+                @DisplayName("boolean is not null and false")
+                void booleanIsNotNullAndFalse() {
+                    Predicate<Boolean> predicate = isFalse();
+                    assertThat(predicate).accepts(Boolean.FALSE);
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalse {
+
+                @Test
+                @DisplayName("boolean is true")
+                void booleanIsTrue() {
+                    Predicate<Boolean> predicate = isFalse();
+                    assertThat(predicate).rejects(true);
+                }
+
+                @Test
+                @DisplayName("boolean is null")
+                void booleanIsNull() {
+                    Predicate<Boolean> predicate = isFalse();
+                    assertThat(predicate).rejects((Boolean) null);
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName("notFalse()")
+        class NotFalse {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrue {
+
+                @Test
+                @DisplayName("boolean is true")
+                void booleanIsTrue() {
+                    Predicate<Boolean> predicate = notFalse();
+                    assertThat(predicate).accepts(true);
+                }
+
+                @Test
+                @DisplayName("boolean is null")
+                void booleanIsNull() {
+                    Predicate<Boolean> predicate = notFalse();
+                    assertThat(predicate).accepts((Boolean) null);
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalse {
+
+                @Test
+                @DisplayName("boolean is false")
+                void booleanIsFalse() {
+                    Predicate<Boolean> predicate = notFalse();
+                    assertThat(predicate).rejects(false);
+                }
+            }
+        }
+    }
 }
