@@ -43,4 +43,20 @@ public class Predicates {
     public static <T> Predicate<T> alwaysFalse() {
         return it -> false;
     }
+
+    public static Predicate<Boolean> isTrue() {
+        return bool -> bool != null && bool;
+    }
+
+    public static Predicate<Boolean> notTrue() {
+        return bool -> bool == null || !bool;
+    }
+
+    public static Predicate<Boolean> isFalse() {
+        return bool -> bool != null && !bool;
+    }
+
+    public static Predicate<Boolean> notFalse() {
+        return bool -> bool == null || bool;
+    }
 }
