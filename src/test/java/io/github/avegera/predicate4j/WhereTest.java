@@ -1,5 +1,8 @@
 package io.github.avegera.predicate4j;
 
+import io.github.avegera.predicate4j.test.Address;
+import io.github.avegera.predicate4j.test.Organization;
+import io.github.avegera.predicate4j.test.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -20,7 +23,7 @@ class WhereTest {
     class WhereObjectImpl {
 
         @Nested
-        @DisplayName("and method isEqualTo(value)")
+        @DisplayName(".isEqualTo(value)")
         class IsEqualTo {
 
             @Nested
@@ -70,7 +73,7 @@ class WhereTest {
         }
 
         @Nested
-        @DisplayName("and method notEqualTo(value)")
+        @DisplayName(".notEqualTo(value)")
         class NotEqualTo {
 
             @Nested
@@ -120,7 +123,7 @@ class WhereTest {
         }
 
         @Nested
-        @DisplayName("and method isNull()")
+        @DisplayName(".isNull()")
         class IsNull {
 
             @Nested
@@ -149,7 +152,7 @@ class WhereTest {
         }
 
         @Nested
-        @DisplayName("and method notNull()")
+        @DisplayName(".notNull()")
         class NotNull {
 
             @Nested
@@ -178,7 +181,7 @@ class WhereTest {
         }
 
         @Nested
-        @DisplayName("and method isInstanceOf(clazz)")
+        @DisplayName(".isInstanceOf(clazz)")
         class IsInstanceOf {
 
             @Nested
@@ -228,7 +231,7 @@ class WhereTest {
         }
 
         @Nested
-        @DisplayName("and method notInstanceOf(clazz)")
+        @DisplayName(".notInstanceOf(clazz)")
         class NotInstanceOf {
 
             @Nested
@@ -283,7 +286,7 @@ class WhereTest {
     class WhereBooleanImpl {
 
         @Nested
-        @DisplayName("and method isEqualTo(value)")
+        @DisplayName(".isEqualTo(value)")
         class IsEqualTo {
 
             @Nested
@@ -333,7 +336,7 @@ class WhereTest {
         }
 
         @Nested
-        @DisplayName("and method notEqualTo(value)")
+        @DisplayName(".notEqualTo(value)")
         class NotEqualTo {
 
             @Nested
@@ -383,7 +386,7 @@ class WhereTest {
         }
 
         @Nested
-        @DisplayName("and method isNull()")
+        @DisplayName(".isNull()")
         class IsNull {
 
             @Nested
@@ -412,7 +415,7 @@ class WhereTest {
         }
 
         @Nested
-        @DisplayName("and method notNull()")
+        @DisplayName(".notNull()")
         class NotNull {
 
             @Nested
@@ -441,7 +444,7 @@ class WhereTest {
         }
 
         @Nested
-        @DisplayName("and method isInstanceOf(clazz)")
+        @DisplayName(".isInstanceOf(clazz)")
         class IsInstanceOf {
 
             @Nested
@@ -498,7 +501,7 @@ class WhereTest {
         }
 
         @Nested
-        @DisplayName("and method notInstanceOf(clazz)")
+        @DisplayName(".notInstanceOf(clazz)")
         class NotInstanceOf {
 
             @Nested
@@ -548,7 +551,7 @@ class WhereTest {
         }
 
         @Nested
-        @DisplayName("and method isTrue()")
+        @DisplayName(".isTrue()")
         class IsTrue {
 
             @Nested
@@ -584,7 +587,7 @@ class WhereTest {
         }
 
         @Nested
-        @DisplayName("and method notTrue()")
+        @DisplayName(".notTrue()")
         class NotTrue {
 
             @Nested
@@ -620,7 +623,7 @@ class WhereTest {
         }
 
         @Nested
-        @DisplayName("and method isFalse()")
+        @DisplayName(".isFalse()")
         class IsFalse {
 
             @Nested
@@ -663,7 +666,7 @@ class WhereTest {
         }
 
         @Nested
-        @DisplayName("and method notFalse()")
+        @DisplayName(".notFalse()")
         class NotFalse {
 
             @Nested
@@ -698,29 +701,234 @@ class WhereTest {
             }
         }
     }
-}
 
-class User {
+    @Nested
+    @DisplayName("Logical conjunction of")
+    class LogicalConjunctionOf {
 
-    private final Integer id;
+        @Nested
+        @DisplayName("2 predicates")
+        class TwoPredicates {
 
-    public User(Integer id) {
-        this.id = id;
-    }
-    public Integer id() {
-        return id;
-    }
-}
+            private final Predicate<Address> predicateConjunction = where(Address::country).isEqualTo("USA").and(Address::zipCode).isNull();
 
-class Organization {
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnTrueWhen {
 
-    private final Boolean active;
+                @Test
+                @DisplayName("all two predicates are true")
+                void allPredicatesAreTrue() {
+                    Address address = new Address("USA", null, null);
+                    assertThat(predicateConjunction).accepts(address);
+                }
+            }
 
-    public Organization(Boolean active) {
-        this.active = active;
-    }
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnFalseWhen {
 
-    public Boolean active() {
-        return active;
+                @Test
+                @DisplayName("object is null")
+                void objectIsNull() {
+                    assertThat(predicateConjunction).rejects((Address) null);
+                }
+
+                @Test
+                @DisplayName("first predicate is false")
+                void firstPredicateIsFalse() {
+                    Address address = new Address("Ireland", null, null);
+                    assertThat(predicateConjunction).rejects(address);
+                }
+
+                @Test
+                @DisplayName("second predicate is false")
+                void secondPredicateIsFalse() {
+                    Address address = new Address("USA", null, 123);
+                    assertThat(predicateConjunction).rejects(address);
+                }
+
+                @Test
+                @DisplayName("both predicates are false")
+                void bothPredicatesAreFalse() {
+                    Address address = new Address("Ireland", null, 123);
+                    assertThat(predicateConjunction).rejects(address);
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName("3 predicates")
+        class ThreePredicates {
+
+            private final Predicate<Address> predicateConjunction = where(Address::country).notNull()
+                    .and(Address::value).notEqualTo("testValue")
+                    .and(Address::zipCode).isInstanceOf(Integer.class);
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnTrueWhen {
+
+                @Test
+                @DisplayName("all predicates are true")
+                void allPredicatesAreTrue() {
+                    Address address = new Address("USA", "someValue", 123);
+                    assertThat(predicateConjunction).accepts(address);
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnFalseWhen {
+
+                @Test
+                @DisplayName("object is null")
+                void objectIsNull() {
+                    assertThat(predicateConjunction).rejects((Address) null);
+                }
+
+                @Test
+                @DisplayName("first predicate is false")
+                void firstPredicateIsFalse() {
+                    Address address = new Address(null, null, null);
+                    assertThat(predicateConjunction).rejects(address);
+                }
+
+                @Test
+                @DisplayName("second predicate is false")
+                void secondPredicateIsFalse() {
+                    Address address = new Address("USA", "testValue", 123);
+                    assertThat(predicateConjunction).rejects(address);
+                }
+
+                @Test
+                @DisplayName("third predicate is false")
+                void thirdPredicateIsFalse() {
+                    Address address = new Address("USA", "someValue", null);
+                    assertThat(predicateConjunction).rejects(address);
+                }
+
+                @Test
+                @DisplayName("two predicates are false")
+                void twoPredicatesAreFalse() {
+                    Address address = new Address(null, "testValue", 123);
+                    assertThat(predicateConjunction).rejects(address);
+                }
+
+                @Test
+                @DisplayName("all predicates are false")
+                void allPredicatesAreFalse() {
+                    Address address = new Address(null, "testValue", null);
+                    assertThat(predicateConjunction).rejects(address);
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName("7 predicates")
+        class SevenPredicates {
+
+            private final Predicate<Address> predicateConjunction = where(Address::country).notNull()
+                    .and(Address::zipCode).notNull()
+                    .and(Address::value).notNull()
+                    .and(Address::country).notEqualTo("USA")
+                    .and(Address::country).notEqualTo("Canada")
+                    .and(Address::value).isEqualTo("testValue")
+                    .and(Address::zipCode).isEqualTo(123);
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnTrueWhen {
+
+                @Test
+                @DisplayName("all predicates are true")
+                void mappedValueIsFalse() {
+                    Address address = new Address("notCanadaAndUSA", "testValue", 123);
+                    assertThat(predicateConjunction).accepts(address);
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnFalseWhen {
+
+                @Test
+                @DisplayName("object is null")
+                void objectIsNull() {
+                    assertThat(predicateConjunction).rejects((Address) null);
+                }
+
+                @Test
+                @DisplayName("first predicate is false")
+                void firstPredicateIsFalse() {
+                    Address address = new Address(null, "testValue", 123);
+                    assertThat(predicateConjunction).rejects(address);
+                }
+
+                @Test
+                @DisplayName("second predicate is false")
+                void secondPredicateIsFalse() {
+                    Address address = new Address("notCanadaAndUSA", null, 123);
+                    assertThat(predicateConjunction).rejects(address);
+                }
+
+                @Test
+                @DisplayName("third predicate is false")
+                void thirdPredicateIsFalse() {
+                    Address address = new Address("notCanadaAndUSA", "testValue", null);
+                    assertThat(predicateConjunction).rejects(address);
+                }
+
+                @Test
+                @DisplayName("fourth predicate is false")
+                void fourthPredicateIsFalse() {
+                    Address address = new Address("USA", "testValue", 123);
+                    assertThat(predicateConjunction).rejects(address);
+                }
+
+                @Test
+                @DisplayName("fifth predicate is false")
+                void fifthPredicateIsFalse() {
+                    Address address = new Address("Canada", "testValue", 123);
+                    assertThat(predicateConjunction).rejects(address);
+                }
+
+                @Test
+                @DisplayName("sixth predicate is false")
+                void sixthPredicateIsFalse() {
+                    Address address = new Address("notCanadaAndUSA", "anotherValue", 123);
+                    assertThat(predicateConjunction).rejects(address);
+                }
+
+                @Test
+                @DisplayName("seventh predicate is false")
+                void seventhPredicateIsFalse() {
+                    Address address = new Address("notCanadaAndUSA", "testValue", 456);
+                    assertThat(predicateConjunction).rejects(address);
+                }
+
+                @Test
+                @DisplayName("three predicates are false")
+                void threePredicatesAreFalse() {
+                    Address address = new Address("USA", "anotherValue", 456);
+                    assertThat(predicateConjunction).rejects(address);
+                }
+
+                @Test
+                @DisplayName("four predicates are false")
+                void fourPredicatesAreFalse() {
+                    Address address = new Address("USA", "anotherValue", null);
+                    assertThat(predicateConjunction).rejects(address);
+                }
+
+                @Test
+                @DisplayName("all predicates are false")
+                void allPredicatesAreFalse() {
+                    Address address = new Address(null, null, null);
+                    assertThat(predicateConjunction).rejects(address);
+                }
+
+            }
+        }
     }
 }
