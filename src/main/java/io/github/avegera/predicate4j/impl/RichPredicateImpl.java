@@ -1,23 +1,26 @@
 package io.github.avegera.predicate4j.impl;
 
 import io.github.avegera.predicate4j.api.RichPredicate;
+import io.github.avegera.predicate4j.api.WhereObject;
 
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class RichPredicateImpl<T, R> implements RichPredicate<T> {
+public class RichPredicateImpl<T> implements RichPredicate<T> {
 
-    private final Function<T, R> mapper;
+    private final Predicate<T> predicate;
 
-    private final Predicate<R> predicate;
-
-    public RichPredicateImpl(Function<T, R> mapper, Predicate<R> predicate) {
-        this.mapper = mapper;
+    public RichPredicateImpl(Predicate<T> predicate) {
         this.predicate = predicate;
     }
 
     @Override
     public boolean test(T object) {
-        return predicate.test(mapper.apply(object));
+        return predicate.test(object);
+    }
+
+    @Override
+    public <R2> WhereObject<T, R2> and(Function<T, R2> andMapper) {
+        return new WhereObjectImpl<>(andMapper, this);
     }
 }
