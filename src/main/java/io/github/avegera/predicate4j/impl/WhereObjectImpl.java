@@ -11,8 +11,16 @@ public class WhereObjectImpl<T, R> implements WhereObject<T, R> {
 
     private final Function<T, R> mapper;
 
+    private final RichPredicate<T> previousPredicate;
+
     public WhereObjectImpl(Function<T, R> mapper) {
         this.mapper = mapper;
+        this.previousPredicate = null;
+    }
+
+    public WhereObjectImpl(Function<T, R> mapper, RichPredicate<T> previousPredicate) {
+        this.mapper = mapper;
+        this.previousPredicate = previousPredicate;
     }
 
     @Override
@@ -46,6 +54,14 @@ public class WhereObjectImpl<T, R> implements WhereObject<T, R> {
     }
 
     protected RichPredicate<T> getPredicate(Predicate<R> predicate) {
-        return new RichPredicateImpl<>(mapper, predicate);
+        Predicate<T> currentPredicate = getPredicateWithMapper(mapper, predicate);
+        if (previousPredicate == null) {
+            return new RichPredicateImpl<>(currentPredicate);
+        }
+        return new RichPredicateImpl<>(previousPredicate.and(currentPredicate));
+    }
+
+    private Predicate<T> getPredicateWithMapper(Function<T, R> mapper, Predicate<R> predicate) {
+        return object -> object != null && predicate.test(mapper.apply(object));
     }
 }
