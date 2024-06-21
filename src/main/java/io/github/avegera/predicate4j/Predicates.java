@@ -1,5 +1,6 @@
 package io.github.avegera.predicate4j;
 
+import java.util.Collection;
 import java.util.Objects;
 import java.util.function.Predicate;
 
@@ -58,5 +59,29 @@ public class Predicates {
 
     public static Predicate<Boolean> notFalse() {
         return bool -> bool == null || bool;
+    }
+
+    public static <T extends Collection<?>> Predicate<T> isEmpty() {
+        return collection -> collection == null || collection.isEmpty();
+    }
+
+    public static <T extends Collection<?>> Predicate<T> notEmpty() {
+        return collection -> collection != null && !collection.isEmpty();
+    }
+
+    public static <T extends Collection<?>> Predicate<T> hasSize(int size) {
+        return collection -> (collection != null ? collection.size() : 0) == size;
+    }
+
+    public static <T extends Collection<?>> Predicate<T> notHaveSize(int size) {
+        return collection -> (collection != null ? collection.size() : 0) != size;
+    }
+
+    public static <T extends Collection<R>, R> Predicate<T> contains(R element) {
+        return collection -> collection != null && collection.contains(element);
+    }
+
+    public static <T extends Collection<R>, R> Predicate<T> notContain(R element) {
+        return collection -> collection == null || !collection.contains(element);
     }
 }

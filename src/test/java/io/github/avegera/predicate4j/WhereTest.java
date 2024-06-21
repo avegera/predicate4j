@@ -1,15 +1,20 @@
 package io.github.avegera.predicate4j;
 
 import io.github.avegera.predicate4j.test.Address;
+import io.github.avegera.predicate4j.test.Customer;
 import io.github.avegera.predicate4j.test.Organization;
 import io.github.avegera.predicate4j.test.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.function.Predicate;
 
 import static io.github.avegera.predicate4j.Where.where;
+import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class WhereTest {
@@ -697,6 +702,619 @@ class WhereTest {
                 void mappedValueIsFalse() {
                     Predicate<Organization> predicate = where().booleanValue(Organization::active).notFalse();
                     assertThat(predicate).rejects(new Organization(false));
+                }
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("Predicate from method where().list(mapper)")
+    class WhereListImpl {
+
+        @Nested
+        @DisplayName(".isEqualTo(value)")
+        class IsEqualTo {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("mapped list is equal to provided list")
+                void mappedListIsEqualToProvidedList() {
+                    List<String> roles = asList("Admin", "User");
+                    Predicate<Customer> predicate = where().list(Customer::roles).isEqualTo(roles);
+                    assertThat(predicate).accepts(new Customer(roles, null));
+                }
+
+                @Test
+                @DisplayName("mapped list is equal to provided list with different list implementations")
+                void mappedListIsEqualToProvidedListWithDifferentListImplementations() {
+                    List<String> roles = new LinkedList<>();
+                    roles.add("Admin");
+                    roles.add("User");
+                    Predicate<Customer> predicate = where().list(Customer::roles).isEqualTo(roles);
+                    assertThat(predicate).accepts(new Customer(asList("Admin", "User"), null));
+                }
+
+                @Test
+                @DisplayName("mapped list is null and provided list is null")
+                void mappedListIsNullAndProvidedListIsNull() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).isEqualTo(null);
+                    assertThat(predicate).accepts(new Customer(null, null));
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("mapped list is not equal to provided list")
+                void mappedListIsNotEqualToProvidedList() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).isEqualTo(asList("Manager", "SuperAdmin"));
+                    assertThat(predicate).rejects(new Customer(asList("Admin", "User"), null));
+                }
+
+                @Test
+                @DisplayName("mapped list is not empty and provided list is null")
+                void mappedListIsNotEmptyAndProvidedListIsNull() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).isEqualTo(null);
+                    assertThat(predicate).rejects(new Customer(asList("Admin", "User"), null));
+                }
+
+                @Test
+                @DisplayName("mapped list is not empty and provided list is empty")
+                void mappedListIsNotEmptyAndProvidedListIsEmpty() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).isEqualTo(new ArrayList<>());
+                    assertThat(predicate).rejects(new Customer(asList("Admin", "User"), null));
+                }
+
+                @Test
+                @DisplayName("mapped list is null and provided list is not empty")
+                void mappedListIsNullAndProvidedListIsNotEmpty() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).isEqualTo(asList("Admin", "User"));
+                    assertThat(predicate).rejects(new Customer(null, null));
+                }
+
+                @Test
+                @DisplayName("mapped list is empty and provided value is not empty")
+                void mappedListIsEmptyAndProvidedListIsNotEmpty() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).isEqualTo(asList("Admin", "User"));
+                    assertThat(predicate).rejects(new Customer(new ArrayList<>(), null));
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName(".notEqualTo(value)")
+        class NotEqualTo {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("mapped list is not equal to provided list")
+                void mappedListIsNotEqualToProvidedList() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).notEqualTo(asList("Manager", "SuperAdmin"));
+                    assertThat(predicate).accepts(new Customer(asList("Admin", "User"), null));
+                }
+
+                @Test
+                @DisplayName("mapped list is not empty and provided list is null")
+                void mappedListIsNotEmptyAndProvidedListIsNull() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).notEqualTo(null);
+                    assertThat(predicate).accepts(new Customer(asList("Admin", "User"), null));
+                }
+
+                @Test
+                @DisplayName("mapped list is not empty and provided list is empty")
+                void mappedListIsNotEmptyAndProvidedListIsEmpty() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).notEqualTo(new ArrayList<>());
+                    assertThat(predicate).accepts(new Customer(asList("Admin", "User"), null));
+                }
+
+                @Test
+                @DisplayName("mapped list is null and provided list is not empty")
+                void mappedListIsNullAndProvidedListIsNotEmpty() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).notEqualTo(asList("Admin", "User"));
+                    assertThat(predicate).accepts(new Customer(null, null));
+                }
+
+                @Test
+                @DisplayName("mapped list is empty and provided value is not empty")
+                void mappedListIsEmptyAndProvidedListIsNotEmpty() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).notEqualTo(asList("Admin", "User"));
+                    assertThat(predicate).accepts(new Customer(new ArrayList<>(), null));
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("mapped list is equal to provided list")
+                void mappedListIsEqualToProvidedList() {
+                    List<String> roles = asList("Admin", "User");
+                    Predicate<Customer> predicate = where().list(Customer::roles).notEqualTo(roles);
+                    assertThat(predicate).rejects(new Customer(roles, null));
+                }
+
+                @Test
+                @DisplayName("mapped list is equal to provided list with different list implementations")
+                void mappedListIsEqualToProvidedListWithDifferentListImplementations() {
+                    List<String> roles = new LinkedList<>();
+                    roles.add("Admin");
+                    roles.add("User");
+                    Predicate<Customer> predicate = where().list(Customer::roles).notEqualTo(roles);
+                    assertThat(predicate).rejects(new Customer(asList("Admin", "User"), null));
+                }
+
+                @Test
+                @DisplayName("mapped list is null and provided list is null")
+                void mappedListIsNullAndProvidedListIsNull() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).notEqualTo(null);
+                    assertThat(predicate).rejects(new Customer(null, null));
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName(".isNull()")
+        class IsNull {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("mapped list is null")
+                void mappedListIsNull() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).isNull();
+                    assertThat(predicate).accepts(new Customer(null, null));
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("mapped list is empty")
+                void mappedListIsEmpty() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).isNull();
+                    assertThat(predicate).rejects(new Customer(new ArrayList<>(), null));
+                }
+
+                @Test
+                @DisplayName("mapped list is not empty")
+                void mappedListIsNotEmpty() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).isNull();
+                    assertThat(predicate).rejects(new Customer(asList("Admin", "User"), null));
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName(".notNull()")
+        class NotNull {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("mapped list is empty")
+                void mappedListIsEmpty() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).notNull();
+                    assertThat(predicate).accepts(new Customer(new ArrayList<>(), null));
+                }
+
+                @Test
+                @DisplayName("mapped list is not empty")
+                void mappedListIsNotEmpty() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).notNull();
+                    assertThat(predicate).accepts(new Customer(asList("Admin", "User"), null));
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("mapped list is null")
+                void mappedListIsNull() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).notNull();
+                    assertThat(predicate).rejects(new Customer(null, null));
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName(".isInstanceOf(clazz)")
+        class IsInstanceOf {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("mapped list is instance of provided class")
+                void mappedListIsInstanceOfProvidedClass() {
+                    List<String> list = new ArrayList<>();
+                    list.add("Admin");
+                    list.add("User");
+                    Predicate<Customer> predicate = where().list(Customer::roles).isInstanceOf(ArrayList.class);
+                    assertThat(predicate).accepts(new Customer(list, null));
+                }
+
+                @Test
+                @DisplayName("mapped list is null and provided class is null")
+                void mappedListIsNullAndProvidedClassIsNull() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).isInstanceOf(null);
+                    assertThat(predicate).rejects(new Customer(null, null));
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("mapped list is not instance of provided class")
+                void mappedListIsNotInstanceOfProvidedClass() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).isInstanceOf(LinkedList.class);
+                    assertThat(predicate).rejects(new Customer(asList("Admin", "User"), null));
+                }
+
+                @Test
+                @DisplayName("mapped list is null and provided class is not null")
+                void mappedListIsNullAndProvidedClassIsNotNull() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).isInstanceOf(List.class);
+                    assertThat(predicate).rejects(new Customer(null, null));
+                }
+
+                @Test
+                @DisplayName("mapped list is not null and provided class is null")
+                void mappedListIsNotNullAndProvidedClassIsNull() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).isInstanceOf(null);
+                    assertThat(predicate).rejects(new Customer(asList("Admin", "User"), null));
+                }
+
+                @Test
+                @DisplayName("mapped list is null and provided class is null")
+                void mappedListIsNullAndProvidedClassIsNull() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).isInstanceOf(null);
+                    assertThat(predicate).rejects(new Customer(null, null));
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName(".notInstanceOf(clazz)")
+        class NotInstanceOf {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("mapped list is not instance of provided class")
+                void mappedListIsNotInstanceOfProvidedClass() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).notInstanceOf(LinkedList.class);
+                    assertThat(predicate).accepts(new Customer(asList("Admin", "User"), null));
+                }
+
+                @Test
+                @DisplayName("mapped list is not null and provided class is null")
+                void mappedListIsNotNullAndProvidedClassIsNull() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).notInstanceOf(null);
+                    assertThat(predicate).accepts(new Customer(asList("Admin", "User"), null));
+                }
+
+                @Test
+                @DisplayName("mapped list is null and provided class is not null")
+                void mappedListIsNullAndProvidedClassIsNotNull() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).notInstanceOf(ArrayList.class);
+                    assertThat(predicate).accepts(new Customer(null, null));
+                }
+
+                @Test
+                @DisplayName("mapped list is null and provided class is null")
+                void mappedListIsNullAndProvidedClassIsNull() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).notInstanceOf(null);
+                    assertThat(predicate).accepts(new Customer(null, null));
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("mapped list is instance of provided class")
+                void mappedListIsInstanceOfProvidedClass() {
+                    List<String> list = new ArrayList<>();
+                    list.add("Admin");
+                    list.add("User");
+                    Predicate<Customer> predicate = where().list(Customer::roles).notInstanceOf(ArrayList.class);
+                    assertThat(predicate).rejects(new Customer(list, null));
+                }
+            }
+        }
+
+
+        @Nested
+        @DisplayName(".isEmpty()")
+        class IsEmpty {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("mapped list is null")
+                void mappedListIsNull() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).isEmpty();
+                    assertThat(predicate).accepts(new Customer(null, null));
+                }
+
+                @Test
+                @DisplayName("mapped list is empty")
+                void mappedListIsEmpty() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).isEmpty();
+                    assertThat(predicate).accepts(new Customer(new ArrayList<>(), null));
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("mapped list is not empty")
+                void mappedListIsNotEmpty() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).isEmpty();
+                    assertThat(predicate).rejects(new Customer(asList("Admin", "User"), null));
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName(".notEmpty()")
+        class NotEmpty {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("mapped list is not empty")
+                void mappedListIsNotEmpty() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).notEmpty();
+                    assertThat(predicate).accepts(new Customer(asList("Admin", "User"), null));
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("mapped list is null")
+                void mappedListIsNull() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).notEmpty();
+                    assertThat(predicate).rejects(new Customer(null, null));
+                }
+
+                @Test
+                @DisplayName("mapped list is empty")
+                void mappedListIsEmpty() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).notEmpty();
+                    assertThat(predicate).rejects(new Customer(new ArrayList<>(), null));
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName(".hasSize(size)")
+        class HasSize {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("mapped list has the specified size")
+                void mappedListHasSpecifiedSize() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).hasSize(2);
+                    assertThat(predicate).accepts(new Customer(asList("Admin", "User"), null));
+                }
+
+                @Test
+                @DisplayName("mapped list is empty and specified size is zero")
+                void mappedListIsEmptyAndSpecifiedSizeIsZero() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).hasSize(0);
+                    assertThat(predicate).accepts(new Customer(new ArrayList<>(), null));
+                }
+
+                @Test
+                @DisplayName("mapped list is null and specified size is zero")
+                void mappedListIsNullAndSpecifiedSizeIsZero() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).hasSize(0);
+                    assertThat(predicate).accepts(new Customer(new ArrayList<>(), null));
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("mapped list has a different size than specified")
+                void mappedListHasDifferentSize() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).hasSize(3);
+                    assertThat(predicate).rejects(new Customer(asList("Admin", "User"), null));
+                }
+
+                @Test
+                @DisplayName("mapped list is empty and size is not zero")
+                void mappedListIsEmptyAndSizeIsNotZero() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).hasSize(1);
+                    assertThat(predicate).rejects(new Customer(new ArrayList<>(), null));
+                }
+
+                @Test
+                @DisplayName("mapped list is null and size is not zero")
+                void mappedListIsNullAndSizeIsNotZero() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).hasSize(2);
+                    assertThat(predicate).rejects(new Customer(null, null));
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName(".notHaveSize(size)")
+        class NotHaveSize {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("mapped list does not have the specified size")
+                void mappedListDoesNotHaveSpecifiedSize() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).notHaveSize(3);
+                    assertThat(predicate).accepts(new Customer(asList("Admin", "User"), null));
+                }
+
+                @Test
+                @DisplayName("mapped list is null and specified size is not zero")
+                void mappedListIsNullAndSpecifiedSizeIsNotZero() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).notHaveSize(2);
+                    assertThat(predicate).accepts(new Customer(null, null));
+                }
+
+                @Test
+                @DisplayName("mapped list is empty and size is not zero")
+                void mappedListIsEmptyAndSizeIsNotZero() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).notHaveSize(1);
+                    assertThat(predicate).accepts(new Customer(new ArrayList<>(), null));
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("mapped list has the specified size")
+                void mappedListHasSpecifiedSize() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).notHaveSize(2);
+                    assertThat(predicate).rejects(new Customer(asList("Admin", "User"), null));
+                }
+
+                @Test
+                @DisplayName("mapped list is empty and specified size is zero")
+                void mappedListIsEmptyAndSpecifiedSizeIsZero() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).notHaveSize(0);
+                    assertThat(predicate).rejects(new Customer(new ArrayList<>(), null));
+                }
+
+                @Test
+                @DisplayName("mapped list is null and specified size is zero")
+                void mappedListIsNullAndSpecifiedSizeIsZero() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).notHaveSize(0);
+                    assertThat(predicate).rejects(new Customer(new ArrayList<>(), null));
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName(".contains(element)")
+        class Contains {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("mapped list contains the specified element")
+                void mappedListContainsSpecifiedElement() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).contains("Admin");
+                    assertThat(predicate).accepts(new Customer(asList("Admin", "User"), null));
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("mapped list does not contain the specified element")
+                void mappedListDoesNotContainSpecifiedElement() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).contains("Manager");
+                    assertThat(predicate).rejects(new Customer(asList("Admin", "User"), null));
+                }
+
+                @Test
+                @DisplayName("mapped list is null")
+                void mappedListIsNull() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).contains("Admin");
+                    assertThat(predicate).rejects(new Customer(null, null));
+                }
+
+                @Test
+                @DisplayName("mapped list is empty")
+                void mappedListIsEmpty() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).contains("Admin");
+                    assertThat(predicate).rejects(new Customer(new ArrayList<>(), null));
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName(".notContain(element)")
+        class NotContain {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("mapped list does not contain the specified element")
+                void mappedListDoesNotContainSpecifiedElement() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).notContain("Manager");
+                    assertThat(predicate).accepts(new Customer(asList("Admin", "User"), null));
+                }
+
+                @Test
+                @DisplayName("mapped list is null")
+                void mappedListIsNull() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).notContain("Admin");
+                    assertThat(predicate).accepts(new Customer(null, null));
+                }
+
+                @Test
+                @DisplayName("mapped list is empty")
+                void mappedListIsEmpty() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).notContain("Admin");
+                    assertThat(predicate).accepts(new Customer(new ArrayList<>(), null));
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("mapped list contains the specified element")
+                void mappedListContainsSpecifiedElement() {
+                    Predicate<Customer> predicate = where().list(Customer::roles).notContain("Admin");
+                    assertThat(predicate).rejects(new Customer(asList("Admin", "User"), null));
                 }
             }
         }
