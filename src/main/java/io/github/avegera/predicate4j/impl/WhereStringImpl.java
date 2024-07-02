@@ -12,6 +12,10 @@ public class WhereStringImpl<T> extends WhereObjectImpl<T, String> implements Wh
         super(mapper);
     }
 
+    public WhereStringImpl(Function<T, String> mapper, RichPredicate<T> previousPredicate) {
+        super(mapper, previousPredicate);
+    }
+
     @Override
     public RichPredicate<T> isEmpty() {
         return getPredicate(Predicates.isEmptyString());

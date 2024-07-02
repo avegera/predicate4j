@@ -13,6 +13,10 @@ public class WhereListImpl<T, R> extends WhereObjectImpl<T, List<R>> implements 
         super(mapper);
     }
 
+    public WhereListImpl(Function<T, List<R>> mapper, RichPredicate<T> previousPredicate) {
+        super(mapper, previousPredicate);
+    }
+
     @Override
     public RichPredicate<T> isEmpty() {
         return getPredicate(Predicates.isEmpty());

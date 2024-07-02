@@ -1899,7 +1899,7 @@ class WhereTest {
                 @Test
                 @DisplayName("all two predicates are true")
                 void allPredicatesAreTrue() {
-                    Address address = new Address("USA", null, null);
+                    Address address = new Address("USA", null);
                     assertThat(predicateConjunction).accepts(address);
                 }
             }
@@ -1917,21 +1917,21 @@ class WhereTest {
                 @Test
                 @DisplayName("first predicate is false")
                 void firstPredicateIsFalse() {
-                    Address address = new Address("Ireland", null, null);
+                    Address address = new Address("Ireland", null);
                     assertThat(predicateConjunction).rejects(address);
                 }
 
                 @Test
                 @DisplayName("second predicate is false")
                 void secondPredicateIsFalse() {
-                    Address address = new Address("USA", null, 123);
+                    Address address = new Address("USA", 123);
                     assertThat(predicateConjunction).rejects(address);
                 }
 
                 @Test
                 @DisplayName("both predicates are false")
                 void bothPredicatesAreFalse() {
-                    Address address = new Address("Ireland", null, 123);
+                    Address address = new Address("Ireland", 123);
                     assertThat(predicateConjunction).rejects(address);
                 }
             }
@@ -1942,7 +1942,7 @@ class WhereTest {
         class ThreePredicates {
 
             private final Predicate<Address> predicateConjunction = where(Address::country).notNull()
-                    .and(Address::value).notEqualTo("testValue")
+                    .and().string(Address::state).startsWith("some")
                     .and(Address::zipCode).isInstanceOf(Integer.class);
 
             @Nested
@@ -1952,7 +1952,7 @@ class WhereTest {
                 @Test
                 @DisplayName("all predicates are true")
                 void allPredicatesAreTrue() {
-                    Address address = new Address("USA", "someValue", 123);
+                    Address address = new Address("USA", "someState", 123);
                     assertThat(predicateConjunction).accepts(address);
                 }
             }
@@ -1977,28 +1977,28 @@ class WhereTest {
                 @Test
                 @DisplayName("second predicate is false")
                 void secondPredicateIsFalse() {
-                    Address address = new Address("USA", "testValue", 123);
+                    Address address = new Address("USA", "testState", 123);
                     assertThat(predicateConjunction).rejects(address);
                 }
 
                 @Test
                 @DisplayName("third predicate is false")
                 void thirdPredicateIsFalse() {
-                    Address address = new Address("USA", "someValue", null);
+                    Address address = new Address("USA", "someState", null);
                     assertThat(predicateConjunction).rejects(address);
                 }
 
                 @Test
                 @DisplayName("two predicates are false")
                 void twoPredicatesAreFalse() {
-                    Address address = new Address(null, "testValue", 123);
+                    Address address = new Address(null, "testState", 123);
                     assertThat(predicateConjunction).rejects(address);
                 }
 
                 @Test
                 @DisplayName("all predicates are false")
                 void allPredicatesAreFalse() {
-                    Address address = new Address(null, "testValue", null);
+                    Address address = new Address(null, "testState", null);
                     assertThat(predicateConjunction).rejects(address);
                 }
             }
@@ -2008,13 +2008,13 @@ class WhereTest {
         @DisplayName("7 predicates")
         class SevenPredicates {
 
-            private final Predicate<Address> predicateConjunction = where(Address::country).notNull()
-                    .and(Address::zipCode).notNull()
-                    .and(Address::value).notNull()
-                    .and(Address::country).notEqualTo("USA")
-                    .and(Address::country).notEqualTo("Canada")
-                    .and(Address::value).isEqualTo("testValue")
-                    .and(Address::zipCode).isEqualTo(123);
+            private final Predicate<Address> predicateConjunction = where(Address::country).isEqualTo("USA")
+                    .and(Address::state).notNull()
+                    .and().string(Address::street).notStartsWith("str.")
+                    .and().string(Address::building).notEqualTo("xyz")
+                    .and(Address::zipCode).isEqualTo(123)
+                    .and().list(Address::tenants).contains("Tenant1")
+                    .and().booleanValue(Address::active).isTrue();
 
             @Nested
             @DisplayName("returns true when")
@@ -2023,8 +2023,7 @@ class WhereTest {
                 @Test
                 @DisplayName("all predicates are true")
                 void mappedValueIsFalse() {
-                    Address address = new Address("notCanadaAndUSA", "testValue", 123);
-                    assertThat(predicateConjunction).accepts(address);
+                    assertThat(predicateConjunction).accepts(new Address("USA", "testValue", "someStreet", "abc", 123, asList("Tenant1", "Tenant2"), true));
                 }
             }
 
@@ -2041,70 +2040,70 @@ class WhereTest {
                 @Test
                 @DisplayName("first predicate is false")
                 void firstPredicateIsFalse() {
-                    Address address = new Address(null, "testValue", 123);
+                    Address address = new Address("Canada", "testValue", "someStreet", "abc", 123, asList("Tenant1", "Tenant2"), true);
                     assertThat(predicateConjunction).rejects(address);
                 }
 
                 @Test
                 @DisplayName("second predicate is false")
                 void secondPredicateIsFalse() {
-                    Address address = new Address("notCanadaAndUSA", null, 123);
+                    Address address = new Address("USA", null, "someStreet", "abc", 123, asList("Tenant1", "Tenant2"), true);
                     assertThat(predicateConjunction).rejects(address);
                 }
 
                 @Test
                 @DisplayName("third predicate is false")
                 void thirdPredicateIsFalse() {
-                    Address address = new Address("notCanadaAndUSA", "testValue", null);
+                    Address address = new Address("USA", "testValue", "str. Some Street", "abc", 123, asList("Tenant1", "Tenant2"), true);
                     assertThat(predicateConjunction).rejects(address);
                 }
 
                 @Test
                 @DisplayName("fourth predicate is false")
                 void fourthPredicateIsFalse() {
-                    Address address = new Address("USA", "testValue", 123);
+                    Address address = new Address("USA", "testValue", "someStreet", "xyz", 123, asList("Tenant1", "Tenant2"), true);
                     assertThat(predicateConjunction).rejects(address);
                 }
 
                 @Test
                 @DisplayName("fifth predicate is false")
                 void fifthPredicateIsFalse() {
-                    Address address = new Address("Canada", "testValue", 123);
+                    Address address = new Address("USA", "testValue", "someStreet", "abc", 456, asList("Tenant1", "Tenant2"), true);
                     assertThat(predicateConjunction).rejects(address);
                 }
 
                 @Test
                 @DisplayName("sixth predicate is false")
                 void sixthPredicateIsFalse() {
-                    Address address = new Address("notCanadaAndUSA", "anotherValue", 123);
+                    Address address = new Address("USA", "testValue", "someStreet", "abc", 123, asList("Tenant2", "Tenant3", "Tenant4"), true);
                     assertThat(predicateConjunction).rejects(address);
                 }
 
                 @Test
                 @DisplayName("seventh predicate is false")
                 void seventhPredicateIsFalse() {
-                    Address address = new Address("notCanadaAndUSA", "testValue", 456);
+                    Address address = new Address("USA", "testValue", "someStreet", "abc", 123, asList("Tenant1", "Tenant2"), false);
                     assertThat(predicateConjunction).rejects(address);
                 }
 
                 @Test
                 @DisplayName("three predicates are false")
                 void threePredicatesAreFalse() {
-                    Address address = new Address("USA", "anotherValue", 456);
+                    Address address = new Address("USA", "testValue", "str. Some Street", "xyz", null, asList("Tenant1", "Tenant2"), true);
                     assertThat(predicateConjunction).rejects(address);
                 }
 
                 @Test
                 @DisplayName("four predicates are false")
                 void fourPredicatesAreFalse() {
-                    Address address = new Address("USA", "anotherValue", null);
+                    Address address = new Address("Canada", null, "someStreet", "abc", 123, asList("Tenant2", "Tenant3"), false);
                     assertThat(predicateConjunction).rejects(address);
                 }
 
                 @Test
                 @DisplayName("all predicates are false")
                 void allPredicatesAreFalse() {
-                    Address address = new Address(null, null, null);
+                    Address address = new Address("USA", "testValue", "someStreet", "abc", 123, asList("Tenant1", "Tenant2"), null);
                     assertThat(predicateConjunction).rejects(address);
                 }
             }
