@@ -12,6 +12,10 @@ public class WhereBooleanImpl<T> extends WhereObjectImpl<T, Boolean> implements 
         super(mapper);
     }
 
+    public WhereBooleanImpl(Function<T, Boolean> mapper, RichPredicate<T> previousPredicate) {
+        super(mapper, previousPredicate);
+    }
+
     @Override
     public RichPredicate<T> isTrue() {
         return getPredicate(Predicates.isTrue());

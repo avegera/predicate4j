@@ -6,4 +6,6 @@ import java.util.function.Predicate;
 public interface RichPredicate<T> extends Predicate<T> {
 
     <R> WhereObject<T, R> and(Function<T, R> mapper);
+
+    RichPredicateConjunction<T> and();
 }
