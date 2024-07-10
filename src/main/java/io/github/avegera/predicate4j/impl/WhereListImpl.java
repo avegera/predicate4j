@@ -35,11 +35,11 @@ public class WhereListImpl<T, R> extends WhereObjectImpl<T, List<R>> implements 
 
     @Override
     public RichPredicate<T> contains(R element) {
-        return getPredicate(Predicates.contains(element));
+        return getPredicate(Predicates.containsElement(element));
     }
 
     @Override
-    public RichPredicate<T> notContain(R element) {
-        return getPredicate(Predicates.notContain(element));
+    public RichPredicate<T> notContains(R element) {
+        return getPredicate(Predicates.notContainsElement(element));
     }
 }

@@ -13,6 +13,8 @@ public class Predicates {
         //private constructor
     }
 
+    //Object predicates
+
     public static <T> Predicate<T> isEqualTo(T object) {
         return it -> Objects.equals(it, object);
     }
@@ -45,6 +47,8 @@ public class Predicates {
         return it -> false;
     }
 
+    //Boolean predicates
+
     public static Predicate<Boolean> isTrue() {
         return bool -> bool != null && bool;
     }
@@ -60,6 +64,8 @@ public class Predicates {
     public static Predicate<Boolean> notFalse() {
         return bool -> bool == null || bool;
     }
+
+    //Collection predicates
 
     public static <T extends Collection<?>> Predicate<T> isEmpty() {
         return collection -> collection == null || collection.isEmpty();
@@ -77,11 +83,53 @@ public class Predicates {
         return collection -> (collection != null ? collection.size() : 0) != size;
     }
 
-    public static <T extends Collection<R>, R> Predicate<T> contains(R element) {
+    public static <T extends Collection<R>, R> Predicate<T> containsElement(R element) {
         return collection -> collection != null && collection.contains(element);
     }
 
-    public static <T extends Collection<R>, R> Predicate<T> notContain(R element) {
+    public static <T extends Collection<R>, R> Predicate<T> notContainsElement(R element) {
         return collection -> collection == null || !collection.contains(element);
+    }
+
+    //String predicates
+
+    public static Predicate<String> isEmptyString() {
+        return str -> str == null || str.isEmpty();
+    }
+
+    public static Predicate<String> notEmptyString() {
+        return str -> str != null && !str.isEmpty();
+    }
+
+    public static Predicate<String> containsSubstring(String substring) {
+        return str -> str != null && str.contains(substring);
+    }
+
+    public static Predicate<String> notContainsSubstring(String substring) {
+        return str -> str == null || !str.contains(substring);
+    }
+
+    public static Predicate<String> startsWith(String prefix) {
+        return str -> str != null && prefix != null && str.startsWith(prefix);
+    }
+
+    public static Predicate<String> notStartsWith(String prefix) {
+        return str -> str == null || prefix == null || !str.startsWith(prefix);
+    }
+
+    public static Predicate<String> endsWith(String suffix) {
+        return str -> str != null && suffix != null && str.endsWith(suffix);
+    }
+
+    public static Predicate<String> notEndsWith(String suffix) {
+        return str -> str == null || suffix == null || !str.endsWith(suffix);
+    }
+
+    public static Predicate<String> matches(String regex) {
+        return str -> str != null && regex != null && str.matches(regex);
+    }
+
+    public static Predicate<String> notMatches(String regex) {
+        return str -> str == null || regex == null || !str.matches(regex);
     }
 }

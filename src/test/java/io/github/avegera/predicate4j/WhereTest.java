@@ -1,9 +1,6 @@
 package io.github.avegera.predicate4j;
 
-import io.github.avegera.predicate4j.test.Address;
-import io.github.avegera.predicate4j.test.Customer;
-import io.github.avegera.predicate4j.test.Organization;
-import io.github.avegera.predicate4j.test.User;
+import io.github.avegera.predicate4j.test.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -1287,21 +1284,21 @@ class WhereTest {
                 @Test
                 @DisplayName("mapped list does not contain the specified element")
                 void mappedListDoesNotContainSpecifiedElement() {
-                    Predicate<Customer> predicate = where().list(Customer::roles).notContain("Manager");
+                    Predicate<Customer> predicate = where().list(Customer::roles).notContains("Manager");
                     assertThat(predicate).accepts(new Customer(asList("Admin", "User"), null));
                 }
 
                 @Test
                 @DisplayName("mapped list is null")
                 void mappedListIsNull() {
-                    Predicate<Customer> predicate = where().list(Customer::roles).notContain("Admin");
+                    Predicate<Customer> predicate = where().list(Customer::roles).notContains("Admin");
                     assertThat(predicate).accepts(new Customer(null, null));
                 }
 
                 @Test
                 @DisplayName("mapped list is empty")
                 void mappedListIsEmpty() {
-                    Predicate<Customer> predicate = where().list(Customer::roles).notContain("Admin");
+                    Predicate<Customer> predicate = where().list(Customer::roles).notContains("Admin");
                     assertThat(predicate).accepts(new Customer(new ArrayList<>(), null));
                 }
             }
@@ -1313,8 +1310,573 @@ class WhereTest {
                 @Test
                 @DisplayName("mapped list contains the specified element")
                 void mappedListContainsSpecifiedElement() {
-                    Predicate<Customer> predicate = where().list(Customer::roles).notContain("Admin");
+                    Predicate<Customer> predicate = where().list(Customer::roles).notContains("Admin");
                     assertThat(predicate).rejects(new Customer(asList("Admin", "User"), null));
+                }
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("Predicate from method where().string(mapper)")
+    class WhereStringImpl {
+
+        @Nested
+        @DisplayName(".isEqualTo(value)")
+        class IsEqualTo {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("mapped value is equal to provided value")
+                void mappedValueIsEqualToProvidedValue() {
+                    Predicate<Product> predicate = where().string(Product::name).isEqualTo("Laptop");
+                    assertThat(predicate).accepts(new Product("Laptop"));
+                }
+
+                @Test
+                @DisplayName("mapped value is null and provided value is null")
+                void mappedValueIsNullAndProvidedValueIsNull() {
+                    Predicate<Product> predicate = where().string(Product::name).isEqualTo(null);
+                    assertThat(predicate).accepts(new Product(null));
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("mapped value is not equal to provided value")
+                void mappedValueIsNotEqualToProvidedValue() {
+                    Predicate<Product> predicate = where().string(Product::name).isEqualTo("Laptop");
+                    assertThat(predicate).rejects(new Product("Desktop"));
+                }
+
+                @Test
+                @DisplayName("mapped value is not null and provided value is null")
+                void mappedValueIsNotNullAndProvidedValueIsNull() {
+                    Predicate<Product> predicate = where().string(Product::name).isEqualTo(null);
+                    assertThat(predicate).rejects(new Product("Laptop"));
+                }
+
+                @Test
+                @DisplayName("mapped value is null and provided value is not null")
+                void mappedValueIsNullAndProvidedValueIsNotNull() {
+                    Predicate<Product> predicate = where().string(Product::name).isEqualTo("Laptop");
+                    assertThat(predicate).rejects(new Product(null));
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName(".notEqualTo(value)")
+        class NotEqualTo {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("mapped value is not equal to provided value")
+                void mappedValueIsNotEqualToProvidedValue() {
+                    Predicate<Product> predicate = where().string(Product::name).notEqualTo("Laptop");
+                    assertThat(predicate).accepts(new Product("Desktop"));
+                }
+
+                @Test
+                @DisplayName("mapped value is not null and provided value is null")
+                void mappedValueIsNotNullAndProvidedValueIsNull() {
+                    Predicate<Product> predicate = where().string(Product::name).notEqualTo(null);
+                    assertThat(predicate).accepts(new Product("Laptop"));
+                }
+
+                @Test
+                @DisplayName("mapped value is null and provided value is not null")
+                void mappedValueIsNullAndProvidedValueIsNotNull() {
+                    Predicate<Product> predicate = where().string(Product::name).notEqualTo("Laptop");
+                    assertThat(predicate).accepts(new Product(null));
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("mapped value is equal to provided value")
+                void mappedValueIsEqualToProvidedValue() {
+                    Predicate<Product> predicate = where().string(Product::name).notEqualTo("Laptop");
+                    assertThat(predicate).rejects(new Product("Laptop"));
+                }
+
+                @Test
+                @DisplayName("mapped value is null and provided value is null")
+                void mappedValueIsNullAndProvidedValueIsNull() {
+                    Predicate<Product> predicate = where().string(Product::name).notEqualTo(null);
+                    assertThat(predicate).rejects(new Product(null));
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName(".isNull()")
+        class IsNull {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("mapped value is null")
+                void mappedValueIsNull() {
+                    Predicate<Product> predicate = where().string(Product::name).isNull();
+                    assertThat(predicate).accepts(new Product(null));
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("mapped value is not null")
+                void mappedValueIsNotNull() {
+                    Predicate<Product> predicate = where().string(Product::name).isNull();
+                    assertThat(predicate).rejects(new Product("Laptop"));
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName(".notNull()")
+        class NotNull {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("mapped value is not null")
+                void mappedValueIsNotNull() {
+                    Predicate<Product> predicate = where().string(Product::name).notNull();
+                    assertThat(predicate).accepts(new Product("Laptop"));
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("mapped value is null")
+                void mappedValueIsNull() {
+                    Predicate<Product> predicate = where().string(Product::name).notNull();
+                    assertThat(predicate).rejects(new Product(null));
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName(".isEmpty()")
+        class IsEmpty {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("mapped value is empty")
+                void mappedValueIsEmpty() {
+                    Predicate<Product> predicate = where().string(Product::name).isEmpty();
+                    assertThat(predicate).accepts(new Product(""));
+                }
+
+                @Test
+                @DisplayName("mapped value is null")
+                void mappedValueIsNull() {
+                    Predicate<Product> predicate = where().string(Product::name).isEmpty();
+                    assertThat(predicate).accepts(new Product(null));
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("mapped value is not empty")
+                void mappedValueIsNotEmpty() {
+                    Predicate<Product> predicate = where().string(Product::name).isEmpty();
+                    assertThat(predicate).rejects(new Product("Laptop"));
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName(".notEmpty()")
+        class NotEmpty {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("mapped value is not empty")
+                void mappedValueIsNotEmpty() {
+                    Predicate<Product> predicate = where().string(Product::name).notEmpty();
+                    assertThat(predicate).accepts(new Product("Laptop"));
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("mapped value is empty")
+                void mappedValueIsEmpty() {
+                    Predicate<Product> predicate = where().string(Product::name).notEmpty();
+                    assertThat(predicate).rejects(new Product(""));
+                }
+
+                @Test
+                @DisplayName("mapped value is null")
+                void mappedValueIsNull() {
+                    Predicate<Product> predicate = where().string(Product::name).notEmpty();
+                    assertThat(predicate).rejects(new Product(null));
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName(".contains(substring)")
+        class Contains {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("mapped value contains the substring")
+                void mappedValueContainsSubstring() {
+                    Predicate<Product> predicate = where().string(Product::name).contains("Lap");
+                    assertThat(predicate).accepts(new Product("Laptop"));
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("mapped value does not contain the substring")
+                void mappedValueDoesNotContainSubstring() {
+                    Predicate<Product> predicate = where().string(Product::name).contains("Phone");
+                    assertThat(predicate).rejects(new Product("Laptop"));
+                }
+
+                @Test
+                @DisplayName("mapped value is null")
+                void mappedValueIsNull() {
+                    Predicate<Product> predicate = where().string(Product::name).contains("Lap");
+                    assertThat(predicate).rejects(new Product(null));
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName(".notContains(substring)")
+        class NotContains {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("mapped value does not contain the substring")
+                void mappedValueDoesNotContainSubstring() {
+                    Predicate<Product> predicate = where().string(Product::name).notContains("Phone");
+                    assertThat(predicate).accepts(new Product("Laptop"));
+                }
+
+                @Test
+                @DisplayName("mapped value is null")
+                void mappedValueIsNull() {
+                    Predicate<Product> predicate = where().string(Product::name).notContains("Lap");
+                    assertThat(predicate).accepts(new Product(null));
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("mapped value contains the substring")
+                void mappedValueContainsSubstring() {
+                    Predicate<Product> predicate = where().string(Product::name).notContains("Lap");
+                    assertThat(predicate).rejects(new Product("Laptop"));
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName(".startsWith(prefix)")
+        class StartsWith {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("mapped value starts with the prefix")
+                void mappedValueStartsWithPrefix() {
+                    Predicate<Product> predicate = where().string(Product::name).startsWith("Lap");
+                    assertThat(predicate).accepts(new Product("Laptop"));
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("mapped value does not start with the prefix")
+                void mappedValueDoesNotStartWithPrefix() {
+                    Predicate<Product> predicate = where().string(Product::name).startsWith("Comp");
+                    assertThat(predicate).rejects(new Product("Laptop"));
+                }
+
+                @Test
+                @DisplayName("mapped value is null")
+                void mappedValueIsNull() {
+                    Predicate<Product> predicate = where().string(Product::name).startsWith("Lap");
+                    assertThat(predicate).rejects(new Product(null));
+                }
+
+                @Test
+                @DisplayName("prefix is null")
+                void prefixIsNull() {
+                    Predicate<Product> predicate = where().string(Product::name).startsWith(null);
+                    assertThat(predicate).rejects(new Product("Laptop"));
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName(".notStartsWith(prefix)")
+        class NotStartsWith {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("mapped value does not start with the prefix")
+                void mappedValueDoesNotStartWithPrefix() {
+                    Predicate<Product> predicate = where().string(Product::name).notStartsWith("Comp");
+                    assertThat(predicate).accepts(new Product("Laptop"));
+                }
+
+                @Test
+                @DisplayName("mapped value is null")
+                void mappedValueIsNull() {
+                    Predicate<Product> predicate = where().string(Product::name).notStartsWith("Lap");
+                    assertThat(predicate).accepts(new Product(null));
+                }
+
+                @Test
+                @DisplayName("prefix is null")
+                void prefixIsNull() {
+                    Predicate<Product> predicate = where().string(Product::name).notStartsWith(null);
+                    assertThat(predicate).accepts(new Product("Laptop"));
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("mapped value starts with the prefix")
+                void mappedValueStartsWithPrefix() {
+                    Predicate<Product> predicate = where().string(Product::name).notStartsWith("Lap");
+                    assertThat(predicate).rejects(new Product("Laptop"));
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName(".endsWith(suffix)")
+        class EndsWith {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("mapped value ends with the suffix")
+                void mappedValueEndsWithSuffix() {
+                    Predicate<Product> predicate = where().string(Product::name).endsWith("top");
+                    assertThat(predicate).accepts(new Product("Laptop"));
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("mapped value does not end with the suffix")
+                void mappedValueDoesNotEndWithSuffix() {
+                    Predicate<Product> predicate = where().string(Product::name).endsWith("phone");
+                    assertThat(predicate).rejects(new Product("Laptop"));
+                }
+
+                @Test
+                @DisplayName("mapped value is null")
+                void mappedValueIsNull() {
+                    Predicate<Product> predicate = where().string(Product::name).endsWith("top");
+                    assertThat(predicate).rejects(new Product(null));
+                }
+
+                @Test
+                @DisplayName("suffix is null")
+                void suffixIsNull() {
+                    Predicate<Product> predicate = where().string(Product::name).endsWith(null);
+                    assertThat(predicate).rejects(new Product("Laptop"));
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName(".notEndsWith(suffix)")
+        class NotEndsWith {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("mapped value does not end with the suffix")
+                void mappedValueDoesNotEndWithSuffix() {
+                    Predicate<Product> predicate = where().string(Product::name).notEndsWith("phone");
+                    assertThat(predicate).accepts(new Product("Laptop"));
+                }
+
+                @Test
+                @DisplayName("mapped value is null")
+                void mappedValueIsNull() {
+                    Predicate<Product> predicate = where().string(Product::name).notEndsWith("top");
+                    assertThat(predicate).accepts(new Product(null));
+                }
+
+                @Test
+                @DisplayName("suffix is null")
+                void suffixIsNull() {
+                    Predicate<Product> predicate = where().string(Product::name).notEndsWith(null);
+                    assertThat(predicate).accepts(new Product("Laptop"));
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("mapped value ends with the suffix")
+                void mappedValueEndsWithSuffix() {
+                    Predicate<Product> predicate = where().string(Product::name).notEndsWith("top");
+                    assertThat(predicate).rejects(new Product("Laptop"));
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName(".matches(regex)")
+        class Matches {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("mapped value matches the regex")
+                void mappedValueMatchesRegex() {
+                    Predicate<Product> predicate = where().string(Product::name).matches("\\w+top");
+                    assertThat(predicate).accepts(new Product("Laptop"));
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("mapped value does not match the regex")
+                void mappedValueDoesNotMatchRegex() {
+                    Predicate<Product> predicate = where().string(Product::name).matches("\\d+");
+                    assertThat(predicate).rejects(new Product("Laptop"));
+                }
+
+                @Test
+                @DisplayName("mapped value is null")
+                void mappedValueIsNull() {
+                    Predicate<Product> predicate = where().string(Product::name).matches("\\w+top");
+                    assertThat(predicate).rejects(new Product(null));
+                }
+
+                @Test
+                @DisplayName("regex is null")
+                void regexIsNull() {
+                    Predicate<Product> predicate = where().string(Product::name).matches(null);
+                    assertThat(predicate).rejects(new Product("Laptop"));
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName(".notMatches(regex)")
+        class NotMatches {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("mapped value does not match the regex")
+                void mappedValueDoesNotMatchRegex() {
+                    Predicate<Product> predicate = where().string(Product::name).notMatches("\\d+");
+                    assertThat(predicate).accepts(new Product("Laptop"));
+                }
+
+                @Test
+                @DisplayName("mapped value is null")
+                void mappedValueIsNull() {
+                    Predicate<Product> predicate = where().string(Product::name).notMatches("\\w+top");
+                    assertThat(predicate).accepts(new Product(null));
+                }
+
+                @Test
+                @DisplayName("regex is null")
+                void regexIsNull() {
+                    Predicate<Product> predicate = where().string(Product::name).notMatches(null);
+                    assertThat(predicate).accepts(new Product("Laptop"));
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("mapped value matches the regex")
+                void mappedValueMatchesRegex() {
+                    Predicate<Product> predicate = where().string(Product::name).notMatches("\\w+top");
+                    assertThat(predicate).rejects(new Product("Laptop"));
                 }
             }
         }
@@ -1545,7 +2107,6 @@ class WhereTest {
                     Address address = new Address(null, null, null);
                     assertThat(predicateConjunction).rejects(address);
                 }
-
             }
         }
     }
