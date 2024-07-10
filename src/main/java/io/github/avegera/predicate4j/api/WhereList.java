@@ -14,5 +14,5 @@ public interface WhereList<T, R> extends WhereObject<T, List<R>> {
 
     RichPredicate<T> contains(R element);
 
-    RichPredicate<T> notContain(R element);
+    RichPredicate<T> notContains(R element);
 }

@@ -4,9 +4,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Predicate;
 
 import static io.github.avegera.predicate4j.Predicates.*;
+import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class PredicatesTest {
@@ -477,6 +480,690 @@ class PredicatesTest {
                 void booleanIsFalse() {
                     Predicate<Boolean> predicate = notFalse();
                     assertThat(predicate).rejects(false);
+                }
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("List predicate")
+    class ListPredicate {
+
+        @Nested
+        @DisplayName("isEmpty()")
+        class IsEmpty {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("list is empty")
+                void listIsEmpty() {
+                    Predicate<List<String>> predicate = isEmpty();
+                    assertThat(predicate).accepts(new ArrayList<>());
+                }
+
+                @Test
+                @DisplayName("list is null")
+                void listIsNull() {
+                    Predicate<List<String>> predicate = isEmpty();
+                    assertThat(predicate).accepts((List<String>) null);
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("list is not empty")
+                void listIsNotEmpty() {
+                    Predicate<List<String>> predicate = isEmpty();
+                    assertThat(predicate).rejects(singletonList("item"));
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName("notEmpty()")
+        class NotEmpty {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("list is not empty")
+                void listIsNotEmpty() {
+                    Predicate<List<String>> predicate = notEmpty();
+                    assertThat(predicate).accepts(singletonList("item"));
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("list is empty")
+                void listIsEmpty() {
+                    Predicate<List<String>> predicate = notEmpty();
+                    assertThat(predicate).rejects(new ArrayList<>());
+                }
+
+                @Test
+                @DisplayName("list is null")
+                void listIsNull() {
+                    Predicate<List<String>> predicate = notEmpty();
+                    assertThat(predicate).rejects((List<String>) null);
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName("hasSize(size)")
+        class HasSize {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("list has the specified size")
+                void listHasSpecifiedSize() {
+                    Predicate<List<String>> predicate = hasSize(1);
+                    assertThat(predicate).accepts(singletonList("item"));
+                }
+
+                @Test
+                @DisplayName("list is empty and specified size is zero")
+                void listIsEmptyAndSpecifiedSizeIsZero() {
+                    Predicate<List<String>> predicate = hasSize(0);
+                    assertThat(predicate).accepts(new ArrayList<>());
+                }
+
+                @Test
+                @DisplayName("list is null and specified size is zero")
+                void listIsNullAndSpecifiedSizeIsZero() {
+                    Predicate<List<String>> predicate = hasSize(0);
+                    assertThat(predicate).accepts((List<String>) null);
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("list has a different size than specified")
+                void listHasDifferentSize() {
+                    Predicate<List<String>> predicate = hasSize(2);
+                    assertThat(predicate).rejects(singletonList("item"));
+                }
+
+                @Test
+                @DisplayName("list is empty and size is not zero")
+                void listIsEmptyAndSizeIsNotZero() {
+                    Predicate<List<String>> predicate = hasSize(1);
+                    assertThat(predicate).rejects(new ArrayList<>());
+                }
+
+                @Test
+                @DisplayName("list is null and size is not zero")
+                void listIsNullAndSizeIsNotZero() {
+                    Predicate<List<String>> predicate = hasSize(1);
+                    assertThat(predicate).rejects((List<String>) null);
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName("notHaveSize(size)")
+        class NotHaveSize {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("list does not have the specified size")
+                void listDoesNotHaveSpecifiedSize() {
+                    Predicate<List<String>> predicate = notHaveSize(2);
+                    assertThat(predicate).accepts(singletonList("item"));
+                }
+
+                @Test
+                @DisplayName("list is empty and size is not zero")
+                void listIsEmptyAndSizeIsNotZero() {
+                    Predicate<List<String>> predicate = notHaveSize(1);
+                    assertThat(predicate).accepts(new ArrayList<>());
+                }
+
+                @Test
+                @DisplayName("list is null and size is not zero")
+                void listIsNullAndSizeIsNotZero() {
+                    Predicate<List<String>> predicate = notHaveSize(1);
+                    assertThat(predicate).accepts((List<String>) null);
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("list has the specified size")
+                void listHasSpecifiedSize() {
+                    Predicate<List<String>> predicate = notHaveSize(1);
+                    assertThat(predicate).rejects(singletonList("item"));
+                }
+
+                @Test
+                @DisplayName("list is empty and specified size is zero")
+                void listIsEmptyAndSpecifiedSizeIsZero() {
+                    Predicate<List<String>> predicate = notHaveSize(0);
+                    assertThat(predicate).rejects(new ArrayList<>());
+                }
+
+                @Test
+                @DisplayName("list is null and specified size is zero")
+                void listIsNullAndSpecifiedSizeIsZero() {
+                    Predicate<List<String>> predicate = notHaveSize(0);
+                    assertThat(predicate).rejects((List<String>) null);
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName("contains(element)")
+        class Contains {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("list contains the specified element")
+                void listContainsSpecifiedElement() {
+                    Predicate<List<String>> predicate = containsElement("item");
+                    assertThat(predicate).accepts(singletonList("item"));
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("list does not contain the specified element")
+                void listDoesNotContainSpecifiedElement() {
+                    Predicate<List<String>> predicate = containsElement("item");
+                    assertThat(predicate).rejects(singletonList("anotherItem"));
+                }
+
+                @Test
+                @DisplayName("list is null")
+                void listIsNull() {
+                    Predicate<List<String>> predicate = containsElement("item");
+                    assertThat(predicate).rejects((List<String>) null);
+                }
+
+                @Test
+                @DisplayName("list is empty")
+                void listIsEmpty() {
+                    Predicate<List<String>> predicate = containsElement("item");
+                    assertThat(predicate).rejects(new ArrayList<>());
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName("notContains(element)")
+        class NotContains {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("list does not contain the specified element")
+                void listDoesNotContainSpecifiedElement() {
+                    Predicate<List<String>> predicate = notContainsElement("item");
+                    assertThat(predicate).accepts(singletonList("anotherItem"));
+                }
+
+                @Test
+                @DisplayName("list is null")
+                void listIsNull() {
+                    Predicate<List<String>> predicate = notContainsElement("item");
+                    assertThat(predicate).accepts((List<String>) null);
+                }
+
+                @Test
+                @DisplayName("list is empty")
+                void listIsEmpty() {
+                    Predicate<List<String>> predicate = notContainsElement("item");
+                    assertThat(predicate).accepts(new ArrayList<>());
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("list contains the specified element")
+                void listContainsSpecifiedElement() {
+                    Predicate<List<String>> predicate = notContainsElement("item");
+                    assertThat(predicate).rejects(singletonList("item"));
+                }
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("String predicate")
+    class StringPredicate {
+
+        @Nested
+        @DisplayName("isEmpty()")
+        class IsEmpty {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrue {
+
+                @Test
+                @DisplayName("string is empty")
+                void stringIsEmpty() {
+                    Predicate<String> predicate = isEmptyString();
+                    assertThat(predicate).accepts("");
+                }
+
+                @Test
+                @DisplayName("string is null")
+                void stringIsNull() {
+                    Predicate<String> predicate = isEmptyString();
+                    assertThat(predicate).accepts((String) null);
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalse {
+
+                @Test
+                @DisplayName("string is not empty")
+                void stringIsNotEmpty() {
+                    Predicate<String> predicate = isEmptyString();
+                    assertThat(predicate).rejects("Laptop");
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName("notEmpty()")
+        class NotEmpty {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrue {
+
+                @Test
+                @DisplayName("string is not empty")
+                void stringIsNotEmpty() {
+                    Predicate<String> predicate = notEmptyString();
+                    assertThat(predicate).accepts("Laptop");
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalse {
+
+                @Test
+                @DisplayName("string is empty")
+                void stringIsEmpty() {
+                    Predicate<String> predicate = notEmptyString();
+                    assertThat(predicate).rejects("");
+                }
+
+                @Test
+                @DisplayName("string is null")
+                void stringIsNull() {
+                    Predicate<String> predicate = notEmptyString();
+                    assertThat(predicate).rejects((String) null);
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName("contains(substring)")
+        class Contains {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrue {
+
+                @Test
+                @DisplayName("string contains the substring")
+                void stringContainsSubstring() {
+                    Predicate<String> predicate = containsSubstring("Lap");
+                    assertThat(predicate).accepts("Laptop");
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalse {
+
+                @Test
+                @DisplayName("string does not contain the substring")
+                void stringDoesNotContainSubstring() {
+                    Predicate<String> predicate = containsSubstring("Phone");
+                    assertThat(predicate).rejects("Laptop");
+                }
+
+                @Test
+                @DisplayName("string is null")
+                void stringIsNull() {
+                    Predicate<String> predicate = containsSubstring("Lap");
+                    assertThat(predicate).rejects((String) null);
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName("notContains(substring)")
+        class NotContains {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrue {
+
+                @Test
+                @DisplayName("string does not contain the substring")
+                void stringDoesNotContainSubstring() {
+                    Predicate<String> predicate = notContainsSubstring("Phone");
+                    assertThat(predicate).accepts("Laptop");
+                }
+
+                @Test
+                @DisplayName("string is null")
+                void stringIsNull() {
+                    Predicate<String> predicate = notContainsSubstring("Lap");
+                    assertThat(predicate).accepts((String) null);
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalse {
+
+                @Test
+                @DisplayName("string contains the substring")
+                void stringContainsSubstring() {
+                    Predicate<String> predicate = notContainsSubstring("Lap");
+                    assertThat(predicate).rejects("Laptop");
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName("startsWith(prefix)")
+        class StartsWith {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrue {
+
+                @Test
+                @DisplayName("string starts with the prefix")
+                void stringStartsWithPrefix() {
+                    Predicate<String> predicate = startsWith("Lap");
+                    assertThat(predicate).accepts("Laptop");
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalse {
+
+                @Test
+                @DisplayName("string does not start with the prefix")
+                void stringDoesNotStartWithPrefix() {
+                    Predicate<String> predicate = startsWith("Comp");
+                    assertThat(predicate).rejects("Laptop");
+                }
+
+                @Test
+                @DisplayName("string is null")
+                void stringIsNull() {
+                    Predicate<String> predicate = startsWith("Lap");
+                    assertThat(predicate).rejects((String) null);
+                }
+
+                @Test
+                @DisplayName("prefix is null")
+                void prefixIsNull() {
+                    Predicate<String> predicate = startsWith(null);
+                    assertThat(predicate).rejects("Laptop");
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName("notStartsWith(prefix)")
+        class NotStartsWith {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrue {
+
+                @Test
+                @DisplayName("string does not start with the prefix")
+                void stringDoesNotStartWithPrefix() {
+                    Predicate<String> predicate = notStartsWith("Comp");
+                    assertThat(predicate).accepts("Laptop");
+                }
+
+                @Test
+                @DisplayName("string is null")
+                void stringIsNull() {
+                    Predicate<String> predicate = notStartsWith("Lap");
+                    assertThat(predicate).accepts((String) null);
+                }
+
+                @Test
+                @DisplayName("prefix is null")
+                void prefixIsNull() {
+                    Predicate<String> predicate = notStartsWith(null);
+                    assertThat(predicate).accepts("Laptop");
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalse {
+
+                @Test
+                @DisplayName("string starts with the prefix")
+                void stringStartsWithPrefix() {
+                    Predicate<String> predicate = notStartsWith("Lap");
+                    assertThat(predicate).rejects("Laptop");
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName("endsWith(suffix)")
+        class EndsWith {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrue {
+
+                @Test
+                @DisplayName("string ends with the suffix")
+                void stringEndsWithSuffix() {
+                    Predicate<String> predicate = endsWith("top");
+                    assertThat(predicate).accepts("Laptop");
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalse {
+
+                @Test
+                @DisplayName("string does not end with the suffix")
+                void stringDoesNotEndWithSuffix() {
+                    Predicate<String> predicate = endsWith("phone");
+                    assertThat(predicate).rejects("Laptop");
+                }
+
+                @Test
+                @DisplayName("string is null")
+                void stringIsNull() {
+                    Predicate<String> predicate = endsWith("top");
+                    assertThat(predicate).rejects((String) null);
+                }
+
+                @Test
+                @DisplayName("suffix is null")
+                void suffixIsNull() {
+                    Predicate<String> predicate = endsWith(null);
+                    assertThat(predicate).rejects("Laptop");
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName("notEndsWith(suffix)")
+        class NotEndsWith {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrue {
+
+                @Test
+                @DisplayName("string does not end with the suffix")
+                void stringDoesNotEndWithSuffix() {
+                    Predicate<String> predicate = notEndsWith("phone");
+                    assertThat(predicate).accepts("Laptop");
+                }
+
+                @Test
+                @DisplayName("string is null")
+                void stringIsNull() {
+                    Predicate<String> predicate = notEndsWith("top");
+                    assertThat(predicate).accepts((String) null);
+                }
+
+                @Test
+                @DisplayName("suffix is null")
+                void suffixIsNull() {
+                    Predicate<String> predicate = notEndsWith(null);
+                    assertThat(predicate).accepts("Laptop");
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalse {
+
+                @Test
+                @DisplayName("string ends with the suffix")
+                void stringEndsWithSuffix() {
+                    Predicate<String> predicate = notEndsWith("top");
+                    assertThat(predicate).rejects("Laptop");
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName("matches(regex)")
+        class Matches {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrue {
+
+                @Test
+                @DisplayName("string matches the regex")
+                void stringMatchesRegex() {
+                    Predicate<String> predicate = matches("\\w+top");
+                    assertThat(predicate).accepts("Laptop");
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalse {
+
+                @Test
+                @DisplayName("string does not match the regex")
+                void stringDoesNotMatchRegex() {
+                    Predicate<String> predicate = matches("\\d+");
+                    assertThat(predicate).rejects("Laptop");
+                }
+
+                @Test
+                @DisplayName("string is null")
+                void stringIsNull() {
+                    Predicate<String> predicate = matches("\\w+top");
+                    assertThat(predicate).rejects((String) null);
+                }
+
+                @Test
+                @DisplayName("regex is null")
+                void regexIsNull() {
+                    Predicate<String> predicate = matches(null);
+                    assertThat(predicate).rejects("Laptop");
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName("notMatches(regex)")
+        class NotMatches {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrue {
+
+                @Test
+                @DisplayName("string does not match the regex")
+                void stringDoesNotMatchRegex() {
+                    Predicate<String> predicate = notMatches("\\d+");
+                    assertThat(predicate).accepts("Laptop");
+                }
+
+                @Test
+                @DisplayName("string is null")
+                void stringIsNull() {
+                    Predicate<String> predicate = notMatches("\\w+top");
+                    assertThat(predicate).accepts((String) null);
+                }
+
+                @Test
+                @DisplayName("regex is null")
+                void regexIsNull() {
+                    Predicate<String> predicate = notMatches(null);
+                    assertThat(predicate).accepts("Laptop");
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalse {
+
+                @Test
+                @DisplayName("string matches the regex")
+                void stringMatchesRegex() {
+                    Predicate<String> predicate = notMatches("\\w+top");
+                    assertThat(predicate).rejects("Laptop");
                 }
             }
         }
