@@ -7,6 +7,8 @@ import io.github.avegera.predicate4j.api.WhereObject;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import static io.github.avegera.predicate4j.Predicates.alwaysTrue;
+
 public class WhereObjectImpl<T, R> implements WhereObject<T, R> {
 
     private final Function<T, R> mapper;
@@ -53,6 +55,16 @@ public class WhereObjectImpl<T, R> implements WhereObject<T, R> {
         return getPredicate(Predicates.notNull());
     }
 
+    @Override
+    public RichPredicate<T> accepts(Predicate<R> predicate) {
+        return getPredicate(predicate);
+    }
+
+    @Override
+    public RichPredicate<T> rejects(Predicate<R> predicate) {
+        return getPredicate(predicate == null ? alwaysTrue() : predicate.negate());
+    }
+
     protected RichPredicate<T> getPredicate(Predicate<R> predicate) {
         Predicate<T> currentPredicate = getPredicateWithMapper(mapper, predicate);
         if (previousPredicate == null) {
@@ -62,6 +74,6 @@ public class WhereObjectImpl<T, R> implements WhereObject<T, R> {
     }
 
     private Predicate<T> getPredicateWithMapper(Function<T, R> mapper, Predicate<R> predicate) {
-        return object -> object != null && predicate.test(mapper.apply(object));
+        return object -> object != null && predicate != null && predicate.test(mapper.apply(object));
     }
 }

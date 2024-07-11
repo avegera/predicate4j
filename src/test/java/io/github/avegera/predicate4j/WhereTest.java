@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 import static io.github.avegera.predicate4j.Where.where;
@@ -277,6 +278,106 @@ class WhereTest {
                 @DisplayName("mapped value is instance of provided class")
                 void mappedValueIsInstanceOfProvidedClass() {
                     Predicate<User> predicate = where(User::id).notInstanceOf(Integer.class);
+                    assertThat(predicate).rejects(new User(TEST_ID_1));
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName(".accepts(predicate)")
+        class Accepts {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("predicate accepts the mapped value")
+                void predicateAcceptsMappedValue() {
+                    Predicate<User> predicate = where(User::id).accepts(id -> id == TEST_ID_1);
+                    assertThat(predicate).accepts(new User(TEST_ID_1));
+                }
+
+                @Test
+                @DisplayName("predicate accepts null value")
+                void predicateAcceptsNullValue() {
+                    Predicate<User> predicate = where(User::id).accepts(Objects::isNull);
+                    assertThat(predicate).accepts(new User(null));
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("predicate does not accept the mapped value")
+                void predicateDoesNotAcceptMappedValue() {
+                    Predicate<User> predicate = where(User::id).accepts(id -> id == TEST_ID_1);
+                    assertThat(predicate).rejects(new User(TEST_ID_2));
+                }
+
+                @Test
+                @DisplayName("predicate does not accept non-null value")
+                void predicateDoesNotAcceptNonNullValue() {
+                    Predicate<User> predicate = where(User::id).accepts(Objects::isNull);
+                    assertThat(predicate).rejects(new User(TEST_ID_1));
+                }
+
+                @Test
+                @DisplayName("predicate is null")
+                void predicateIsNull() {
+                    Predicate<User> predicate = where(User::id).accepts(null);
+                    assertThat(predicate).rejects(new User(TEST_ID_1));
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName(".rejects(predicate)")
+        class Rejects {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("predicate rejects the mapped value")
+                void predicateRejectsMappedValue() {
+                    Predicate<User> predicate = where(User::id).rejects(id -> id != TEST_ID_1);
+                    assertThat(predicate).accepts(new User(TEST_ID_1));
+                }
+
+                @Test
+                @DisplayName("predicate rejects null value")
+                void predicateRejectsNullValue() {
+                    Predicate<User> predicate = where(User::id).rejects(Objects::nonNull);
+                    assertThat(predicate).accepts(new User(null));
+                }
+
+                @Test
+                @DisplayName("predicate is null")
+                void predicateIsNull() {
+                    Predicate<User> predicate = where(User::id).rejects(null);
+                    assertThat(predicate).accepts(new User(TEST_ID_1));
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("predicate does not reject the mapped value")
+                void predicateDoesNotRejectMappedValue() {
+                    Predicate<User> predicate = where(User::id).rejects(id -> id != TEST_ID_1);
+                    assertThat(predicate).rejects(new User(TEST_ID_2));
+                }
+
+                @Test
+                @DisplayName("predicate does not reject non-null value")
+                void predicateDoesNotRejectNonNullValue() {
+                    Predicate<User> predicate = where(User::id).rejects(Objects::nonNull);
                     assertThat(predicate).rejects(new User(TEST_ID_1));
                 }
             }
