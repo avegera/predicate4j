@@ -91,6 +91,40 @@ public class Predicates {
         return collection -> collection == null || !collection.contains(element);
     }
 
+    //Number predicates
+
+    public static <N extends Number & Comparable<N>> Predicate<N> isGreaterThan(N value) {
+        return number -> number != null && number.compareTo(value) > 0;
+    }
+
+    public static <N extends Number & Comparable<N>> Predicate<N> isLessThan(N value) {
+        return number -> number != null && number.compareTo(value) < 0;
+    }
+
+    public static <N extends Number & Comparable<N>> Predicate<N> isGreaterThanOrEqualTo(N value) {
+        return number -> number != null && number.compareTo(value) >= 0;
+    }
+
+    public static <N extends Number & Comparable<N>> Predicate<N> isLessThanOrEqualTo(N value) {
+        return number -> number != null && number.compareTo(value) <= 0;
+    }
+
+    public static <N extends Number & Comparable<N>> Predicate<N> isBetween(N startInclusive, N endInclusive) {
+        return number -> number != null && number.compareTo(startInclusive) >= 0 && number.compareTo(endInclusive) <= 0;
+    }
+
+    public static <N extends Number & Comparable<N>> Predicate<N> notBetween(N startInclusive, N endInclusive) {
+        return number -> number == null || number.compareTo(startInclusive) < 0 || number.compareTo(endInclusive) > 0;
+    }
+
+    public static <N extends Number> Predicate<N> isEven() {
+        return number -> number != null && number.longValue() % 2 == 0;
+    }
+
+    public static <N extends Number> Predicate<N> isOdd() {
+        return number -> number != null && number.longValue() % 2 != 0;
+    }
+
     //String predicates
 
     public static Predicate<String> isEmptyString() {
