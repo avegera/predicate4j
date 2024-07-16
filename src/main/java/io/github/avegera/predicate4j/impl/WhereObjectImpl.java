@@ -11,9 +11,9 @@ import static io.github.avegera.predicate4j.Predicates.alwaysTrue;
 
 public class WhereObjectImpl<T, R> implements WhereObject<T, R> {
 
-    private final Function<T, R> mapper;
+    protected final Function<T, R> mapper;
 
-    private final RichPredicate<T> previousPredicate;
+    protected final RichPredicate<T> previousPredicate;
 
     public WhereObjectImpl(Function<T, R> mapper) {
         this.mapper = mapper;

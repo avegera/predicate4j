@@ -2372,6 +2372,54 @@ class WhereTest {
                 }
             }
         }
+
+        @Nested
+        @DisplayName(".length()")
+        class Length {
+
+            @Nested
+            @DisplayName(".isGreaterThan(value)")
+            class IsGreaterThan {
+
+                @Nested
+                @DisplayName("returns true when")
+                class ReturnsTrueWhen {
+
+                    @Test
+                    @DisplayName("length of the mapped value is greater than the provided value")
+                    void lengthOfMappedValueIsGreaterThanProvidedValue() {
+                        Predicate<Product> predicate = where().string(Product::name).length().isGreaterThan(5);
+                        assertThat(predicate).accepts(new Product("Laptop"));
+                    }
+                }
+
+                @Nested
+                @DisplayName("returns false when")
+                class ReturnsFalseWhen {
+
+                    @Test
+                    @DisplayName("length of the mapped value is not greater than the provided value")
+                    void lengthOfMappedValueIsNotGreaterThanProvidedValue() {
+                        Predicate<Product> predicate = where().string(Product::name).length().isGreaterThan(10);
+                        assertThat(predicate).rejects(new Product("Laptop"));
+                    }
+
+                    @Test
+                    @DisplayName("mapped value is null")
+                    void mappedValueIsNull() {
+                        Predicate<Product> predicate = where().string(Product::name).length().isGreaterThan(5);
+                        assertThat(predicate).rejects(new Product(null));
+                    }
+
+                    @Test
+                    @DisplayName("mapper is null")
+                    void mapperIsNull() {
+                        Predicate<Object> predicate = where().string(null).length().isGreaterThan(5);
+                        assertThat(predicate).rejects(new Product("Laptop"));
+                    }
+                }
+            }
+        }
     }
 
     @Nested
@@ -2503,7 +2551,7 @@ class WhereTest {
             private final Predicate<Address> predicateConjunction = where(Address::country).isEqualTo("USA")
                     .and(Address::state).notNull()
                     .and().string(Address::street).notStartsWith("str.")
-                    .and().string(Address::building).notEqualTo("xyz")
+                    .and().string(Address::building).length().isGreaterThanOrEqualTo(3)
                     .and().number(Address::zipCode).isGreaterThan(100)
                     .and().list(Address::tenants).contains("Tenant1")
                     .and().booleanValue(Address::active).isTrue();
@@ -2553,7 +2601,7 @@ class WhereTest {
                 @Test
                 @DisplayName("fourth predicate is false")
                 void fourthPredicateIsFalse() {
-                    Address address = new Address("USA", "testValue", "someStreet", "xyz", 123, asList("Tenant1", "Tenant2"), true);
+                    Address address = new Address("USA", "testValue", "someStreet", "x", 123, asList("Tenant1", "Tenant2"), true);
                     assertThat(predicateConjunction).rejects(address);
                 }
 
@@ -2581,7 +2629,7 @@ class WhereTest {
                 @Test
                 @DisplayName("three predicates are false")
                 void threePredicatesAreFalse() {
-                    Address address = new Address("USA", "testValue", "str. Some Street", "xyz", null, asList("Tenant1", "Tenant2"), true);
+                    Address address = new Address("USA", "testValue", "str. Some Street", "x", null, asList("Tenant1", "Tenant2"), true);
                     assertThat(predicateConjunction).rejects(address);
                 }
 
@@ -2595,7 +2643,7 @@ class WhereTest {
                 @Test
                 @DisplayName("all predicates are false")
                 void allPredicatesAreFalse() {
-                    Address address = new Address("USA", "testValue", "someStreet", "abc", 10, asList("Tenant1", "Tenant2"), null);
+                    Address address = new Address("USA", "testValue", "someStreet", "x", 10, asList("Tenant1", "Tenant2"), null);
                     assertThat(predicateConjunction).rejects(address);
                 }
             }
