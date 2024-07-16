@@ -763,6 +763,376 @@ class PredicatesTest {
     }
 
     @Nested
+    @DisplayName("Number predicate")
+    class NumberPredicate {
+
+        @Nested
+        @DisplayName("isGreaterThan()")
+        class IsGreaterThan {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrue {
+
+                @Test
+                @DisplayName("number is greater than the provided value")
+                void numberIsGreaterThanProvidedValue() {
+                    Predicate<Integer> predicate = isGreaterThan(10);
+                    assertThat(predicate).accepts(15);
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalse {
+
+                @Test
+                @DisplayName("number is less than the provided value")
+                void numberIsLessThanProvidedValue() {
+                    Predicate<Integer> predicate = isGreaterThan(10);
+                    assertThat(predicate).rejects(5);
+                }
+
+                @Test
+                @DisplayName("number is equal to the provided value")
+                void numberIsEqualToProvidedValue() {
+                    Predicate<Integer> predicate = isGreaterThan(10);
+                    assertThat(predicate).rejects(10);
+                }
+
+                @Test
+                @DisplayName("number is null")
+                void numberIsNull() {
+                    Predicate<Integer> predicate = isGreaterThan(10);
+                    assertThat(predicate).rejects((Integer) null);
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName("isLessThan()")
+        class IsLessThan {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrue {
+
+                @Test
+                @DisplayName("number is less than the provided value")
+                void numberIsLessThanProvidedValue() {
+                    Predicate<Integer> predicate = isLessThan(10);
+                    assertThat(predicate).accepts(5);
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalse {
+
+                @Test
+                @DisplayName("number is greater than the provided value")
+                void numberIsGreaterThanProvidedValue() {
+                    Predicate<Integer> predicate = isLessThan(10);
+                    assertThat(predicate).rejects(15);
+                }
+
+                @Test
+                @DisplayName("number is equal to the provided value")
+                void numberIsEqualToProvidedValue() {
+                    Predicate<Integer> predicate = isLessThan(10);
+                    assertThat(predicate).rejects(10);
+                }
+
+                @Test
+                @DisplayName("number is null")
+                void numberIsNull() {
+                    Predicate<Integer> predicate = isLessThan(10);
+                    assertThat(predicate).rejects((Integer) null);
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName("isGreaterThanOrEqualTo()")
+        class IsGreaterThanOrEqualTo {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrue {
+
+                @Test
+                @DisplayName("number is greater than the provided value")
+                void numberIsGreaterThanProvidedValue() {
+                    Predicate<Integer> predicate = isGreaterThanOrEqualTo(10);
+                    assertThat(predicate).accepts(15);
+                }
+
+                @Test
+                @DisplayName("number is equal to the provided value")
+                void numberIsEqualToProvidedValue() {
+                    Predicate<Integer> predicate = isGreaterThanOrEqualTo(10);
+                    assertThat(predicate).accepts(10);
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalse {
+
+                @Test
+                @DisplayName("number is less than the provided value")
+                void numberIsLessThanProvidedValue() {
+                    Predicate<Integer> predicate = isGreaterThanOrEqualTo(10);
+                    assertThat(predicate).rejects(5);
+                }
+
+                @Test
+                @DisplayName("number is null")
+                void numberIsNull() {
+                    Predicate<Integer> predicate = isGreaterThanOrEqualTo(10);
+                    assertThat(predicate).rejects((Integer) null);
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName("isLessThanOrEqualTo()")
+        class IsLessThanOrEqualTo {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrue {
+
+                @Test
+                @DisplayName("number is less than the provided value")
+                void numberIsLessThanProvidedValue() {
+                    Predicate<Integer> predicate = isLessThanOrEqualTo(10);
+                    assertThat(predicate).accepts(5);
+                }
+
+                @Test
+                @DisplayName("number is equal to the provided value")
+                void numberIsEqualToProvidedValue() {
+                    Predicate<Integer> predicate = isLessThanOrEqualTo(10);
+                    assertThat(predicate).accepts(10);
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalse {
+
+                @Test
+                @DisplayName("number is greater than the provided value")
+                void numberIsGreaterThanProvidedValue() {
+                    Predicate<Integer> predicate = isLessThanOrEqualTo(10);
+                    assertThat(predicate).rejects(15);
+                }
+
+                @Test
+                @DisplayName("number is null")
+                void numberIsNull() {
+                    Predicate<Integer> predicate = isLessThanOrEqualTo(10);
+                    assertThat(predicate).rejects((Integer) null);
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName("isBetween()")
+        class IsBetween {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrue {
+
+                @Test
+                @DisplayName("number is within the range")
+                void numberIsWithinRange() {
+                    Predicate<Integer> predicate = isBetween(10, 20);
+                    assertThat(predicate).accepts(15);
+                }
+
+                @Test
+                @DisplayName("number is equal to the start of the range")
+                void numberIsEqualToStartOfRange() {
+                    Predicate<Integer> predicate = isBetween(10, 20);
+                    assertThat(predicate).accepts(10);
+                }
+
+                @Test
+                @DisplayName("number is equal to the end of the range")
+                void numberIsEqualToEndOfRange() {
+                    Predicate<Integer> predicate = isBetween(10, 20);
+                    assertThat(predicate).accepts(20);
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalse {
+
+                @Test
+                @DisplayName("number is less than the start of the range")
+                void numberIsLessThanStartOfRange() {
+                    Predicate<Integer> predicate = isBetween(10, 20);
+                    assertThat(predicate).rejects(5);
+                }
+
+                @Test
+                @DisplayName("number is greater than the end of the range")
+                void numberIsGreaterThanEndOfRange() {
+                    Predicate<Integer> predicate = isBetween(10, 20);
+                    assertThat(predicate).rejects(25);
+                }
+
+                @Test
+                @DisplayName("number is null")
+                void numberIsNull() {
+                    Predicate<Integer> predicate = isBetween(10, 20);
+                    assertThat(predicate).rejects((Integer) null);
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName("notBetween()")
+        class NotBetween {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrue {
+
+                @Test
+                @DisplayName("number is less than the start of the range")
+                void numberIsLessThanStartOfRange() {
+                    Predicate<Integer> predicate = notBetween(10, 20);
+                    assertThat(predicate).accepts(5);
+                }
+
+                @Test
+                @DisplayName("number is greater than the end of the range")
+                void numberIsGreaterThanEndOfRange() {
+                    Predicate<Integer> predicate = notBetween(10, 20);
+                    assertThat(predicate).accepts(25);
+                }
+
+                @Test
+                @DisplayName("number is null")
+                void numberIsNull() {
+                    Predicate<Integer> predicate = notBetween(10, 20);
+                    assertThat(predicate).accepts((Integer) null);
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalse {
+
+                @Test
+                @DisplayName("number is within the range")
+                void numberIsWithinRange() {
+                    Predicate<Integer> predicate = notBetween(10, 20);
+                    assertThat(predicate).rejects(15);
+                }
+
+                @Test
+                @DisplayName("number is equal to the start of the range")
+                void numberIsEqualToStartOfRange() {
+                    Predicate<Integer> predicate = notBetween(10, 20);
+                    assertThat(predicate).rejects(10);
+                }
+
+                @Test
+                @DisplayName("number is equal to the end of the range")
+                void numberIsEqualToEndOfRange() {
+                    Predicate<Integer> predicate = notBetween(10, 20);
+                    assertThat(predicate).rejects(20);
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName("isEven()")
+        class IsEven {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrue {
+
+                @Test
+                @DisplayName("number is even")
+                void numberIsEven() {
+                    Predicate<Number> predicate = isEven();
+                    assertThat(predicate).accepts(4);
+                }
+
+                @Test
+                @DisplayName("number is zero")
+                void numberIsZero() {
+                    Predicate<Number> predicate = isEven();
+                    assertThat(predicate).accepts(0);
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalse {
+
+                @Test
+                @DisplayName("number is odd")
+                void numberIsOdd() {
+                    Predicate<Number> predicate = isEven();
+                    assertThat(predicate).rejects(3);
+                }
+
+                @Test
+                @DisplayName("number is null")
+                void numberIsNull() {
+                    Predicate<Number> predicate = isEven();
+                    assertThat(predicate).rejects((Number) null);
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName("isOdd()")
+        class IsOdd {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrue {
+
+                @Test
+                @DisplayName("number is odd")
+                void numberIsOdd() {
+                    Predicate<Number> predicate = isOdd();
+                    assertThat(predicate).accepts(3);
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalse {
+
+                @Test
+                @DisplayName("number is even")
+                void numberIsEven() {
+                    Predicate<Number> predicate = isOdd();
+                    assertThat(predicate).rejects(4);
+                }
+
+                @Test
+                @DisplayName("number is null")
+                void numberIsNull() {
+                    Predicate<Number> predicate = isOdd();
+                    assertThat(predicate).rejects((Number) null);
+                }
+            }
+        }
+    }
+
+    @Nested
     @DisplayName("String predicate")
     class StringPredicate {
 

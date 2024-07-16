@@ -9,5 +9,7 @@ public interface WhereType {
 
     <T, R> WhereList<T, R> list(Function<T, List<R>> mapper);
 
+    <T, N extends Number & Comparable<N>> WhereNumber<T, N> number(Function<T, N> mapper);
+
     <T> WhereString<T> string(Function<T, String> mapper);
 }

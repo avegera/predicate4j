@@ -1419,6 +1419,397 @@ class WhereTest {
     }
 
     @Nested
+    @DisplayName("Predicate from method where().number(mapper)")
+    class WhereNumberImpl {
+
+        @Nested
+        @DisplayName(".isGreaterThan(value)")
+        class IsGreaterThan {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("mapped value is greater than provided value")
+                void mappedValueIsGreaterThanProvidedValue() {
+                    Predicate<Price> predicate = where().number(Price::value).isGreaterThan(100);
+                    assertThat(predicate).accepts(new Price(150));
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("mapped value is less than provided value")
+                void mappedValueIsLessThanProvidedValue() {
+                    Predicate<Price> predicate = where().number(Price::value).isGreaterThan(100);
+                    assertThat(predicate).rejects(new Price(50));
+                }
+
+                @Test
+                @DisplayName("mapped value is equal to provided value")
+                void mappedValueIsEqualToProvidedValue() {
+                    Predicate<Price> predicate = where().number(Price::value).isGreaterThan(100);
+                    assertThat(predicate).rejects(new Price(100));
+                }
+
+                @Test
+                @DisplayName("mapped value is null")
+                void mappedValueIsNull() {
+                    Predicate<Price> predicate = where().number(Price::value).isGreaterThan(100);
+                    assertThat(predicate).rejects(new Price(null));
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName(".isGreaterThanOrEqualTo(value)")
+        class IsGreaterThanOrEqualTo {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("mapped value is greater than provided value")
+                void mappedValueIsGreaterThanProvidedValue() {
+                    Predicate<Price> predicate = where().number(Price::value).isGreaterThanOrEqualTo(100);
+                    assertThat(predicate).accepts(new Price(150));
+                }
+
+                @Test
+                @DisplayName("mapped value is equal to provided value")
+                void mappedValueIsEqualToProvidedValue() {
+                    Predicate<Price> predicate = where().number(Price::value).isGreaterThanOrEqualTo(100);
+                    assertThat(predicate).accepts(new Price(100));
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("mapped value is less than provided value")
+                void mappedValueIsLessThanProvidedValue() {
+                    Predicate<Price> predicate = where().number(Price::value).isGreaterThanOrEqualTo(100);
+                    assertThat(predicate).rejects(new Price(50));
+                }
+
+                @Test
+                @DisplayName("mapped value is null")
+                void mappedValueIsNull() {
+                    Predicate<Price> predicate = where().number(Price::value).isGreaterThanOrEqualTo(100);
+                    assertThat(predicate).rejects(new Price(null));
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName(".isLessThan(value)")
+        class IsLessThan {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("mapped value is less than provided value")
+                void mappedValueIsLessThanProvidedValue() {
+                    Predicate<Price> predicate = where().number(Price::value).isLessThan(100);
+                    assertThat(predicate).accepts(new Price(50));
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("mapped value is greater than provided value")
+                void mappedValueIsGreaterThanProvidedValue() {
+                    Predicate<Price> predicate = where().number(Price::value).isLessThan(100);
+                    assertThat(predicate).rejects(new Price(150));
+                }
+
+                @Test
+                @DisplayName("mapped value is equal to provided value")
+                void mappedValueIsEqualToProvidedValue() {
+                    Predicate<Price> predicate = where().number(Price::value).isLessThan(100);
+                    assertThat(predicate).rejects(new Price(100));
+                }
+
+                @Test
+                @DisplayName("mapped value is null")
+                void mappedValueIsNull() {
+                    Predicate<Price> predicate = where().number(Price::value).isLessThan(100);
+                    assertThat(predicate).rejects(new Price(null));
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName(".isLessThanOrEqualTo(value)")
+        class IsLessThanOrEqualTo {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("mapped value is less than provided value")
+                void mappedValueIsLessThanProvidedValue() {
+                    Predicate<Price> predicate = where().number(Price::value).isLessThanOrEqualTo(100);
+                    assertThat(predicate).accepts(new Price(50));
+                }
+
+                @Test
+                @DisplayName("mapped value is equal to provided value")
+                void mappedValueIsEqualToProvidedValue() {
+                    Predicate<Price> predicate = where().number(Price::value).isLessThanOrEqualTo(100);
+                    assertThat(predicate).accepts(new Price(100));
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("mapped value is greater than provided value")
+                void mappedValueIsGreaterThanProvidedValue() {
+                    Predicate<Price> predicate = where().number(Price::value).isLessThanOrEqualTo(100);
+                    assertThat(predicate).rejects(new Price(150));
+                }
+
+                @Test
+                @DisplayName("mapped value is null")
+                void mappedValueIsNull() {
+                    Predicate<Price> predicate = where().number(Price::value).isLessThanOrEqualTo(100);
+                    assertThat(predicate).rejects(new Price(null));
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName(".isBetween(start, end)")
+        class IsBetween {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("mapped value is within the range")
+                void mappedValueIsWithinRange() {
+                    Predicate<Price> predicate = where().number(Price::value).isBetween(50, 150);
+                    assertThat(predicate).accepts(new Price(100));
+                }
+
+                @Test
+                @DisplayName("mapped value is equal to start of the range")
+                void mappedValueIsEqualToStartOfRange() {
+                    Predicate<Price> predicate = where().number(Price::value).isBetween(50, 150);
+                    assertThat(predicate).accepts(new Price(50));
+                }
+
+                @Test
+                @DisplayName("mapped value is equal to end of the range")
+                void mappedValueIsEqualToEndOfRange() {
+                    Predicate<Price> predicate = where().number(Price::value).isBetween(50, 150);
+                    assertThat(predicate).accepts(new Price(150));
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("mapped value is less than start of the range")
+                void mappedValueIsLessThanStartOfRange() {
+                    Predicate<Price> predicate = where().number(Price::value).isBetween(50, 150);
+                    assertThat(predicate).rejects(new Price(25));
+                }
+
+                @Test
+                @DisplayName("mapped value is greater than end of the range")
+                void mappedValueIsGreaterThanEndOfRange() {
+                    Predicate<Price> predicate = where().number(Price::value).isBetween(50, 150);
+                    assertThat(predicate).rejects(new Price(175));
+                }
+
+                @Test
+                @DisplayName("mapped value is null")
+                void mappedValueIsNull() {
+                    Predicate<Price> predicate = where().number(Price::value).isBetween(50, 150);
+                    assertThat(predicate).rejects(new Price(null));
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName(".notBetween(start, end)")
+        class NotBetween {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("mapped value is less than start of the range")
+                void mappedValueIsLessThanStartOfRange() {
+                    Predicate<Price> predicate = where().number(Price::value).notBetween(50, 150);
+                    assertThat(predicate).accepts(new Price(25));
+                }
+
+                @Test
+                @DisplayName("mapped value is greater than end of the range")
+                void mappedValueIsGreaterThanEndOfRange() {
+                    Predicate<Price> predicate = where().number(Price::value).notBetween(50, 150);
+                    assertThat(predicate).accepts(new Price(175));
+                }
+
+                @Test
+                @DisplayName("mapped value is null")
+                void mappedValueIsNull() {
+                    Predicate<Price> predicate = where().number(Price::value).notBetween(50, 150);
+                    assertThat(predicate).accepts(new Price(null));
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("mapped value is within the range")
+                void mappedValueIsWithinRange() {
+                    Predicate<Price> predicate = where().number(Price::value).notBetween(50, 150);
+                    assertThat(predicate).rejects(new Price(100));
+                }
+
+                @Test
+                @DisplayName("mapped value is equal to start of the range")
+                void mappedValueIsEqualToStartOfRange() {
+                    Predicate<Price> predicate = where().number(Price::value).notBetween(50, 150);
+                    assertThat(predicate).rejects(new Price(50));
+                }
+
+                @Test
+                @DisplayName("mapped value is equal to end of the range")
+                void mappedValueIsEqualToEndOfRange() {
+                    Predicate<Price> predicate = where().number(Price::value).notBetween(50, 150);
+                    assertThat(predicate).rejects(new Price(150));
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName(".isOdd()")
+        class IsOdd {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("mapped value is odd")
+                void mappedValueIsOdd() {
+                    Predicate<Price> predicate = where().number(Price::value).isOdd();
+                    assertThat(predicate).accepts(new Price(3));
+                }
+
+                @Test
+                @DisplayName("mapped value is negative odd")
+                void mappedValueIsNegativeOdd() {
+                    Predicate<Price> predicate = where().number(Price::value).isOdd();
+                    assertThat(predicate).accepts(new Price(-3));
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("mapped value is even")
+                void mappedValueIsEven() {
+                    Predicate<Price> predicate = where().number(Price::value).isOdd();
+                    assertThat(predicate).rejects(new Price(4));
+                }
+
+                @Test
+                @DisplayName("mapped value is zero")
+                void mappedValueIsZero() {
+                    Predicate<Price> predicate = where().number(Price::value).isOdd();
+                    assertThat(predicate).rejects(new Price(0));
+                }
+
+                @Test
+                @DisplayName("mapped value is null")
+                void mappedValueIsNull() {
+                    Predicate<Price> predicate = where().number(Price::value).isOdd();
+                    assertThat(predicate).rejects(new Price(null));
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName(".isEven()")
+        class IsEven {
+
+            @Nested
+            @DisplayName("returns true when")
+            class ReturnsTrueWhen {
+
+                @Test
+                @DisplayName("mapped value is even")
+                void mappedValueIsEven() {
+                    Predicate<Price> predicate = where().number(Price::value).isEven();
+                    assertThat(predicate).accepts(new Price(4));
+                }
+
+                @Test
+                @DisplayName("mapped value is zero")
+                void mappedValueIsZero() {
+                    Predicate<Price> predicate = where().number(Price::value).isEven();
+                    assertThat(predicate).accepts(new Price(0));
+                }
+
+                @Test
+                @DisplayName("mapped value is negative even")
+                void mappedValueIsNegativeEven() {
+                    Predicate<Price> predicate = where().number(Price::value).isEven();
+                    assertThat(predicate).accepts(new Price(-4));
+                }
+            }
+
+            @Nested
+            @DisplayName("returns false when")
+            class ReturnsFalseWhen {
+
+                @Test
+                @DisplayName("mapped value is odd")
+                void mappedValueIsOdd() {
+                    Predicate<Price> predicate = where().number(Price::value).isEven();
+                    assertThat(predicate).rejects(new Price(3));
+                }
+
+                @Test
+                @DisplayName("mapped value is null")
+                void mappedValueIsNull() {
+                    Predicate<Price> predicate = where().number(Price::value).isEven();
+                    assertThat(predicate).rejects(new Price(null));
+                }
+            }
+        }
+    }
+
+    @Nested
     @DisplayName("Predicate from method where().string(mapper)")
     class WhereStringImpl {
 
@@ -2113,7 +2504,7 @@ class WhereTest {
                     .and(Address::state).notNull()
                     .and().string(Address::street).notStartsWith("str.")
                     .and().string(Address::building).notEqualTo("xyz")
-                    .and(Address::zipCode).isEqualTo(123)
+                    .and().number(Address::zipCode).isGreaterThan(100)
                     .and().list(Address::tenants).contains("Tenant1")
                     .and().booleanValue(Address::active).isTrue();
 
@@ -2169,7 +2560,7 @@ class WhereTest {
                 @Test
                 @DisplayName("fifth predicate is false")
                 void fifthPredicateIsFalse() {
-                    Address address = new Address("USA", "testValue", "someStreet", "abc", 456, asList("Tenant1", "Tenant2"), true);
+                    Address address = new Address("USA", "testValue", "someStreet", "abc", 45, asList("Tenant1", "Tenant2"), true);
                     assertThat(predicateConjunction).rejects(address);
                 }
 
@@ -2204,7 +2595,7 @@ class WhereTest {
                 @Test
                 @DisplayName("all predicates are false")
                 void allPredicatesAreFalse() {
-                    Address address = new Address("USA", "testValue", "someStreet", "abc", 123, asList("Tenant1", "Tenant2"), null);
+                    Address address = new Address("USA", "testValue", "someStreet", "abc", 10, asList("Tenant1", "Tenant2"), null);
                     assertThat(predicateConjunction).rejects(address);
                 }
             }
