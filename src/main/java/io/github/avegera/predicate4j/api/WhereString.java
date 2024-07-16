@@ -21,4 +21,6 @@ public interface WhereString<T> extends WhereObject<T, String> {
     RichPredicate<T> matches(String regex);
 
     RichPredicate<T> notMatches(String regex);
+
+    WhereNumber<T, Integer> length();
 }

@@ -2,6 +2,7 @@ package io.github.avegera.predicate4j.impl;
 
 import io.github.avegera.predicate4j.Predicates;
 import io.github.avegera.predicate4j.api.RichPredicate;
+import io.github.avegera.predicate4j.api.WhereNumber;
 import io.github.avegera.predicate4j.api.WhereString;
 
 import java.util.function.Function;
@@ -64,5 +65,18 @@ public class WhereStringImpl<T> extends WhereObjectImpl<T, String> implements Wh
     @Override
     public RichPredicate<T> notMatches(String regex) {
         return getPredicate(Predicates.notMatches(regex));
+    }
+
+    @Override
+    public WhereNumber<T, Integer> length() {
+        return new WhereNumberImpl<>(this::getLength, previousPredicate);
+    }
+
+    private Integer getLength(T object) {
+        if (mapper == null) {
+            return null;
+        }
+        String string = mapper.apply(object);
+        return string != null ? string.length() : 0;
     }
 }
