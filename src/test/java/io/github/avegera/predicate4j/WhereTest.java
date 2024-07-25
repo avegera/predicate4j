@@ -1218,8 +1218,8 @@ class WhereTest {
         }
 
         @Nested
-        @DisplayName(".hasSize(size)")
-        class HasSize {
+        @DisplayName(".size().isEqualTo(size)")
+        class SizeIsEqualTo {
 
             @Nested
             @DisplayName("returns true when")
@@ -1228,21 +1228,21 @@ class WhereTest {
                 @Test
                 @DisplayName("mapped list has the specified size")
                 void mappedListHasSpecifiedSize() {
-                    Predicate<Customer> predicate = where().list(Customer::roles).hasSize(2);
+                    Predicate<Customer> predicate = where().list(Customer::roles).size().isEqualTo(2);
                     assertThat(predicate).accepts(new Customer(asList("Admin", "User"), null));
                 }
 
                 @Test
                 @DisplayName("mapped list is empty and specified size is zero")
                 void mappedListIsEmptyAndSpecifiedSizeIsZero() {
-                    Predicate<Customer> predicate = where().list(Customer::roles).hasSize(0);
+                    Predicate<Customer> predicate = where().list(Customer::roles).size().isEqualTo(0);
                     assertThat(predicate).accepts(new Customer(new ArrayList<>(), null));
                 }
 
                 @Test
                 @DisplayName("mapped list is null and specified size is zero")
                 void mappedListIsNullAndSpecifiedSizeIsZero() {
-                    Predicate<Customer> predicate = where().list(Customer::roles).hasSize(0);
+                    Predicate<Customer> predicate = where().list(Customer::roles).size().isEqualTo(0);
                     assertThat(predicate).accepts(new Customer(new ArrayList<>(), null));
                 }
             }
@@ -1254,29 +1254,29 @@ class WhereTest {
                 @Test
                 @DisplayName("mapped list has a different size than specified")
                 void mappedListHasDifferentSize() {
-                    Predicate<Customer> predicate = where().list(Customer::roles).hasSize(3);
+                    Predicate<Customer> predicate = where().list(Customer::roles).size().isEqualTo(3);
                     assertThat(predicate).rejects(new Customer(asList("Admin", "User"), null));
                 }
 
                 @Test
                 @DisplayName("mapped list is empty and size is not zero")
                 void mappedListIsEmptyAndSizeIsNotZero() {
-                    Predicate<Customer> predicate = where().list(Customer::roles).hasSize(1);
+                    Predicate<Customer> predicate = where().list(Customer::roles).size().isEqualTo(1);
                     assertThat(predicate).rejects(new Customer(new ArrayList<>(), null));
                 }
 
                 @Test
                 @DisplayName("mapped list is null and size is not zero")
                 void mappedListIsNullAndSizeIsNotZero() {
-                    Predicate<Customer> predicate = where().list(Customer::roles).hasSize(2);
+                    Predicate<Customer> predicate = where().list(Customer::roles).size().isEqualTo(2);
                     assertThat(predicate).rejects(new Customer(null, null));
                 }
             }
         }
 
         @Nested
-        @DisplayName(".notHaveSize(size)")
-        class NotHaveSize {
+        @DisplayName(".size().notEqualTo(size)")
+        class SizeNotEqualTo {
 
             @Nested
             @DisplayName("returns true when")
@@ -1285,21 +1285,21 @@ class WhereTest {
                 @Test
                 @DisplayName("mapped list does not have the specified size")
                 void mappedListDoesNotHaveSpecifiedSize() {
-                    Predicate<Customer> predicate = where().list(Customer::roles).notHaveSize(3);
+                    Predicate<Customer> predicate = where().list(Customer::roles).size().notEqualTo(3);
                     assertThat(predicate).accepts(new Customer(asList("Admin", "User"), null));
                 }
 
                 @Test
                 @DisplayName("mapped list is null and specified size is not zero")
                 void mappedListIsNullAndSpecifiedSizeIsNotZero() {
-                    Predicate<Customer> predicate = where().list(Customer::roles).notHaveSize(2);
+                    Predicate<Customer> predicate = where().list(Customer::roles).size().notEqualTo(2);
                     assertThat(predicate).accepts(new Customer(null, null));
                 }
 
                 @Test
                 @DisplayName("mapped list is empty and size is not zero")
                 void mappedListIsEmptyAndSizeIsNotZero() {
-                    Predicate<Customer> predicate = where().list(Customer::roles).notHaveSize(1);
+                    Predicate<Customer> predicate = where().list(Customer::roles).size().notEqualTo(1);
                     assertThat(predicate).accepts(new Customer(new ArrayList<>(), null));
                 }
             }
@@ -1311,21 +1311,21 @@ class WhereTest {
                 @Test
                 @DisplayName("mapped list has the specified size")
                 void mappedListHasSpecifiedSize() {
-                    Predicate<Customer> predicate = where().list(Customer::roles).notHaveSize(2);
+                    Predicate<Customer> predicate = where().list(Customer::roles).size().notEqualTo(2);
                     assertThat(predicate).rejects(new Customer(asList("Admin", "User"), null));
                 }
 
                 @Test
                 @DisplayName("mapped list is empty and specified size is zero")
                 void mappedListIsEmptyAndSpecifiedSizeIsZero() {
-                    Predicate<Customer> predicate = where().list(Customer::roles).notHaveSize(0);
+                    Predicate<Customer> predicate = where().list(Customer::roles).size().notEqualTo(0);
                     assertThat(predicate).rejects(new Customer(new ArrayList<>(), null));
                 }
 
                 @Test
                 @DisplayName("mapped list is null and specified size is zero")
                 void mappedListIsNullAndSpecifiedSizeIsZero() {
-                    Predicate<Customer> predicate = where().list(Customer::roles).notHaveSize(0);
+                    Predicate<Customer> predicate = where().list(Customer::roles).size().notEqualTo(0);
                     assertThat(predicate).rejects(new Customer(new ArrayList<>(), null));
                 }
             }

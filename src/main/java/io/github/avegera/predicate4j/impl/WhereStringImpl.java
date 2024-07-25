@@ -73,10 +73,6 @@ public class WhereStringImpl<T> extends WhereObjectImpl<T, String> implements Wh
     }
 
     private Integer getLength(T object) {
-        if (mapper == null) {
-            return null;
-        }
-        String string = mapper.apply(object);
-        return string != null ? string.length() : 0;
+        return getInt(object, String::length);
     }
 }
