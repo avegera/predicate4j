@@ -3,6 +3,7 @@ package io.github.avegera.predicate4j.impl;
 import io.github.avegera.predicate4j.Predicates;
 import io.github.avegera.predicate4j.api.RichPredicate;
 import io.github.avegera.predicate4j.api.WhereList;
+import io.github.avegera.predicate4j.api.WhereNumber;
 
 import java.util.List;
 import java.util.function.Function;
@@ -28,16 +29,6 @@ public class WhereListImpl<T, R> extends WhereObjectImpl<T, List<R>> implements 
     }
 
     @Override
-    public RichPredicate<T> hasSize(int size) {
-        return getPredicate(Predicates.hasSize(size));
-    }
-
-    @Override
-    public RichPredicate<T> notHaveSize(int size) {
-        return getPredicate(Predicates.notHaveSize(size));
-    }
-
-    @Override
     public RichPredicate<T> contains(R element) {
         return getPredicate(Predicates.containsElement(element));
     }
@@ -45,5 +36,14 @@ public class WhereListImpl<T, R> extends WhereObjectImpl<T, List<R>> implements 
     @Override
     public RichPredicate<T> notContains(R element) {
         return getPredicate(Predicates.notContainsElement(element));
+    }
+
+    @Override
+    public WhereNumber<T, Integer> size() {
+        return new WhereNumberImpl<>(this::getSize, previousPredicate);
+    }
+
+    private Integer getSize(T object) {
+        return getInt(object, List::size);
     }
 }

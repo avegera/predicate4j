@@ -73,6 +73,14 @@ public class WhereObjectImpl<T, R> implements WhereObject<T, R> {
         return new RichPredicateImpl<>(previousPredicate.and(currentPredicate));
     }
 
+    protected Integer getInt(T object, Function<R, Integer> intFunction) {
+        if (mapper == null) {
+            return null;
+        }
+        R result = mapper.apply(object);
+        return result != null ? intFunction.apply(result) : 0;
+    }
+
     private Predicate<T> getPredicateWithMapper(Function<T, R> mapper, Predicate<R> predicate) {
         return object -> object != null && predicate != null && predicate.test(mapper.apply(object));
     }

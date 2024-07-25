@@ -8,11 +8,9 @@ public interface WhereList<T, R> extends WhereObject<T, List<R>> {
 
     RichPredicate<T> notEmpty();
 
-    RichPredicate<T> hasSize(int size);
-
-    RichPredicate<T> notHaveSize(int size);
-
     RichPredicate<T> contains(R element);
 
     RichPredicate<T> notContains(R element);
+
+    WhereNumber<T, Integer> size();
 }
