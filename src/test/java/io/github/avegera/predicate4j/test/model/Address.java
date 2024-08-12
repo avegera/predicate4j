@@ -1,6 +1,11 @@
-package io.github.avegera.predicate4j.test;
+package io.github.avegera.predicate4j.test.model;
 
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+
+import static io.github.avegera.predicate4j.test.util.MapUtils.getMap;
+import static io.github.avegera.predicate4j.test.util.StringUtils.toStringOnlyInitialized;
 
 public class Address {
 
@@ -11,16 +16,28 @@ public class Address {
     private final Integer zipCode;
     private final Boolean active;
     private final List<String> tenants;
+    private final Map<String, Function<Address, Object>> initializationMap;
 
     public Address(String country, Integer zipCode) {
-        this(country, null, null, null, zipCode, null, null);
+        this(country, null, null, null, zipCode, null, null, getMap(Address::country, Address::zipCode));
     }
 
     public Address(String country, String state, Integer zipCode) {
-        this(country, state, null, null, zipCode, null, null);
+        this(country, state, null, null, zipCode, null, null, getMap(Address::country, Address::state, Address::zipCode));
     }
 
     public Address(String country, String state, String street, String building, Integer zipCode, List<String> tenants, Boolean active) {
+        this(country, state, street, building, zipCode, tenants, active, getMap(
+                Address::country,
+                Address::state,
+                Address::building,
+                Address::zipCode,
+                Address::tenants,
+                Address::active)
+        );
+    }
+
+    public Address(String country, String state, String street, String building, Integer zipCode, List<String> tenants, Boolean active, Map<String, Function<Address, Object>> initializationMap) {
         this.country = country;
         this.street = street;
         this.state = state;
@@ -28,6 +45,7 @@ public class Address {
         this.zipCode = zipCode;
         this.tenants = tenants;
         this.active = active;
+        this.initializationMap = initializationMap;
     }
 
     public String country() {
@@ -60,22 +78,6 @@ public class Address {
 
     @Override
     public String toString() {
-        return String.format(
-                "Address(country=%s, state=%s, street=%s, building=%s, zipCode=%s, active=%s, tenants=%s)",
-                getValue(country),
-                getValue(state),
-                getValue(street),
-                getValue(building),
-                getValue(zipCode),
-                getValue(active),
-                getValue(tenants)
-        );
-    }
-
-    private String getValue(Object object) {
-        if (object == null) {
-            return null;
-        }
-        return object instanceof String ? "\"" + object + "\"" : object.toString();
+        return toStringOnlyInitialized(this, this.initializationMap);
     }
 }

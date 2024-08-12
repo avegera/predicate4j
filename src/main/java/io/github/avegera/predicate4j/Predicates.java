@@ -94,27 +94,27 @@ public class Predicates {
     //Number predicates
 
     public static <N extends Number & Comparable<N>> Predicate<N> isGreaterThan(N value) {
-        return number -> number != null && number.compareTo(value) > 0;
+        return number -> number != null && value != null && number.compareTo(value) > 0;
     }
 
     public static <N extends Number & Comparable<N>> Predicate<N> isLessThan(N value) {
-        return number -> number != null && number.compareTo(value) < 0;
+        return number -> number != null && value != null && number.compareTo(value) < 0;
     }
 
     public static <N extends Number & Comparable<N>> Predicate<N> isGreaterThanOrEqualTo(N value) {
-        return number -> number != null && number.compareTo(value) >= 0;
+        return number -> number != null && value != null && number.compareTo(value) >= 0;
     }
 
     public static <N extends Number & Comparable<N>> Predicate<N> isLessThanOrEqualTo(N value) {
-        return number -> number != null && number.compareTo(value) <= 0;
+        return number -> number != null && value != null && number.compareTo(value) <= 0;
     }
 
     public static <N extends Number & Comparable<N>> Predicate<N> isBetween(N startInclusive, N endInclusive) {
-        return number -> number != null && number.compareTo(startInclusive) >= 0 && number.compareTo(endInclusive) <= 0;
+        return number -> number != null && startInclusive != null && endInclusive != null && number.compareTo(startInclusive) >= 0 && number.compareTo(endInclusive) <= 0;
     }
 
     public static <N extends Number & Comparable<N>> Predicate<N> notBetween(N startInclusive, N endInclusive) {
-        return number -> number == null || number.compareTo(startInclusive) < 0 || number.compareTo(endInclusive) > 0;
+        return number -> number == null || startInclusive == null || endInclusive == null || number.compareTo(startInclusive) < 0 || number.compareTo(endInclusive) > 0;
     }
 
     public static <N extends Number> Predicate<N> isEven() {
@@ -136,11 +136,11 @@ public class Predicates {
     }
 
     public static Predicate<String> containsSubstring(String substring) {
-        return str -> str != null && str.contains(substring);
+        return str -> str != null && substring != null && str.contains(substring);
     }
 
     public static Predicate<String> notContainsSubstring(String substring) {
-        return str -> str == null || !str.contains(substring);
+        return str -> str == null || substring == null || !str.contains(substring);
     }
 
     public static Predicate<String> startsWith(String prefix) {

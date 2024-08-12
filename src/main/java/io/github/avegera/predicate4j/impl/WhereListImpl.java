@@ -40,7 +40,7 @@ public class WhereListImpl<T, R> extends WhereObjectImpl<T, List<R>> implements 
 
     @Override
     public WhereNumber<T, Integer> size() {
-        return new WhereNumberImpl<>(this::getSize, previousPredicate);
+        return new WhereNumberImpl<>(mapper == null ? null : this::getSize, previousPredicate);
     }
 
     private Integer getSize(T object) {
