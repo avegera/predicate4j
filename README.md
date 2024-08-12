@@ -5,7 +5,7 @@ Predicate4j is a Java library with an expressive API for building complex predic
 For example, this code returns a `Predicate<User>` that checks if the role is "admin" and the organization id is not null: 
 
 ```java
- return where(User::role).isEqualTo("admin").and(User::organizationId).notNull();
+return where(User::role).isEqualTo("admin").and(User::organizationId).notNull();
 ```
 
 It allows for the easy creation and combination of predicates for various types (including objects, collections, strings, numbers, etc.).
@@ -99,9 +99,9 @@ It's possible to combine multiple predicates using logical operations:
 
 ```java
 List<User> activeAdultNotAdmins = users.stream()
-        .filter(where(User::getStatus).isEqualTo("ACTIVE")
+        .filter(where(User::status).isEqualTo("ACTIVE")
                 .and().number(User::age).isGreaterThan(21)
-                .and().list(User::getRoles).notContains("Admin"))
+                .and().list(User::roles).notContains("Admin"))
         .collect(toList());
 ```
 
@@ -111,6 +111,6 @@ Pass your own predicate that not present in the library:
 
 ```java
 List<User> customPredicateUsers = users.stream()
-        .filter(where(User::getStatus).accepts(status -> status.trim().length() > 5))
+        .filter(where(User::status).accepts(status -> status.trim().length() > 5))
         .collect(toList());
 ```

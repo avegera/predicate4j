@@ -69,7 +69,7 @@ public class WhereStringImpl<T> extends WhereObjectImpl<T, String> implements Wh
 
     @Override
     public WhereNumber<T, Integer> length() {
-        return new WhereNumberImpl<>(this::getLength, previousPredicate);
+        return new WhereNumberImpl<>(mapper == null ? null : this::getLength, previousPredicate);
     }
 
     private Integer getLength(T object) {
