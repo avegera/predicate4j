@@ -14,11 +14,16 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.Collection;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import static io.github.avegera.predicate4j.Where.where;
 import static io.github.avegera.predicate4j.test.model.User.userWithId;
+import static io.github.avegera.predicate4j.test.model.User.userWithName;
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 
 @Where("where")
 @Type("object")
@@ -150,6 +155,59 @@ public class WhereObjectTest extends PredicateScenarioTest<User> {
                             .isTrueFor(userWithId(null))
                     .withArgument(null)
                             .isTrueFor(userWithId(123))
+                .toStream();
+    }
+
+    @MethodSource
+    @ParameterizedTest
+    @CaseAs(provider = FirstArgument.class)
+    @As("_where(mapper).in(collection)")
+    public void whereIn(PredicateContext<User, String> context, Collection<String> validNames) {
+        scenario(context, where(User::name).in(validNames));
+    }
+
+    static Stream<Arguments> whereIn() {
+        return PredicateTest.<User, String>builder()
+                .predicate("where(User::name).in($argument1)")
+                .withMapper(User::name)
+                    .withArgument(asList("John", "Jane"))
+                        .isTrueFor(userWithName("John"))
+                        .isTrueFor(userWithName("Jane"))
+                        .isFalseFor(userWithName("Doe"))
+                        .isFalseFor(userWithName(null))
+                        .isFalseFor(null)
+                    .withArgument(singletonList("Doe"))
+                        .isTrueFor(userWithName("Doe"))
+                        .isFalseFor(userWithName("John"))
+                    .withArgument(emptyList())
+                        .isFalseFor(userWithName("John"))
+                        .isFalseFor(userWithName(null))
+                .toStream();
+    }
+
+    @MethodSource
+    @ParameterizedTest
+    @CaseAs(provider = FirstArgument.class)
+    @As("_where(mapper).notIn(collection)")
+    public void whereNotIn(PredicateContext<User, String> context, Collection<String> invalidNames) {
+        scenario(context, where(User::name).notIn(invalidNames));
+    }
+
+    static Stream<Arguments> whereNotIn() {
+        return PredicateTest.<User, String>builder()
+                .predicate("where(User::name).notIn($argument1)")
+                .withMapper(User::name)
+                    .withArgument(asList("John", "Jane"))
+                        .isTrueFor(userWithName("Doe"))
+                        .isTrueFor(userWithName(null))
+                        .isFalseFor(userWithName("John"))
+                        .isFalseFor(userWithName("Jane"))
+                    .withArgument(singletonList("Doe"))
+                        .isTrueFor(userWithName("John"))
+                        .isFalseFor(userWithName("Doe"))
+                    .withArgument(emptyList())
+                        .isTrueFor(userWithName("John"))
+                        .isTrueFor(userWithName(null))
                 .toStream();
     }
 

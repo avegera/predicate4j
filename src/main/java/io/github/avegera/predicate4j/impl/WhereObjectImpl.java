@@ -4,6 +4,7 @@ import io.github.avegera.predicate4j.Predicates;
 import io.github.avegera.predicate4j.api.RichPredicate;
 import io.github.avegera.predicate4j.api.WhereObject;
 
+import java.util.Collection;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -53,6 +54,16 @@ public class WhereObjectImpl<T, R> implements WhereObject<T, R> {
     @Override
     public RichPredicate<T> notNull() {
         return getPredicate(Predicates.notNull());
+    }
+
+    @Override
+    public RichPredicate<T> in(Collection<R> collection) {
+        return getPredicate(Predicates.in(collection));
+    }
+
+    @Override
+    public RichPredicate<T> notIn(Collection<R> collection) {
+        return getPredicate(Predicates.notIn(collection));
     }
 
     @Override
