@@ -47,6 +47,14 @@ public class Predicates {
         return it -> false;
     }
 
+    public static <T> Predicate<T> in(Collection<? extends T> collection) {
+        return it -> collection != null && collection.contains(it);
+    }
+
+    public static <T> Predicate<T> notIn(Collection<? extends T> collection) {
+        return it -> collection == null || !collection.contains(it);
+    }
+
     //Boolean predicates
 
     public static Predicate<Boolean> isTrue() {

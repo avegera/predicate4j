@@ -1,5 +1,6 @@
 package io.github.avegera.predicate4j.api;
 
+import java.util.Collection;
 import java.util.function.Predicate;
 
 public interface WhereObject<T, R> {
@@ -15,6 +16,10 @@ public interface WhereObject<T, R> {
     RichPredicate<T> notInstanceOf(Class<?> clazz);
 
     RichPredicate<T> notNull();
+
+    RichPredicate<T> in(Collection<R> collection);
+
+    RichPredicate<T> notIn(Collection<R> collection);
 
     RichPredicate<T> accepts(Predicate<R> predicate);
 
