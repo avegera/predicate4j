@@ -91,12 +91,20 @@ public class Predicates {
         return collection -> (collection != null ? collection.size() : 0) != size;
     }
 
-    public static <T extends Collection<R>, R> Predicate<T> containsElement(R element) {
+    public static <T extends Collection<E>, E> Predicate<T> containsElement(E element) {
         return collection -> collection != null && collection.contains(element);
     }
 
-    public static <T extends Collection<R>, R> Predicate<T> notContainsElement(R element) {
+    public static <T extends Collection<E>, E> Predicate<T> notContainsElement(E element) {
         return collection -> collection == null || !collection.contains(element);
+    }
+
+    public static <T extends Collection<E>, E> Predicate<T> containsAllElements(Collection<E> elements) {
+        return collection -> collection != null && collection.containsAll(elements);
+    }
+
+    public static <T extends Collection<E>, E> Predicate<T> notContainsAllElements(Collection<E> elements) {
+        return collection -> collection == null || !collection.containsAll(elements);
     }
 
     //Number predicates

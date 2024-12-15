@@ -1,6 +1,11 @@
 package io.github.avegera.predicate4j.impl;
 
-import io.github.avegera.predicate4j.api.*;
+import io.github.avegera.predicate4j.api.WhereBoolean;
+import io.github.avegera.predicate4j.api.WhereNumber;
+import io.github.avegera.predicate4j.api.WhereString;
+import io.github.avegera.predicate4j.api.WhereType;
+import io.github.avegera.predicate4j.api.collection.WhereList;
+import io.github.avegera.predicate4j.impl.collection.WhereListImpl;
 
 import java.util.List;
 import java.util.function.Function;
@@ -13,7 +18,7 @@ public class WhereTypeImpl implements WhereType {
     }
 
     @Override
-    public <T, R> WhereList<T, R> list(Function<T, List<R>> mapper) {
+    public <T, E> WhereList<T, List<E>, E> list(Function<T, List<E>> mapper) {
         return new WhereListImpl<>(mapper);
     }
 
