@@ -10,12 +10,12 @@ public class PredicateContext<T, R> {
     private final T object;
     private final boolean expectedResult;
 
-    private PredicateContext(Builder<T, R> builder) {
-        this.name = builder.name;
-        this.predicate = builder.predicate;
-        this.mapper = builder.mapper;
-        this.object = builder.object;
-        this.expectedResult = builder.expectedResult;
+    public PredicateContext(String name, String predicate, Function<T, R> mapper, T object, boolean expectedResult) {
+        this.name = name;
+        this.predicate = predicate;
+        this.mapper = mapper;
+        this.object = object;
+        this.expectedResult = expectedResult;
     }
 
     public T object() {
@@ -85,7 +85,13 @@ public class PredicateContext<T, R> {
         }
 
         public PredicateContext<T, R> build() {
-            return new PredicateContext<>(this);
+            return new PredicateContext<>(
+                    this.name,
+                    this.predicate,
+                    this.mapper,
+                    this.object,
+                    this.expectedResult
+            );
         }
     }
 }

@@ -1,6 +1,8 @@
 package io.github.avegera.predicate4j.impl;
 
 import io.github.avegera.predicate4j.api.*;
+import io.github.avegera.predicate4j.api.collection.WhereList;
+import io.github.avegera.predicate4j.impl.collection.WhereListImpl;
 
 import java.util.List;
 import java.util.function.BiFunction;
@@ -20,7 +22,7 @@ public class RichPredicateConjunctionImpl<T> implements RichPredicateConjunction
     }
 
     @Override
-    public <R> WhereList<T, R> list(Function<T, List<R>> mapper) {
+    public <E> WhereList<T, List<E>, E> list(Function<T, List<E>> mapper) {
         return getWhere(WhereListImpl::new, mapper);
     }
 
