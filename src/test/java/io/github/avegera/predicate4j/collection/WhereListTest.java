@@ -1,4 +1,4 @@
-package io.github.avegera.predicate4j;
+package io.github.avegera.predicate4j.collection;
 
 import com.google.common.collect.ImmutableList;
 import com.tngtech.jgiven.annotation.As;
@@ -11,6 +11,7 @@ import io.github.avegera.predicate4j.test.predicate.PredicateTest;
 import io.github.avegera.predicate4j.test.scenario.PredicateScenarioTest;
 import io.github.avegera.predicate4j.test.tag.Type;
 import io.github.avegera.predicate4j.test.tag.Where;
+import io.github.avegera.predicate4j.test.util.ListWithNullableIterator;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -42,6 +43,8 @@ public class WhereListTest extends PredicateScenarioTest<User> {
                 .predicate("where().list(mapper).isEmpty()")
                 .withMapper(User::roles)
                     .isTrueFor(userWithRoles(new ArrayList<>()))
+                    .isTrueFor(userWithRoles(new ListWithNullableIterator<>()))
+                    .isTrueFor(userWithRoles(null))
                     .isFalseFor(userWithRoles(ImmutableList.of("Admin")))
                     .isFalseFor(null)
                 .toStream();
@@ -61,6 +64,8 @@ public class WhereListTest extends PredicateScenarioTest<User> {
                 .withMapper(User::roles)
                     .isTrueFor(userWithRoles(ImmutableList.of("Admin")))
                     .isFalseFor(userWithRoles(new ArrayList<>()))
+                    .isFalseFor(userWithRoles(new ListWithNullableIterator<>()))
+                    .isFalseFor(userWithRoles(null))
                     .isFalseFor(null)
                 .toStream();
     }
@@ -108,6 +113,55 @@ public class WhereListTest extends PredicateScenarioTest<User> {
                         .isTrueFor(userWithRoles(ImmutableList.of("Admin", "User")))
                     .withArgument(null)
                         .isFalseFor(null)
+                .toStream();
+    }
+
+
+    @MethodSource
+    @ParameterizedTest
+    @CaseAs(provider = FirstArgument.class)
+    @As("_where().list(mapper).containsAll(value)")
+    public void whereListContainsAll(PredicateContext<User, List<String>> context, List<String> roles) {
+        scenario(context, where().list(context.mapper()).containsAll(roles));
+    }
+
+    static Stream<Arguments> whereListContainsAll() {
+        return PredicateTest.<User, List<String>>builder()
+                .predicate("where().list(mapper).containsAll($argument1)")
+                .withMapper(User::roles)
+                    .withArgument(ImmutableList.of("Admin", "User"))
+                        .isTrueFor(userWithRoles(ImmutableList.of("Admin", "User", "Guest")))
+                    .withArgument(ImmutableList.of("Admin", "Guest"))
+                        .isFalseFor(userWithRoles(ImmutableList.of("Admin", "User")))
+                    .withArgument(null)
+                        .isFalseFor(userWithRoles(ImmutableList.of("Admin", "User")))
+                    .withArgument(ImmutableList.of("Admin"))
+                        .isTrueFor(userWithRoles(ImmutableList.of("Admin", "User")))
+                        .isFalseFor(userWithRoles(null))
+                .toStream();
+    }
+
+    @MethodSource
+    @ParameterizedTest
+    @CaseAs(provider = FirstArgument.class)
+    @As("_where().list(mapper).notContainsAll(value)")
+    public void whereListNotContainsAll(PredicateContext<User, List<String>> context, List<String> roles) {
+        scenario(context, where().list(context.mapper()).notContainsAll(roles));
+    }
+
+    static Stream<Arguments> whereListNotContainsAll() {
+        return PredicateTest.<User, List<String>>builder()
+                .predicate("where().list(mapper).notContainsAll($argument1)")
+                .withMapper(User::roles)
+                    .withArgument(ImmutableList.of("Admin", "Guest"))
+                        .isTrueFor(userWithRoles(ImmutableList.of("Admin", "User")))
+                    .withArgument(ImmutableList.of("Admin", "User"))
+                        .isFalseFor(userWithRoles(ImmutableList.of("Admin", "User")))
+                    .withArgument(null)
+                        .isTrueFor(userWithRoles(ImmutableList.of("Admin", "User")))
+                    .withArgument(ImmutableList.of("Guest"))
+                        .isTrueFor(userWithRoles(ImmutableList.of("Admin")))
+                        .isTrueFor(userWithRoles(null))
                 .toStream();
     }
 
@@ -311,6 +365,30 @@ public class WhereListTest extends PredicateScenarioTest<User> {
                     .withArgument(null)
                         .isTrueFor(userWithRoles(ImmutableList.of("Admin", "User")))
                         .isFalseFor(null)
+                .toStream();
+    }
+
+    @MethodSource
+    @ParameterizedTest
+    @CaseAs(provider = FirstArgument.class)
+    @As("Logical conjunction of 3 predicates")
+    public void whereListConjunction(PredicateContext<User, List<String>> context) {
+        scenario(context, where().list(User::roles).notEmpty()
+                .and().list(User::roles).contains("Admin")
+                .and().list(User::roles).size().isLessThan(4));
+    }
+
+    static Stream<Arguments> whereListConjunction() {
+        return PredicateTest.<User, List<String>>builder()
+                .predicate("where().list(User::roles).notEmpty()\n" +
+                        "       .and().list(User::roles).contains(\"Admin\")\n" +
+                        "       .and().list(User::roles).size().isLessThan(4)")
+                .isTrueFor(userWithRoles(ImmutableList.of("Admin"))) // Matches all conditions
+                .isFalseFor(userWithRoles(ImmutableList.of("Admin", "User", "Guest", "Other"))) // size >= 4
+                .isFalseFor(userWithRoles(ImmutableList.of("User", "Guest"))) // does not contain "Admin"
+                .isFalseFor(userWithRoles(new ArrayList<>())) // Empty list
+                .isFalseFor(userWithRoles(null)) // roles are null
+                .isFalseFor(null) // user is null
                 .toStream();
     }
 }

@@ -1,5 +1,7 @@
 #Maven
 target/
+jgiven-reports/
+repo-dump.txt
 
 #IntelliJ
 /.idea

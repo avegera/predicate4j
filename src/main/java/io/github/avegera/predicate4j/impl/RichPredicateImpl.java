@@ -1,7 +1,7 @@
 package io.github.avegera.predicate4j.impl;
 
-import io.github.avegera.predicate4j.api.RichPredicateConjunction;
 import io.github.avegera.predicate4j.api.RichPredicate;
+import io.github.avegera.predicate4j.api.RichPredicateConjunction;
 import io.github.avegera.predicate4j.api.WhereObject;
 
 import java.util.function.Function;

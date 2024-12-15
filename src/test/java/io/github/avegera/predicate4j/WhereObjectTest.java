@@ -182,6 +182,9 @@ public class WhereObjectTest extends PredicateScenarioTest<User> {
                     .withArgument(emptyList())
                         .isFalseFor(userWithName("John"))
                         .isFalseFor(userWithName(null))
+                    .withArgument(null)
+                        .isFalseFor(userWithName("John"))
+                        .isFalseFor(userWithName(null))
                 .toStream();
     }
 
@@ -206,6 +209,9 @@ public class WhereObjectTest extends PredicateScenarioTest<User> {
                         .isTrueFor(userWithName("John"))
                         .isFalseFor(userWithName("Doe"))
                     .withArgument(emptyList())
+                        .isTrueFor(userWithName("John"))
+                        .isTrueFor(userWithName(null))
+                    .withArgument(null)
                         .isTrueFor(userWithName("John"))
                         .isTrueFor(userWithName(null))
                 .toStream();

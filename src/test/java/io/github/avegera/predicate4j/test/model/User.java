@@ -2,6 +2,7 @@ package io.github.avegera.predicate4j.test.model;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 
 import static io.github.avegera.predicate4j.test.util.MapUtils.getMap;
@@ -17,13 +18,16 @@ public class User {
 
     private final List<String> roles;
 
+    private final Set<String> permissions;
+
     private final Map<String, Function<User, Object>> initializationMap;
 
-    public User(Integer id, String name, Boolean active, List<String> roles, Map<String, Function<User, Object>> initializationMap) {
+    private User(Integer id, String name, Boolean active, List<String> roles, Set<String> permissions, Map<String, Function<User, Object>> initializationMap) {
         this.id = id;
         this.name = name;
         this.active = active;
         this.roles = roles;
+        this.permissions = permissions;
         this.initializationMap = initializationMap;
     }
 
@@ -43,20 +47,28 @@ public class User {
         return roles;
     }
 
+    public Set<String> permissions() {
+        return permissions;
+    }
+
     public static User userWithId(Integer id) {
-        return new User(id, null, null, null, getMap(User::id));
+        return new User(id, null, null, null, null, getMap(User::id));
     }
 
     public static User userWithName(String name) {
-        return new User(null, name, null, null, getMap(User::name));
+        return new User(null, name, null, null, null, getMap(User::name));
     }
 
     public static User userWithActiveFlag(Boolean active) {
-        return new User(null, null, active, null, getMap(User::active));
+        return new User(null, null, active, null, null, getMap(User::active));
     }
 
     public static User userWithRoles(List<String> roles) {
-        return new User(null, null, null, roles, getMap(User::roles));
+        return new User(null, null, null, roles, null, getMap(User::roles));
+    }
+
+    public static User userWithPermissions(Set<String> permissions) {
+        return new User(null, null, null, null, permissions, getMap(User::permissions));
     }
 
     @Override
