@@ -2,25 +2,25 @@ package io.github.avegera.predicate4j.api;
 
 public interface WhereString<T> extends WhereObject<T, String> {
 
-    RichPredicate<T> isEmpty();
+    FluentPredicate<T> isEmpty();
 
-    RichPredicate<T> notEmpty();
+    FluentPredicate<T> notEmpty();
 
-    RichPredicate<T> contains(String substring);
+    FluentPredicate<T> contains(String substring);
 
-    RichPredicate<T> notContains(String substring);
+    FluentPredicate<T> notContains(String substring);
 
-    RichPredicate<T> startsWith(String prefix);
+    FluentPredicate<T> startsWith(String prefix);
 
-    RichPredicate<T> notStartsWith(String prefix);
+    FluentPredicate<T> notStartsWith(String prefix);
 
-    RichPredicate<T> endsWith(String suffix);
+    FluentPredicate<T> endsWith(String suffix);
 
-    RichPredicate<T> notEndsWith(String suffix);
+    FluentPredicate<T> notEndsWith(String suffix);
 
-    RichPredicate<T> matches(String regex);
+    FluentPredicate<T> matches(String regex);
 
-    RichPredicate<T> notMatches(String regex);
+    FluentPredicate<T> notMatches(String regex);
 
     WhereNumber<T, Integer> length();
 }

@@ -1,6 +1,6 @@
 package io.github.avegera.predicate4j.impl.collection;
 
-import io.github.avegera.predicate4j.api.RichPredicate;
+import io.github.avegera.predicate4j.api.FluentPredicate;
 import io.github.avegera.predicate4j.api.collection.WhereList;
 
 import java.util.List;
@@ -12,7 +12,7 @@ public class WhereListImpl<T, R extends List<E>, E> extends WhereCollectionImpl<
         super(mapper);
     }
 
-    public WhereListImpl(Function<T, R> mapper, RichPredicate<T> previousPredicate) {
+    public WhereListImpl(Function<T, R> mapper, FluentPredicate<T> previousPredicate) {
         super(mapper, previousPredicate);
     }
 }

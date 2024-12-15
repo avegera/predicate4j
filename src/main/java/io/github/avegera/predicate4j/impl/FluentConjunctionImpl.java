@@ -16,11 +16,11 @@ import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public class RichPredicateConjunctionImpl<T> implements RichPredicateConjunction<T> {
+public class FluentConjunctionImpl<T> implements FluentConjunction<T> {
 
-    private final RichPredicate<T> previousPredicate;
+    private final FluentPredicate<T> previousPredicate;
 
-    public RichPredicateConjunctionImpl(RichPredicate<T> previousPredicate) {
+    public FluentConjunctionImpl(FluentPredicate<T> previousPredicate) {
         this.previousPredicate = previousPredicate;
     }
 
@@ -59,7 +59,7 @@ public class RichPredicateConjunctionImpl<T> implements RichPredicateConjunction
         return getWhere(WhereStringImpl::new, mapper);
     }
 
-    private <R, W extends WhereObject<T, R>> W getWhere(BiFunction<Function<T, R>, RichPredicate<T>, W> constructor, Function<T, R> mapper) {
+    private <R, W extends WhereObject<T, R>> W getWhere(BiFunction<Function<T, R>, FluentPredicate<T>, W> constructor, Function<T, R> mapper) {
         return constructor.apply(mapper, previousPredicate);
     }
 }

@@ -5,23 +5,23 @@ import java.util.function.Predicate;
 
 public interface WhereObject<T, R> {
 
-    RichPredicate<T> isEqualTo(R value);
+    FluentPredicate<T> isEqualTo(R value);
 
-    RichPredicate<T> isInstanceOf(Class<?> clazz);
+    FluentPredicate<T> isInstanceOf(Class<?> clazz);
 
-    RichPredicate<T> isNull();
+    FluentPredicate<T> isNull();
 
-    RichPredicate<T> notEqualTo(R value);
+    FluentPredicate<T> notEqualTo(R value);
 
-    RichPredicate<T> notInstanceOf(Class<?> clazz);
+    FluentPredicate<T> notInstanceOf(Class<?> clazz);
 
-    RichPredicate<T> notNull();
+    FluentPredicate<T> notNull();
 
-    RichPredicate<T> in(Collection<R> collection);
+    FluentPredicate<T> in(Collection<R> collection);
 
-    RichPredicate<T> notIn(Collection<R> collection);
+    FluentPredicate<T> notIn(Collection<R> collection);
 
-    RichPredicate<T> accepts(Predicate<R> predicate);
+    FluentPredicate<T> accepts(Predicate<R> predicate);
 
-    RichPredicate<T> rejects(Predicate<R> predicate);
+    FluentPredicate<T> rejects(Predicate<R> predicate);
 }

@@ -1,17 +1,17 @@
 package io.github.avegera.predicate4j.impl;
 
-import io.github.avegera.predicate4j.api.RichPredicate;
-import io.github.avegera.predicate4j.api.RichPredicateConjunction;
+import io.github.avegera.predicate4j.api.FluentConjunction;
+import io.github.avegera.predicate4j.api.FluentPredicate;
 import io.github.avegera.predicate4j.api.WhereObject;
 
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class RichPredicateImpl<T> implements RichPredicate<T> {
+public class FluentPredicateImpl<T> implements FluentPredicate<T> {
 
     private final Predicate<T> predicate;
 
-    public RichPredicateImpl(Predicate<T> predicate) {
+    public FluentPredicateImpl(Predicate<T> predicate) {
         this.predicate = predicate;
     }
 
@@ -26,7 +26,7 @@ public class RichPredicateImpl<T> implements RichPredicate<T> {
     }
 
     @Override
-    public RichPredicateConjunction<T> and() {
-        return new RichPredicateConjunctionImpl<>(this);
+    public FluentConjunction<T> and() {
+        return new FluentConjunctionImpl<>(this);
     }
 }
