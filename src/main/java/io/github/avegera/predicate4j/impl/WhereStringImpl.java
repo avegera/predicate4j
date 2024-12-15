@@ -1,7 +1,7 @@
 package io.github.avegera.predicate4j.impl;
 
 import io.github.avegera.predicate4j.Predicates;
-import io.github.avegera.predicate4j.api.RichPredicate;
+import io.github.avegera.predicate4j.api.FluentPredicate;
 import io.github.avegera.predicate4j.api.WhereNumber;
 import io.github.avegera.predicate4j.api.WhereString;
 
@@ -13,57 +13,57 @@ public class WhereStringImpl<T> extends WhereObjectImpl<T, String> implements Wh
         super(mapper);
     }
 
-    public WhereStringImpl(Function<T, String> mapper, RichPredicate<T> previousPredicate) {
+    public WhereStringImpl(Function<T, String> mapper, FluentPredicate<T> previousPredicate) {
         super(mapper, previousPredicate);
     }
 
     @Override
-    public RichPredicate<T> isEmpty() {
+    public FluentPredicate<T> isEmpty() {
         return getPredicate(Predicates.isEmptyString());
     }
 
     @Override
-    public RichPredicate<T> notEmpty() {
+    public FluentPredicate<T> notEmpty() {
         return getPredicate(Predicates.notEmptyString());
     }
 
     @Override
-    public RichPredicate<T> contains(String substring) {
+    public FluentPredicate<T> contains(String substring) {
         return getPredicate(Predicates.containsSubstring(substring));
     }
 
     @Override
-    public RichPredicate<T> notContains(String substring) {
+    public FluentPredicate<T> notContains(String substring) {
         return getPredicate(Predicates.notContainsSubstring(substring));
     }
 
     @Override
-    public RichPredicate<T> startsWith(String prefix) {
+    public FluentPredicate<T> startsWith(String prefix) {
         return getPredicate(Predicates.startsWith(prefix));
     }
 
     @Override
-    public RichPredicate<T> notStartsWith(String prefix) {
+    public FluentPredicate<T> notStartsWith(String prefix) {
         return getPredicate(Predicates.notStartsWith(prefix));
     }
 
     @Override
-    public RichPredicate<T> endsWith(String suffix) {
+    public FluentPredicate<T> endsWith(String suffix) {
         return getPredicate(Predicates.endsWith(suffix));
     }
 
     @Override
-    public RichPredicate<T> notEndsWith(String suffix) {
+    public FluentPredicate<T> notEndsWith(String suffix) {
         return getPredicate(Predicates.notEndsWith(suffix));
     }
 
     @Override
-    public RichPredicate<T> matches(String regex) {
+    public FluentPredicate<T> matches(String regex) {
         return getPredicate(Predicates.matches(regex));
     }
 
     @Override
-    public RichPredicate<T> notMatches(String regex) {
+    public FluentPredicate<T> notMatches(String regex) {
         return getPredicate(Predicates.notMatches(regex));
     }
 

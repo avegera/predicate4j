@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 
-public interface RichPredicateConjunction<T> {
+public interface FluentConjunction<T> {
 
     WhereBoolean<T> booleanValue(Function<T, Boolean> mapper);
 

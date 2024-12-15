@@ -1,7 +1,7 @@
 package io.github.avegera.predicate4j.impl;
 
 import io.github.avegera.predicate4j.Predicates;
-import io.github.avegera.predicate4j.api.RichPredicate;
+import io.github.avegera.predicate4j.api.FluentPredicate;
 import io.github.avegera.predicate4j.api.WhereBoolean;
 
 import java.util.function.Function;
@@ -12,27 +12,27 @@ public class WhereBooleanImpl<T> extends WhereObjectImpl<T, Boolean> implements 
         super(mapper);
     }
 
-    public WhereBooleanImpl(Function<T, Boolean> mapper, RichPredicate<T> previousPredicate) {
+    public WhereBooleanImpl(Function<T, Boolean> mapper, FluentPredicate<T> previousPredicate) {
         super(mapper, previousPredicate);
     }
 
     @Override
-    public RichPredicate<T> isTrue() {
+    public FluentPredicate<T> isTrue() {
         return getPredicate(Predicates.isTrue());
     }
 
     @Override
-    public RichPredicate<T> notTrue() {
+    public FluentPredicate<T> notTrue() {
         return getPredicate(Predicates.notTrue());
     }
 
     @Override
-    public RichPredicate<T> isFalse() {
+    public FluentPredicate<T> isFalse() {
         return getPredicate(Predicates.isFalse());
     }
 
     @Override
-    public RichPredicate<T> notFalse() {
+    public FluentPredicate<T> notFalse() {
         return getPredicate(Predicates.notFalse());
     }
 }

@@ -2,11 +2,11 @@ package io.github.avegera.predicate4j.api;
 
 public interface WhereBoolean<T> extends WhereObject<T, Boolean> {
 
-    RichPredicate<T> isTrue();
+    FluentPredicate<T> isTrue();
 
-    RichPredicate<T> notTrue();
+    FluentPredicate<T> notTrue();
 
-    RichPredicate<T> isFalse();
+    FluentPredicate<T> isFalse();
 
-    RichPredicate<T> notFalse();
+    FluentPredicate<T> notFalse();
 }

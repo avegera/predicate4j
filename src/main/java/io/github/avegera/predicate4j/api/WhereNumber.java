@@ -2,19 +2,19 @@ package io.github.avegera.predicate4j.api;
 
 public interface WhereNumber<T, N extends Number> extends WhereObject<T, N> {
 
-    RichPredicate<T> isGreaterThan(N value);
+    FluentPredicate<T> isGreaterThan(N value);
 
-    RichPredicate<T> isGreaterThanOrEqualTo(N value);
+    FluentPredicate<T> isGreaterThanOrEqualTo(N value);
 
-    RichPredicate<T> isLessThan(N value);
+    FluentPredicate<T> isLessThan(N value);
 
-    RichPredicate<T> isLessThanOrEqualTo(N value);
+    FluentPredicate<T> isLessThanOrEqualTo(N value);
 
-    RichPredicate<T> isBetween(N startInclusive, N endInclusive);
+    FluentPredicate<T> isBetween(N startInclusive, N endInclusive);
 
-    RichPredicate<T> notBetween(N startInclusive, N endInclusive);
+    FluentPredicate<T> notBetween(N startInclusive, N endInclusive);
 
-    RichPredicate<T> isEven();
+    FluentPredicate<T> isEven();
 
-    RichPredicate<T> isOdd();
+    FluentPredicate<T> isOdd();
 }
