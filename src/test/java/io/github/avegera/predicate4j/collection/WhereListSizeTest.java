@@ -1,4 +1,4 @@
-package io.github.avegera.predicate4j;
+package io.github.avegera.predicate4j.collection;
 
 import com.tngtech.jgiven.annotation.As;
 import com.tngtech.jgiven.annotation.CaseAs;

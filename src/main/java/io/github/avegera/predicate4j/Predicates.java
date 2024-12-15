@@ -100,11 +100,11 @@ public class Predicates {
     }
 
     public static <T extends Collection<E>, E> Predicate<T> containsAllElements(Collection<E> elements) {
-        return collection -> collection != null && collection.containsAll(elements);
+        return collection -> collection != null && elements != null && collection.containsAll(elements);
     }
 
     public static <T extends Collection<E>, E> Predicate<T> notContainsAllElements(Collection<E> elements) {
-        return collection -> collection == null || !collection.containsAll(elements);
+        return collection -> collection == null || elements == null || !collection.containsAll(elements);
     }
 
     //Number predicates
