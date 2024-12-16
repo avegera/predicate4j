@@ -4,6 +4,10 @@ import io.github.avegera.predicate4j.api.collection.WhereCollection;
 import io.github.avegera.predicate4j.api.collection.WhereIterable;
 import io.github.avegera.predicate4j.api.collection.WhereList;
 import io.github.avegera.predicate4j.api.collection.WhereSet;
+import io.github.avegera.predicate4j.api.quantifier.WhereAtLeast;
+import io.github.avegera.predicate4j.api.quantifier.WhereEach;
+import io.github.avegera.predicate4j.api.quantifier.WhereExactly;
+import io.github.avegera.predicate4j.api.quantifier.WhereNone;
 
 import java.util.Collection;
 import java.util.List;
@@ -25,4 +29,16 @@ public interface WhereType {
     <T, N extends Number & Comparable<N>> WhereNumber<T, N> number(Function<T, N> mapper);
 
     <T> WhereString<T> string(Function<T, String> mapper);
+
+    <T, E> WhereAtLeast<T, E> atLeast(int times, Function<T, Iterable<E>> mapper);
+
+    <T, E> WhereAtLeast<T, E> atLeastOne(Function<T, Iterable<E>> mapper);
+
+    <T, E> WhereExactly<T, E> exactly(int times, Function<T, Iterable<E>> mapper);
+
+    <T, E> WhereExactly<T, E> exactlyOne(Function<T, Iterable<E>> mapper);
+
+    <T, E> WhereEach<T, E> each(Function<T, Iterable<E>> mapper);
+
+    <T, E> WhereNone<T, E> none(Function<T, Iterable<E>> mapper);
 }

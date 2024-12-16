@@ -5,10 +5,15 @@ import io.github.avegera.predicate4j.api.collection.WhereCollection;
 import io.github.avegera.predicate4j.api.collection.WhereIterable;
 import io.github.avegera.predicate4j.api.collection.WhereList;
 import io.github.avegera.predicate4j.api.collection.WhereSet;
+import io.github.avegera.predicate4j.api.quantifier.WhereAtLeast;
+import io.github.avegera.predicate4j.api.quantifier.WhereEach;
+import io.github.avegera.predicate4j.api.quantifier.WhereExactly;
+import io.github.avegera.predicate4j.api.quantifier.WhereNone;
 import io.github.avegera.predicate4j.impl.collection.WhereCollectionImpl;
 import io.github.avegera.predicate4j.impl.collection.WhereIterableImpl;
 import io.github.avegera.predicate4j.impl.collection.WhereListImpl;
 import io.github.avegera.predicate4j.impl.collection.WhereSetImpl;
+import io.github.avegera.predicate4j.impl.quantifier.*;
 
 import java.util.Collection;
 import java.util.List;
@@ -57,6 +62,37 @@ public class FluentConjunctionImpl<T> implements FluentConjunction<T> {
     @Override
     public WhereString<T> string(Function<T, String> mapper) {
         return getWhere(WhereStringImpl::new, mapper);
+    }
+
+    @Override
+    public <E> WhereAtLeast<T, E> atLeast(int times, Function<T, Iterable<E>> mapper) {
+        return new WhereAtLeastImpl<>(times, mapper, previousPredicate);
+    }
+
+    @Override
+    public <E> WhereAtLeast<T, E> atLeastOne(Function<T, Iterable<E>> mapper) {
+        return new WhereAtLeastOneImpl<>(mapper, previousPredicate);
+//        return getWhere(WhereAtLeastImpl::new, mapper); //TODO: yeah, it's a bit different logic
+    }
+
+    @Override
+    public <E> WhereExactly<T, E> exactly(int times, Function<T, Iterable<E>> mapper) {
+        return new WhereExactlyImpl<>(times, mapper, previousPredicate);
+    }
+
+    @Override
+    public <E> WhereExactly<T, E> exactlyOne(Function<T, Iterable<E>> mapper) {
+        return new WhereExactlyOneImpl<>(mapper, previousPredicate);
+    }
+
+    @Override
+    public <E> WhereEach<T, E> each(Function<T, Iterable<E>> mapper) {
+        return new WhereEachImpl<>(mapper, previousPredicate);
+    }
+
+    @Override
+    public <E> WhereNone<T, E> none(Function<T, Iterable<E>> mapper) {
+        return new WhereNoneImpl<>(mapper, previousPredicate);
     }
 
     private <R, W extends WhereObject<T, R>> W getWhere(BiFunction<Function<T, R>, FluentPredicate<T>, W> constructor, Function<T, R> mapper) {

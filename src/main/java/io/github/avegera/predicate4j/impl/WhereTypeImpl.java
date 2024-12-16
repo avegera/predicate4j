@@ -8,10 +8,15 @@ import io.github.avegera.predicate4j.api.collection.WhereCollection;
 import io.github.avegera.predicate4j.api.collection.WhereIterable;
 import io.github.avegera.predicate4j.api.collection.WhereList;
 import io.github.avegera.predicate4j.api.collection.WhereSet;
+import io.github.avegera.predicate4j.api.quantifier.WhereAtLeast;
+import io.github.avegera.predicate4j.api.quantifier.WhereEach;
+import io.github.avegera.predicate4j.api.quantifier.WhereExactly;
+import io.github.avegera.predicate4j.api.quantifier.WhereNone;
 import io.github.avegera.predicate4j.impl.collection.WhereCollectionImpl;
 import io.github.avegera.predicate4j.impl.collection.WhereIterableImpl;
 import io.github.avegera.predicate4j.impl.collection.WhereListImpl;
 import io.github.avegera.predicate4j.impl.collection.WhereSetImpl;
+import io.github.avegera.predicate4j.impl.quantifier.*;
 
 import java.util.Collection;
 import java.util.List;
@@ -53,5 +58,35 @@ public class WhereTypeImpl implements WhereType {
     @Override
     public <T> WhereString<T> string(Function<T, String> mapper) {
         return new WhereStringImpl<>(mapper);
+    }
+
+    @Override
+    public <T, E> WhereAtLeast<T, E> atLeast(int times, Function<T, Iterable<E>> mapper) {
+        return new WhereAtLeastImpl<>(times, mapper);
+    }
+
+    @Override
+    public <T, E> WhereAtLeast<T, E> atLeastOne(Function<T, Iterable<E>> mapper) {
+        return new WhereAtLeastOneImpl<>(mapper);
+    }
+
+    @Override
+    public <T, E> WhereExactly<T, E> exactly(int times, Function<T, Iterable<E>> mapper) {
+        return new WhereExactlyImpl<>(times, mapper);
+    }
+
+    @Override
+    public <T, E> WhereExactly<T, E> exactlyOne(Function<T, Iterable<E>> mapper) {
+        return new WhereExactlyOneImpl<>(mapper);
+    }
+
+    @Override
+    public <T, E> WhereEach<T, E> each(Function<T, Iterable<E>> mapper) {
+        return new WhereEachImpl<>(mapper);
+    }
+
+    @Override
+    public <T, E> WhereNone<T, E> none(Function<T, Iterable<E>> mapper) {
+        return new WhereNoneImpl<>(mapper);
     }
 }

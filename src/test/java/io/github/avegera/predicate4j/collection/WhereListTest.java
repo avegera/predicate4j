@@ -373,6 +373,8 @@ public class WhereListTest extends PredicateScenarioTest<User> {
     @CaseAs(provider = FirstArgument.class)
     @As("Logical conjunction of 3 predicates")
     public void whereListConjunction(PredicateContext<User, List<String>> context) {
+        where().atLeastOne(User::roles).isEqualTo("test");
+
         scenario(context, where().list(User::roles).notEmpty()
                 .and().list(User::roles).contains("Admin")
                 .and().list(User::roles).size().isLessThan(4));
