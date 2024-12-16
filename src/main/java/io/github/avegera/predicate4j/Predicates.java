@@ -13,7 +13,7 @@ public class Predicates {
         //private constructor
     }
 
-    //Object predicates
+    //region [Category: Object Predicates]
 
     public static <T> Predicate<T> isEqualTo(T object) {
         return it -> Objects.equals(it, object);
@@ -55,7 +55,9 @@ public class Predicates {
         return it -> collection == null || !collection.contains(it);
     }
 
-    //Boolean predicates
+    //endregion [Category: Object Predicates]
+
+    //region [Category: Boolean Predicates]
 
     public static Predicate<Boolean> isTrue() {
         return bool -> bool != null && bool;
@@ -73,7 +75,9 @@ public class Predicates {
         return bool -> bool == null || bool;
     }
 
-    //Collection predicates
+    //endregion [Category: Boolean Predicates]
+
+    //region [Category: Collection Predicates]
 
     public static <T extends Collection<?>> Predicate<T> isEmpty() {
         return collection -> collection == null || collection.isEmpty();
@@ -107,7 +111,9 @@ public class Predicates {
         return collection -> collection == null || elements == null || !collection.containsAll(elements);
     }
 
-    //Number predicates
+    //endregion [Category: Collection Predicates]
+
+    //region [Category: Number Predicates]
 
     public static <N extends Number & Comparable<N>> Predicate<N> isGreaterThan(N value) {
         return number -> number != null && value != null && number.compareTo(value) > 0;
@@ -141,7 +147,9 @@ public class Predicates {
         return number -> number != null && number.longValue() % 2 != 0;
     }
 
-    //String predicates
+    //endregion [Category: Number Predicates]
+
+    //region [Category: String Predicates]
 
     public static Predicate<String> isEmptyString() {
         return str -> str == null || str.isEmpty();
@@ -182,4 +190,6 @@ public class Predicates {
     public static Predicate<String> notMatches(String regex) {
         return str -> str == null || regex == null || !str.matches(regex);
     }
+
+    //endregion [Category: String Predicates]
 }
