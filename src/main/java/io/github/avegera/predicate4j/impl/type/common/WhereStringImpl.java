@@ -7,13 +7,13 @@ import io.github.avegera.predicate4j.api.type.common.WhereString;
 
 import java.util.function.Function;
 
-public class WhereStringImpl<T> extends WhereObjectImpl<T, String> implements WhereString<T> {
+public class WhereStringImpl<T, M> extends WhereObjectImpl<T, M, String> implements WhereString<T> {
 
-    public WhereStringImpl(Function<T, String> mapper) {
+    public WhereStringImpl(Function<T, M> mapper) {
         super(mapper);
     }
 
-    public WhereStringImpl(Function<T, String> mapper, FluentPredicate<T> previousPredicate) {
+    public WhereStringImpl(Function<T, M> mapper, FluentPredicate<T> previousPredicate) {
         super(mapper, previousPredicate);
     }
 
@@ -73,6 +73,7 @@ public class WhereStringImpl<T> extends WhereObjectImpl<T, String> implements Wh
     }
 
     private Integer getLength(T object) {
-        return getInt(object, String::length);
+        M result = mapper.apply(object);
+        return result != null ? ((String) result).length() : 0;
     }
 }

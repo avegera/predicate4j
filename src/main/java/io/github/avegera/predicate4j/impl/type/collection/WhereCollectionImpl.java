@@ -40,11 +40,22 @@ public class WhereCollectionImpl<T, R extends Collection<E>, E> extends WhereIte
     }
 
     @Override
+    public FluentPredicate<T> isEmpty() {
+        return getPredicate(Predicates.isEmpty());
+    }
+
+    @Override
+    public FluentPredicate<T> notEmpty() {
+        return getPredicate(Predicates.notEmpty());
+    }
+
+    @Override
     public WhereNumber<T, Integer> size() {
         return new WhereNumberImpl<>(mapper == null ? null : this::getSize, previousPredicate);
     }
 
     private Integer getSize(T object) {
-        return getInt(object, Collection::size);
+        R result = mapper.apply(object);
+        return result != null ? result.size() : 0;
     }
 }

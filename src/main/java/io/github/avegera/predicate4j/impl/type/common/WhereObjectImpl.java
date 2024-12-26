@@ -11,18 +11,18 @@ import java.util.function.Predicate;
 
 import static io.github.avegera.predicate4j.Predicates.alwaysTrue;
 
-public class WhereObjectImpl<T, R> implements WhereObject<T, R> {
+public class WhereObjectImpl<T, M, R> implements WhereObject<T, R> {
 
-    protected final Function<T, R> mapper;
+    protected final Function<T, M> mapper;
 
     protected final FluentPredicate<T> previousPredicate;
 
-    public WhereObjectImpl(Function<T, R> mapper) {
+    public WhereObjectImpl(Function<T, M> mapper) {
         this.mapper = mapper;
         this.previousPredicate = null;
     }
 
-    public WhereObjectImpl(Function<T, R> mapper, FluentPredicate<T> previousPredicate) {
+    public WhereObjectImpl(Function<T, M> mapper, FluentPredicate<T> previousPredicate) {
         this.mapper = mapper;
         this.previousPredicate = previousPredicate;
     }
@@ -78,19 +78,17 @@ public class WhereObjectImpl<T, R> implements WhereObject<T, R> {
     }
 
     protected FluentPredicate<T> getPredicate(Predicate<R> predicate) {
-        Predicate<T> currentPredicate = getPredicateWithMapper(mapper, predicate);
-        if (previousPredicate == null) {
-            return new FluentPredicateImpl<>(currentPredicate);
-        }
-        return new FluentPredicateImpl<>(previousPredicate.and(currentPredicate));
+        Predicate<T> current = getPredicateWithMapper(mapper, predicate);
+        Predicate<T> next = previousPredicate == null ? current : previousPredicate.and(current);
+        return new FluentPredicateImpl<>(next);
     }
 
-    protected Integer getInt(T object, Function<R, Integer> intFunction) {
-        R result = mapper.apply(object);
-        return result != null ? intFunction.apply(result) : 0;
+    private Predicate<T> getPredicateWithMapper(Function<T, M> mapper, Predicate<R> predicate) {
+        return object -> object != null && predicate != null && mapper != null && test(mapper, predicate, object);
     }
 
-    private Predicate<T> getPredicateWithMapper(Function<T, R> mapper, Predicate<R> predicate) {
-        return object -> object != null && predicate != null && mapper != null && predicate.test(mapper.apply(object));
+    @SuppressWarnings("unchecked")
+    protected boolean test(Function<T, M> mapper, Predicate<R> predicate, T object) {
+        return predicate.test((R) mapper.apply(object));
     }
 }

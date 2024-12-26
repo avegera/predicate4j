@@ -3,7 +3,7 @@ package io.github.avegera.predicate4j.impl.core;
 import io.github.avegera.predicate4j.api.conjunction.common.WhereConjunction;
 import io.github.avegera.predicate4j.api.core.FluentPredicate;
 import io.github.avegera.predicate4j.api.type.common.WhereObject;
-import io.github.avegera.predicate4j.impl.conjuction.common.WhereConjunctionImpl;
+import io.github.avegera.predicate4j.impl.conjunction.common.WhereConjunctionImpl;
 import io.github.avegera.predicate4j.impl.type.common.WhereObjectImpl;
 
 import java.util.function.Function;
