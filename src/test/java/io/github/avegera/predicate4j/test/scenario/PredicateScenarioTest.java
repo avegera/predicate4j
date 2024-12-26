@@ -1,7 +1,7 @@
 package io.github.avegera.predicate4j.test.scenario;
 
 import com.tngtech.jgiven.junit5.ScenarioTest;
-import io.github.avegera.predicate4j.api.FluentPredicate;
+import io.github.avegera.predicate4j.api.core.FluentPredicate;
 import io.github.avegera.predicate4j.test.predicate.PredicateContext;
 import io.github.avegera.predicate4j.test.step.GivenPredicate;
 import io.github.avegera.predicate4j.test.step.ThenPredicateReturns;

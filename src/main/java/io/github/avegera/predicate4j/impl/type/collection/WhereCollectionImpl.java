@@ -1,10 +1,10 @@
-package io.github.avegera.predicate4j.impl.collection;
+package io.github.avegera.predicate4j.impl.type.collection;
 
 import io.github.avegera.predicate4j.Predicates;
-import io.github.avegera.predicate4j.api.FluentPredicate;
-import io.github.avegera.predicate4j.api.WhereNumber;
-import io.github.avegera.predicate4j.api.collection.WhereCollection;
-import io.github.avegera.predicate4j.impl.WhereNumberImpl;
+import io.github.avegera.predicate4j.api.core.FluentPredicate;
+import io.github.avegera.predicate4j.api.type.collection.WhereCollection;
+import io.github.avegera.predicate4j.api.type.common.WhereNumber;
+import io.github.avegera.predicate4j.impl.type.common.WhereNumberImpl;
 
 import java.util.Collection;
 import java.util.function.Function;

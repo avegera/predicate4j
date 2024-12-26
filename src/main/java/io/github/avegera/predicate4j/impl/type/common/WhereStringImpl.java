@@ -1,9 +1,9 @@
-package io.github.avegera.predicate4j.impl;
+package io.github.avegera.predicate4j.impl.type.common;
 
 import io.github.avegera.predicate4j.Predicates;
-import io.github.avegera.predicate4j.api.FluentPredicate;
-import io.github.avegera.predicate4j.api.WhereNumber;
-import io.github.avegera.predicate4j.api.WhereString;
+import io.github.avegera.predicate4j.api.core.FluentPredicate;
+import io.github.avegera.predicate4j.api.type.common.WhereNumber;
+import io.github.avegera.predicate4j.api.type.common.WhereString;
 
 import java.util.function.Function;
 

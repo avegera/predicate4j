@@ -1,9 +1,9 @@
 package io.github.avegera.predicate4j;
 
-import io.github.avegera.predicate4j.api.WhereObject;
-import io.github.avegera.predicate4j.api.WhereType;
-import io.github.avegera.predicate4j.impl.WhereObjectImpl;
-import io.github.avegera.predicate4j.impl.WhereTypeImpl;
+import io.github.avegera.predicate4j.api.entry.common.WhereEntry;
+import io.github.avegera.predicate4j.api.type.common.WhereObject;
+import io.github.avegera.predicate4j.impl.entry.type.WhereEntryImpl;
+import io.github.avegera.predicate4j.impl.type.common.WhereObjectImpl;
 
 import java.util.function.Function;
 
@@ -17,7 +17,7 @@ public class Where {
         return new WhereObjectImpl<>(mapper);
     }
 
-    public static WhereType where() {
-        return new WhereTypeImpl();
+    public static WhereEntry where() {
+        return new WhereEntryImpl();
     }
 }

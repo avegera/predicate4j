@@ -1,4 +1,6 @@
-package io.github.avegera.predicate4j.api;
+package io.github.avegera.predicate4j.api.type.common;
+
+import io.github.avegera.predicate4j.api.core.FluentPredicate;
 
 import java.util.Collection;
 import java.util.function.Predicate;
