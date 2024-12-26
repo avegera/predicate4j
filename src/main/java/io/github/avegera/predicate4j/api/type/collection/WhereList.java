@@ -1,4 +1,4 @@
-package io.github.avegera.predicate4j.api.collection;
+package io.github.avegera.predicate4j.api.type.collection;
 
 import java.util.List;
 

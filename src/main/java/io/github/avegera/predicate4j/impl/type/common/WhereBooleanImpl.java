@@ -1,8 +1,8 @@
-package io.github.avegera.predicate4j.impl;
+package io.github.avegera.predicate4j.impl.type.common;
 
 import io.github.avegera.predicate4j.Predicates;
-import io.github.avegera.predicate4j.api.FluentPredicate;
-import io.github.avegera.predicate4j.api.WhereBoolean;
+import io.github.avegera.predicate4j.api.core.FluentPredicate;
+import io.github.avegera.predicate4j.api.type.common.WhereBoolean;
 
 import java.util.function.Function;
 

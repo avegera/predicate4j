@@ -1,8 +1,10 @@
-package io.github.avegera.predicate4j.impl;
+package io.github.avegera.predicate4j.impl.core;
 
-import io.github.avegera.predicate4j.api.FluentConjunction;
-import io.github.avegera.predicate4j.api.FluentPredicate;
-import io.github.avegera.predicate4j.api.WhereObject;
+import io.github.avegera.predicate4j.api.conjunction.common.WhereConjunction;
+import io.github.avegera.predicate4j.api.core.FluentPredicate;
+import io.github.avegera.predicate4j.api.type.common.WhereObject;
+import io.github.avegera.predicate4j.impl.conjuction.common.WhereConjunctionImpl;
+import io.github.avegera.predicate4j.impl.type.common.WhereObjectImpl;
 
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -26,7 +28,7 @@ public class FluentPredicateImpl<T> implements FluentPredicate<T> {
     }
 
     @Override
-    public FluentConjunction<T> and() {
-        return new FluentConjunctionImpl<>(this);
+    public WhereConjunction<T> and() {
+        return new WhereConjunctionImpl<>(this);
     }
 }

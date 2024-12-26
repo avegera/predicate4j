@@ -1,16 +1,19 @@
-package io.github.avegera.predicate4j.api;
+package io.github.avegera.predicate4j.api.conjunction.common;
 
-import io.github.avegera.predicate4j.api.collection.WhereCollection;
-import io.github.avegera.predicate4j.api.collection.WhereIterable;
-import io.github.avegera.predicate4j.api.collection.WhereList;
-import io.github.avegera.predicate4j.api.collection.WhereSet;
+import io.github.avegera.predicate4j.api.type.collection.WhereCollection;
+import io.github.avegera.predicate4j.api.type.collection.WhereIterable;
+import io.github.avegera.predicate4j.api.type.collection.WhereList;
+import io.github.avegera.predicate4j.api.type.collection.WhereSet;
+import io.github.avegera.predicate4j.api.type.common.WhereBoolean;
+import io.github.avegera.predicate4j.api.type.common.WhereNumber;
+import io.github.avegera.predicate4j.api.type.common.WhereString;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 
-public interface FluentConjunction<T> {
+public interface WhereConjunction<T> {
 
     WhereBoolean<T> booleanValue(Function<T, Boolean> mapper);
 

@@ -1,8 +1,8 @@
-package io.github.avegera.predicate4j.impl.collection;
+package io.github.avegera.predicate4j.impl.type.collection;
 
-import io.github.avegera.predicate4j.api.FluentPredicate;
-import io.github.avegera.predicate4j.api.collection.WhereIterable;
-import io.github.avegera.predicate4j.impl.WhereObjectImpl;
+import io.github.avegera.predicate4j.api.core.FluentPredicate;
+import io.github.avegera.predicate4j.api.type.collection.WhereIterable;
+import io.github.avegera.predicate4j.impl.type.common.WhereObjectImpl;
 
 import java.util.function.Function;
 

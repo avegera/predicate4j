@@ -1,7 +1,7 @@
-package io.github.avegera.predicate4j.api.collection;
+package io.github.avegera.predicate4j.api.type.collection;
 
-import io.github.avegera.predicate4j.api.FluentPredicate;
-import io.github.avegera.predicate4j.api.WhereNumber;
+import io.github.avegera.predicate4j.api.core.FluentPredicate;
+import io.github.avegera.predicate4j.api.type.common.WhereNumber;
 
 import java.util.Collection;
 

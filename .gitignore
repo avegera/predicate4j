@@ -1,6 +1,7 @@
 #Maven
 target/
 jgiven-reports/
+patches/
 repo-dump.txt
 
 #IntelliJ

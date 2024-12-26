@@ -3,7 +3,7 @@ package io.github.avegera.predicate4j.test.step;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.As;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
-import io.github.avegera.predicate4j.api.FluentPredicate;
+import io.github.avegera.predicate4j.api.core.FluentPredicate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

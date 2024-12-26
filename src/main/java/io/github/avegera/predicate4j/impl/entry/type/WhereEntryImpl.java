@@ -1,24 +1,27 @@
-package io.github.avegera.predicate4j.impl;
+package io.github.avegera.predicate4j.impl.entry.type;
 
-import io.github.avegera.predicate4j.api.WhereBoolean;
-import io.github.avegera.predicate4j.api.WhereNumber;
-import io.github.avegera.predicate4j.api.WhereString;
-import io.github.avegera.predicate4j.api.WhereType;
-import io.github.avegera.predicate4j.api.collection.WhereCollection;
-import io.github.avegera.predicate4j.api.collection.WhereIterable;
-import io.github.avegera.predicate4j.api.collection.WhereList;
-import io.github.avegera.predicate4j.api.collection.WhereSet;
-import io.github.avegera.predicate4j.impl.collection.WhereCollectionImpl;
-import io.github.avegera.predicate4j.impl.collection.WhereIterableImpl;
-import io.github.avegera.predicate4j.impl.collection.WhereListImpl;
-import io.github.avegera.predicate4j.impl.collection.WhereSetImpl;
+import io.github.avegera.predicate4j.api.entry.common.WhereEntry;
+import io.github.avegera.predicate4j.api.type.collection.WhereCollection;
+import io.github.avegera.predicate4j.api.type.collection.WhereIterable;
+import io.github.avegera.predicate4j.api.type.collection.WhereList;
+import io.github.avegera.predicate4j.api.type.collection.WhereSet;
+import io.github.avegera.predicate4j.api.type.common.WhereBoolean;
+import io.github.avegera.predicate4j.api.type.common.WhereNumber;
+import io.github.avegera.predicate4j.api.type.common.WhereString;
+import io.github.avegera.predicate4j.impl.type.collection.WhereCollectionImpl;
+import io.github.avegera.predicate4j.impl.type.collection.WhereIterableImpl;
+import io.github.avegera.predicate4j.impl.type.collection.WhereListImpl;
+import io.github.avegera.predicate4j.impl.type.collection.WhereSetImpl;
+import io.github.avegera.predicate4j.impl.type.common.WhereBooleanImpl;
+import io.github.avegera.predicate4j.impl.type.common.WhereNumberImpl;
+import io.github.avegera.predicate4j.impl.type.common.WhereStringImpl;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 
-public class WhereTypeImpl implements WhereType {
+public class WhereEntryImpl implements WhereEntry {
 
     @Override
     public <T> WhereBoolean<T> booleanValue(Function<T, Boolean> mapper) {
