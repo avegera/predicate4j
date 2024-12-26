@@ -6,13 +6,13 @@ import io.github.avegera.predicate4j.api.type.common.WhereNumber;
 
 import java.util.function.Function;
 
-public class WhereNumberImpl<T, N extends Number & Comparable<N>> extends WhereObjectImpl<T, N> implements WhereNumber<T, N> {
+public class WhereNumberImpl<T, M, N extends Number & Comparable<N>> extends WhereObjectImpl<T, M, N> implements WhereNumber<T, N> {
 
-    public WhereNumberImpl(Function<T, N> mapper) {
+    public WhereNumberImpl(Function<T, M> mapper) {
         super(mapper);
     }
 
-    public WhereNumberImpl(Function<T, N> mapper, FluentPredicate<T> previousPredicate) {
+    public WhereNumberImpl(Function<T, M> mapper, FluentPredicate<T> previousPredicate) {
         super(mapper, previousPredicate);
     }
 

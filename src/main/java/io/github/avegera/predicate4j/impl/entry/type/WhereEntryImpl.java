@@ -1,13 +1,16 @@
 package io.github.avegera.predicate4j.impl.entry.type;
 
 import io.github.avegera.predicate4j.api.entry.common.WhereEntry;
+import io.github.avegera.predicate4j.api.entry.quantifier.WhereEntryQuantifierType;
 import io.github.avegera.predicate4j.api.type.collection.WhereCollection;
 import io.github.avegera.predicate4j.api.type.collection.WhereIterable;
 import io.github.avegera.predicate4j.api.type.collection.WhereList;
 import io.github.avegera.predicate4j.api.type.collection.WhereSet;
 import io.github.avegera.predicate4j.api.type.common.WhereBoolean;
 import io.github.avegera.predicate4j.api.type.common.WhereNumber;
+import io.github.avegera.predicate4j.api.type.common.WhereObject;
 import io.github.avegera.predicate4j.api.type.common.WhereString;
+import io.github.avegera.predicate4j.impl.entry.quantifier.*;
 import io.github.avegera.predicate4j.impl.type.collection.WhereCollectionImpl;
 import io.github.avegera.predicate4j.impl.type.collection.WhereIterableImpl;
 import io.github.avegera.predicate4j.impl.type.collection.WhereListImpl;
@@ -15,6 +18,7 @@ import io.github.avegera.predicate4j.impl.type.collection.WhereSetImpl;
 import io.github.avegera.predicate4j.impl.type.common.WhereBooleanImpl;
 import io.github.avegera.predicate4j.impl.type.common.WhereNumberImpl;
 import io.github.avegera.predicate4j.impl.type.common.WhereStringImpl;
+import io.github.avegera.predicate4j.impl.type.quantifier.*;
 
 import java.util.Collection;
 import java.util.List;
@@ -56,5 +60,65 @@ public class WhereEntryImpl implements WhereEntry {
     @Override
     public <T> WhereString<T> string(Function<T, String> mapper) {
         return new WhereStringImpl<>(mapper);
+    }
+
+    @Override
+    public WhereEntryQuantifierType atLeast(int times) {
+        return new WhereEntryAtLeastTypeImpl(times);
+    }
+
+    @Override
+    public <T, E> WhereObject<T, E> atLeast(int times, Function<T, Iterable<E>> mapper) {
+        return new WhereAtLeastImpl<>(times, mapper);
+    }
+
+    @Override
+    public WhereEntryQuantifierType atLeastOne() {
+        return new WhereEntryAtLeastOneTypeImpl();
+    }
+
+    @Override
+    public <T, E> WhereObject<T, E> atLeastOne(Function<T, Iterable<E>> mapper) {
+        return new WhereAtLeastOneImpl<>(mapper);
+    }
+
+    @Override
+    public WhereEntryQuantifierType exactly(int times) {
+        return new WhereEntryExactlyTypeImpl(times);
+    }
+
+    @Override
+    public <T, E> WhereObject<T, E> exactly(int times, Function<T, Iterable<E>> mapper) {
+        return new WhereExactlyImpl<>(times, mapper);
+    }
+
+    @Override
+    public WhereEntryQuantifierType exactlyOne() {
+        return new WhereEntryExactlyOneTypeImpl();
+    }
+
+    @Override
+    public <T, E> WhereObject<T, E> exactlyOne(Function<T, Iterable<E>> mapper) {
+        return new WhereExactlyOneImpl<>(mapper);
+    }
+
+    @Override
+    public WhereEntryQuantifierType each() {
+        return new WhereEntryEachTypeImpl();
+    }
+
+    @Override
+    public <T, E> WhereObject<T, E> each(Function<T, Iterable<E>> mapper) {
+        return new WhereEachImpl<>(mapper);
+    }
+
+    @Override
+    public WhereEntryQuantifierType none() {
+        return new WhereEntryNoneTypeImpl();
+    }
+
+    @Override
+    public <T, E> WhereObject<T, E> none(Function<T, Iterable<E>> mapper) {
+        return new WhereNoneImpl<>(mapper);
     }
 }

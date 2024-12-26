@@ -6,7 +6,7 @@ import io.github.avegera.predicate4j.impl.type.common.WhereObjectImpl;
 
 import java.util.function.Function;
 
-public class WhereIterableImpl<T, R extends Iterable<E>, E> extends WhereObjectImpl<T, R> implements WhereIterable<T, R, E> {
+public class WhereIterableImpl<T, R extends Iterable<E>, E> extends WhereObjectImpl<T, R, R> implements WhereIterable<T, R, E> {
 
     public WhereIterableImpl(Function<T, R> mapper) {
         super(mapper);

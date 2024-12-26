@@ -1,6 +1,7 @@
-package io.github.avegera.predicate4j.impl.conjuction.common;
+package io.github.avegera.predicate4j.impl.conjunction.common;
 
 import io.github.avegera.predicate4j.api.conjunction.common.WhereConjunction;
+import io.github.avegera.predicate4j.api.conjunction.quantifier.WhereQuantifierConjunction;
 import io.github.avegera.predicate4j.api.core.FluentPredicate;
 import io.github.avegera.predicate4j.api.type.collection.WhereCollection;
 import io.github.avegera.predicate4j.api.type.collection.WhereIterable;
@@ -10,6 +11,7 @@ import io.github.avegera.predicate4j.api.type.common.WhereBoolean;
 import io.github.avegera.predicate4j.api.type.common.WhereNumber;
 import io.github.avegera.predicate4j.api.type.common.WhereObject;
 import io.github.avegera.predicate4j.api.type.common.WhereString;
+import io.github.avegera.predicate4j.impl.conjunction.quantifier.*;
 import io.github.avegera.predicate4j.impl.type.collection.WhereCollectionImpl;
 import io.github.avegera.predicate4j.impl.type.collection.WhereIterableImpl;
 import io.github.avegera.predicate4j.impl.type.collection.WhereListImpl;
@@ -17,6 +19,7 @@ import io.github.avegera.predicate4j.impl.type.collection.WhereSetImpl;
 import io.github.avegera.predicate4j.impl.type.common.WhereBooleanImpl;
 import io.github.avegera.predicate4j.impl.type.common.WhereNumberImpl;
 import io.github.avegera.predicate4j.impl.type.common.WhereStringImpl;
+import io.github.avegera.predicate4j.impl.type.quantifier.*;
 
 import java.util.Collection;
 import java.util.List;
@@ -65,6 +68,66 @@ public class WhereConjunctionImpl<T> implements WhereConjunction<T> {
     @Override
     public WhereString<T> string(Function<T, String> mapper) {
         return getWhere(WhereStringImpl::new, mapper);
+    }
+
+    @Override
+    public WhereQuantifierConjunction<T> atLeast(int times) {
+        return new WhereAtLeastTypeConjunctionImpl<>(times, previousPredicate);
+    }
+
+    @Override
+    public <E> WhereObject<T, E> atLeast(int times, Function<T, Iterable<E>> mapper) {
+        return new WhereAtLeastImpl<>(times, mapper, previousPredicate);
+    }
+
+    @Override
+    public WhereQuantifierConjunction<T> atLeastOne() {
+        return new WhereAtLeastOneTypeConjunctionImpl<>(previousPredicate);
+    }
+
+    @Override
+    public <E> WhereObject<T, E> atLeastOne(Function<T, Iterable<E>> mapper) {
+        return new WhereAtLeastOneImpl<>(mapper, previousPredicate);
+    }
+
+    @Override
+    public WhereQuantifierConjunction<T> exactly(int times) {
+        return new WhereExactlyTypeConjunctionImpl<>(times, previousPredicate);
+    }
+
+    @Override
+    public <E> WhereObject<T, E> exactly(int times, Function<T, Iterable<E>> mapper) {
+        return new WhereExactlyImpl<>(times, mapper, previousPredicate);
+    }
+
+    @Override
+    public WhereQuantifierConjunction<T> exactlyOne() {
+        return new WhereExactlyOneTypeConjunctionImpl<>(previousPredicate);
+    }
+
+    @Override
+    public <E> WhereObject<T, E> exactlyOne(Function<T, Iterable<E>> mapper) {
+        return new WhereExactlyOneImpl<>(mapper, previousPredicate);
+    }
+
+    @Override
+    public WhereQuantifierConjunction<T> each() {
+        return new WhereEachTypeConjunctionImpl<>(previousPredicate);
+    }
+
+    @Override
+    public <E> WhereObject<T, E> each(Function<T, Iterable<E>> mapper) {
+        return new WhereEachImpl<>(mapper, previousPredicate);
+    }
+
+    @Override
+    public WhereQuantifierConjunction<T> none() {
+        return new WhereNoneTypeConjunctionImpl<>(previousPredicate);
+    }
+
+    @Override
+    public <E> WhereObject<T, E> none(Function<T, Iterable<E>> mapper) {
+        return new WhereNoneImpl<>(mapper, previousPredicate);
     }
 
     private <R, W extends WhereObject<T, R>> W getWhere(BiFunction<Function<T, R>, FluentPredicate<T>, W> constructor, Function<T, R> mapper) {
