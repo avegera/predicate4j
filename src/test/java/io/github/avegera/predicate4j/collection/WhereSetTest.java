@@ -11,7 +11,6 @@ import io.github.avegera.predicate4j.test.predicate.PredicateTest;
 import io.github.avegera.predicate4j.test.scenario.PredicateScenarioTest;
 import io.github.avegera.predicate4j.test.tag.Type;
 import io.github.avegera.predicate4j.test.tag.Where;
-import io.github.avegera.predicate4j.test.util.SetWithNullableIterator;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -22,6 +21,8 @@ import java.util.stream.Stream;
 
 import static io.github.avegera.predicate4j.Where.where;
 import static io.github.avegera.predicate4j.test.model.User.userWithPermissions;
+import static io.github.avegera.predicate4j.test.util.SetWithNullableIterator.setWithNullableIterator;
+import static java.util.Collections.emptySet;
 
 @Where("where")
 @Type("set")
@@ -41,7 +42,7 @@ public class WhereSetTest extends PredicateScenarioTest<User> {
                 .predicate("where().set(mapper).isEmpty()")
                 .withMapper(User::permissions)
                     .isTrueFor(userWithPermissions(new HashSet<>()))
-                    .isTrueFor(userWithPermissions(new SetWithNullableIterator<>()))
+                    .isTrueFor(userWithPermissions(setWithNullableIterator()))
                     .isFalseFor(userWithPermissions(ImmutableSet.of("READ")))
                     .isFalseFor(null)
                 .toStream();
@@ -60,7 +61,7 @@ public class WhereSetTest extends PredicateScenarioTest<User> {
                 .predicate("where().set(mapper).notEmpty()")
                 .withMapper(User::permissions)
                     .isTrueFor(userWithPermissions(ImmutableSet.of("READ")))
-                    .isFalseFor(userWithPermissions(new SetWithNullableIterator<>()))
+                    .isFalseFor(userWithPermissions(setWithNullableIterator()))
                     .isFalseFor(userWithPermissions(new HashSet<>()))
                     .isFalseFor(userWithPermissions(null))
                     .isFalseFor(null)
@@ -221,6 +222,8 @@ public class WhereSetTest extends PredicateScenarioTest<User> {
                 .isTrueFor(userWithPermissions(ImmutableSet.of("DELETE")))
                 .isFalseFor(userWithPermissions(ImmutableSet.of("CREATE", "READ", "UPDATE", "DELETE"))) //size >= 4
                 .isFalseFor(userWithPermissions(ImmutableSet.of("READ", "WRITE"))) //does not contain DELETE
+                .isFalseFor(userWithPermissions(setWithNullableIterator())) // set with nullable iterator
+                .isFalseFor(userWithPermissions(emptySet())) // empty permissions
                 .isFalseFor(userWithPermissions(null)) // permissions are null
                 .isFalseFor(null) // user is null
                 .toStream();

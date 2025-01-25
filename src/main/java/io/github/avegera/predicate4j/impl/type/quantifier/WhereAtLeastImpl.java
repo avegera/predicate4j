@@ -1,19 +1,21 @@
 package io.github.avegera.predicate4j.impl.type.quantifier;
 
+import io.github.avegera.predicate4j.Quantifiers;
 import io.github.avegera.predicate4j.api.core.FluentPredicate;
+import io.github.avegera.predicate4j.impl.type.common.WhereObjectImpl;
 
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import static java.lang.Math.min;
+import static java.lang.Math.max;
 
-public class WhereAtLeastImpl<T, E> extends AbstractQuantifierImpl<T, E> {
+public class WhereAtLeastImpl<T, E> extends WhereObjectImpl<T, Iterable<E>, E> {
 
     private final int times;
 
     public WhereAtLeastImpl(int times, Function<T, Iterable<E>> mapper) {
         super(mapper);
-        this.times = min(times, 1);
+        this.times = max(times, 1);
     }
 
     public WhereAtLeastImpl(int times, Function<T, Iterable<E>> mapper, FluentPredicate<T> previousPredicate) {
@@ -22,7 +24,8 @@ public class WhereAtLeastImpl<T, E> extends AbstractQuantifierImpl<T, E> {
     }
 
     @Override
-    protected boolean applyQuantifier(Iterable<E> iterable, Predicate<E> predicate) {
+    protected boolean test(Function<T, Iterable<E>> mapper, Predicate<E> predicate, T object) {
+        Iterable<E> iterable = mapper.apply(object);
         return Quantifiers.atLeast(times, iterable, predicate);
     }
 }

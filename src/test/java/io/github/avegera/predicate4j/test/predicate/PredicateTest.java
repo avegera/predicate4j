@@ -26,7 +26,7 @@ public class PredicateTest<T, R> {
 
     public PredicateTestCaseMapper<T, R> withMapper(Lambda<T, R> mapper) {
         currentMapper = mapper;
-        return new PredicateTestCaseMapper<T, R>(this, this::addTestCase);
+        return new PredicateTestCaseMapper<>(this, this::addTestCase);
     }
 
     public PredicateTestCaseNoMapperNoArgument<T, R> isTrueFor(T object) {

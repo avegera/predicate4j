@@ -4,6 +4,10 @@ import java.util.HashSet;
 
 public class SetWithNullableIterator<E> extends HashSet<E> {
 
+    public static <E> SetWithNullableIterator<E> setWithNullableIterator() {
+        return new SetWithNullableIterator<>();
+    }
+
     @Override
     @SuppressWarnings("ConstantConditions")
     public java.util.Iterator<E> iterator() {

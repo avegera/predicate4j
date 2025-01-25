@@ -1,7 +1,7 @@
 package io.github.avegera.predicate4j.impl.conjunction.common;
 
 import io.github.avegera.predicate4j.api.conjunction.common.WhereConjunction;
-import io.github.avegera.predicate4j.api.conjunction.quantifier.WhereQuantifierConjunction;
+import io.github.avegera.predicate4j.api.conjunction.quantifier.WhereConjunctionQuantifierType;
 import io.github.avegera.predicate4j.api.core.FluentPredicate;
 import io.github.avegera.predicate4j.api.type.collection.WhereCollection;
 import io.github.avegera.predicate4j.api.type.collection.WhereIterable;
@@ -71,7 +71,7 @@ public class WhereConjunctionImpl<T> implements WhereConjunction<T> {
     }
 
     @Override
-    public WhereQuantifierConjunction<T> atLeast(int times) {
+    public WhereConjunctionQuantifierType<T> atLeast(int times) {
         return new WhereAtLeastTypeConjunctionImpl<>(times, previousPredicate);
     }
 
@@ -81,7 +81,7 @@ public class WhereConjunctionImpl<T> implements WhereConjunction<T> {
     }
 
     @Override
-    public WhereQuantifierConjunction<T> atLeastOne() {
+    public WhereConjunctionQuantifierType<T> atLeastOne() {
         return new WhereAtLeastOneTypeConjunctionImpl<>(previousPredicate);
     }
 
@@ -91,7 +91,7 @@ public class WhereConjunctionImpl<T> implements WhereConjunction<T> {
     }
 
     @Override
-    public WhereQuantifierConjunction<T> exactly(int times) {
+    public WhereConjunctionQuantifierType<T> exactly(int times) {
         return new WhereExactlyTypeConjunctionImpl<>(times, previousPredicate);
     }
 
@@ -101,7 +101,7 @@ public class WhereConjunctionImpl<T> implements WhereConjunction<T> {
     }
 
     @Override
-    public WhereQuantifierConjunction<T> exactlyOne() {
+    public WhereConjunctionQuantifierType<T> exactlyOne() {
         return new WhereExactlyOneTypeConjunctionImpl<>(previousPredicate);
     }
 
@@ -111,7 +111,7 @@ public class WhereConjunctionImpl<T> implements WhereConjunction<T> {
     }
 
     @Override
-    public WhereQuantifierConjunction<T> each() {
+    public WhereConjunctionQuantifierType<T> each() {
         return new WhereEachTypeConjunctionImpl<>(previousPredicate);
     }
 
@@ -121,7 +121,7 @@ public class WhereConjunctionImpl<T> implements WhereConjunction<T> {
     }
 
     @Override
-    public WhereQuantifierConjunction<T> none() {
+    public WhereConjunctionQuantifierType<T> none() {
         return new WhereNoneTypeConjunctionImpl<>(previousPredicate);
     }
 
