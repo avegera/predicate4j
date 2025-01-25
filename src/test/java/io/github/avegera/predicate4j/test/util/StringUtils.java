@@ -62,6 +62,9 @@ public class StringUtils {
                 return format("[\"%s\"]", String.join("\", \"", (List<String>) object));
             }
         }
+        //TODO: print L for Long value (pass class object serializer)
+        //TODO: if array of number for cases .isFalseFor(userWithBalances(asList(null, 100, null, 200L)))
+        //TODO: User(roles=["Admin", "Guest", "null"])  - should be null not "null"
         return object.toString();
     }
 }

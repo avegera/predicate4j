@@ -6,7 +6,7 @@ import io.github.avegera.predicate4j.api.type.common.WhereString;
 
 import java.util.function.Function;
 
-public interface WhereQuantifierConjunction<T> {
+public interface WhereConjunctionQuantifierType<T> {
 
     WhereBoolean<T> booleanValue(Function<T, Iterable<Boolean>> mapper);
 

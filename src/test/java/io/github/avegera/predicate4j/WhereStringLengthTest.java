@@ -42,6 +42,7 @@ public class WhereStringLengthTest extends PredicateScenarioTest<User>{
                         .isFalseFor(userWithName("John"))
                     .withArgument(0)
                         .isTrueFor(userWithName(""))
+                        .isTrueFor(userWithName(null))
                         .isFalseFor(null)
                     .withArgument(null)
                         .isFalseFor(userWithName("John"))

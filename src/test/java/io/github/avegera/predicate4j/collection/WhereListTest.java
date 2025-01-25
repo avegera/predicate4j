@@ -11,7 +11,6 @@ import io.github.avegera.predicate4j.test.predicate.PredicateTest;
 import io.github.avegera.predicate4j.test.scenario.PredicateScenarioTest;
 import io.github.avegera.predicate4j.test.tag.Type;
 import io.github.avegera.predicate4j.test.tag.Where;
-import io.github.avegera.predicate4j.test.util.ListWithNullableIterator;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -23,7 +22,10 @@ import java.util.stream.Stream;
 
 import static io.github.avegera.predicate4j.Where.where;
 import static io.github.avegera.predicate4j.test.model.User.userWithRoles;
+import static io.github.avegera.predicate4j.test.util.ListWithNullableIterator.listWithNullableIterator;
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 
 @Where("where")
 @Type("list")
@@ -42,10 +44,11 @@ public class WhereListTest extends PredicateScenarioTest<User> {
         return PredicateTest.<User, List<String>>builder()
                 .predicate("where().list(mapper).isEmpty()")
                 .withMapper(User::roles)
-                    .isTrueFor(userWithRoles(new ArrayList<>()))
-                    .isTrueFor(userWithRoles(new ListWithNullableIterator<>()))
+                    .isTrueFor(userWithRoles(listWithNullableIterator()))
+                    .isTrueFor(userWithRoles(emptyList()))
                     .isTrueFor(userWithRoles(null))
                     .isFalseFor(userWithRoles(ImmutableList.of("Admin")))
+                    .isFalseFor(userWithRoles(singletonList(null)))
                     .isFalseFor(null)
                 .toStream();
     }
@@ -64,7 +67,7 @@ public class WhereListTest extends PredicateScenarioTest<User> {
                 .withMapper(User::roles)
                     .isTrueFor(userWithRoles(ImmutableList.of("Admin")))
                     .isFalseFor(userWithRoles(new ArrayList<>()))
-                    .isFalseFor(userWithRoles(new ListWithNullableIterator<>()))
+                    .isFalseFor(userWithRoles(listWithNullableIterator()))
                     .isFalseFor(userWithRoles(null))
                     .isFalseFor(null)
                 .toStream();
@@ -386,7 +389,8 @@ public class WhereListTest extends PredicateScenarioTest<User> {
                 .isTrueFor(userWithRoles(ImmutableList.of("Admin"))) // Matches all conditions
                 .isFalseFor(userWithRoles(ImmutableList.of("Admin", "User", "Guest", "Other"))) // size >= 4
                 .isFalseFor(userWithRoles(ImmutableList.of("User", "Guest"))) // does not contain "Admin"
-                .isFalseFor(userWithRoles(new ArrayList<>())) // Empty list
+                .isFalseFor(userWithRoles(listWithNullableIterator())) // Fails notEmpty
+                .isFalseFor(userWithRoles(emptyList())) // Fails notEmpty
                 .isFalseFor(userWithRoles(null)) // roles are null
                 .isFalseFor(null) // user is null
                 .toStream();

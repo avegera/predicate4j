@@ -21,7 +21,7 @@ import static io.github.avegera.predicate4j.test.model.User.userWithName;
 
 @Where("where")
 @Type("string")
-@Description("Build predicates with single string condition")
+@Description("Test predicates for string properties")
 public class WhereStringTest extends PredicateScenarioTest<User> {
 
     @MethodSource

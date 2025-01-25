@@ -22,6 +22,8 @@ import java.util.stream.Stream;
 
 import static io.github.avegera.predicate4j.Where.where;
 import static io.github.avegera.predicate4j.test.model.User.userWithRoles;
+import static io.github.avegera.predicate4j.test.util.ListWithNullableIterator.listWithNullableIterator;
+import static java.util.Collections.emptyList;
 
 @Where("where")
 @Type("collection")
@@ -365,7 +367,8 @@ public class WhereCollectionTest extends PredicateScenarioTest<User> {
                 .isTrueFor(userWithRoles(ImmutableList.of("Admin"))) // Matches all conditions
                 .isFalseFor(userWithRoles(ImmutableList.of("Admin", "User", "Guest", "Other"))) // size >= 4
                 .isFalseFor(userWithRoles(ImmutableList.of("User", "Guest"))) // does not contain "Admin"
-                .isFalseFor(userWithRoles(new ArrayList<>())) // Empty collection
+                .isFalseFor(userWithRoles(listWithNullableIterator())) // Fails notEmpty
+                .isFalseFor(userWithRoles(emptyList())) // Fails notEmpty
                 .isFalseFor(userWithRoles(null)) // roles are null
                 .isFalseFor(null) // user is null
                 .toStream();
