@@ -14,15 +14,16 @@ It allows for the easy creation and combination of predicates for various types 
 
 The library provides Java predicate builder with fluent API that:
 
-* null safe
-* type safe
-* has zero compile-time dependencies
-* supports predicates for various types:
+* Null-safe
+* Type-safe
+* Has zero compile-time dependencies
+* Supports predicates for different data types, including:
   * objects
   * strings
   * booleans
   * numbers (integer, long, etc.)
   * collections (List, Set, etc.)
+  * quantifiers (each, none, at least, exactly)
 
 ## Installation
 
@@ -42,7 +43,7 @@ implementation 'io.github.avegera:predicate4j:0.1.0'
 ```
 ## Usage
 
-Predicate4j provides a fluent API for building and using Java predicates in a type-safe and null-safe manner. It allows to create complex conditions in a readable and maintainable way.
+Predicate4j provides a fluent API for building and using Java predicates in a type-safe and null-safe manner. It allows creating complex conditions in a readable and maintainable way.
 
 Let's use the following `User` record for examples below:
 ```java
@@ -53,64 +54,125 @@ record User(Long id, String status, int age, List<String> roles) {
 
 And we create the following users:
 ```java
-List<User> users = Arrays.asList(
+List<User> users = List.of(
         new User(1, "ACTIVE", 35, List.of("Admin", "Manager")), 
         new User(2, "ACTIVE", 18, List.of("User")),
         new User(3, "INACTIVE", 12, List.of("Guest"))
 );
-```
 
-### Basic Predicates
-Here's a basic example of how to create and use predicates with this library and Java Stream API:
+```
+### Create Basic Predicates
+
+Create reusable predicates for common conditions, such as checking if a user is active:
 
 ```java
-List<User> activeUsers = users.stream()
-        .filter(where(User::status).isEqualTo("ACTIVE"))
-        .collect(toList());
+Predicate<User> isActiveUser = where(User::status).isEqualTo("ACTIVE");
 ```
 
-### Predicates for Types
+
+### Filter with Stream API
+Here's a basic example of how to filter `users` collection using plain Java Stream API. Let's find inactive users:
+
+```java
+List<User> inactiveUsers = users.stream()
+        .filter(user -> user != null && user.status() != null && (user.status().equals("LOCKED") || user.status().equals("INACTIVE")))
+        .toList();
+```
+
+With predicate4j it can be replaced with:
+
+```java
+List<User> inactiveUsers = users.stream()
+        .filter(where(User::status).in("LOCKED", "INACTIVE"))
+        .toList();
+```
+
+### Hide Null Checks and Focus on Logic
+
+The previous example demonstrates that the library is null-safe by default. It incorporates null-checks before executing any null-sensitive predicates, ensuring that null values do not cause runtime errors.
+
+
+
+Similarly, the library handles null values gracefully for mappers. If, for any reason, a nullable mapper is provided, it will not cause an error; instead, it will return `false` by default.
+
+### Build Type-safe Predicates
 The library supports various types of predicates for objects, strings, numbers, and collections.
 
-#### Number Predicates
-```java
-List<User> adultUsers = users.stream()
-        .filter(where().number(User::age).isGreaterThanOrEqualTo(18))
-        .collect(toList());
-```
-
-#### String Predicates
+**Note:** Let's use `filter(collection, predicate)` method to simplify examples below:
 
 ```java
-List<User> usersWithSpecificStatus = users.stream()
-        .filter(where().string(User::status).startsWith("ACT"))
-        .collect(toList());
+  public static <T> List<T> filter(Collection<T> collection, Predicate<T> predicate) {
+      return collection.stream().filter(predicate).toList();
+  }
 ```
 
-#### Collection Predicates
+#### Numbers
+
+It allows to compare numbers, for example, users where age >=18:
+
 ```java
-List<User> admins = users.stream()
-        .filter(where().list(User::roles).contains("Admin"))
-        .collect(toList());
+List<User> adultUsers = filter(users, where().number(User::age).isGreaterThanOrEqualTo(18));
 ```
 
-### Combining Predicates
+#### Strings
+
+Performs string-based checks, such as finding users whose status starts with "ACT":
+
+```java
+List<User> filteredUsers = filter(users, where().string(User::status).startsWith("ACT"));
+```
+
+#### Collections
+
+Works with collections, e.g. verifying if a user's roles contain a specific value:
+
+```java
+List<User> admins = filter(users, where().list(User::roles).contains("Admin"));
+```
+
+### Apply Quantifiers
+
+Quantifiers provide elegant and concise support for working with collections, enabling iteration and matching with a laconic syntax. Use the following methods:
+
+* Use `atLeastOne()` to check if at least one element in a collection satisfies a condition:
+
+  ```java
+  where().atLeastOne(User::roles).isEqualTo("Admin");
+  ```
+* Use `each()` to verify that all elements in a collection satisfy a condition:
+  
+  ```java
+  where().each().string(User::roles).notEmpty();
+  ```
+
+* `exactly()` to assert that exactly n elements in a collection meet a given condition:
+
+  ```java
+  where().exactly(2, User::roles).in(allowableRoles);
+  ```
+* `none()` to ensure that no elements in a collection satisfy a condition.
+
+  ```java
+  where().none(User::roles).isNull();
+  ```
+
+### Combine Predicates
 It's possible to combine multiple predicates using logical operations:
 
 ```java
-List<User> activeAdultNotAdmins = users.stream()
-        .filter(where(User::status).isEqualTo("ACTIVE")
-                .and().number(User::age).isGreaterThan(21)
-                .and().list(User::roles).notContains("Admin"))
-        .collect(toList());
+List<User> activeAdultNotAdmins = filter(users, isActiveAdultNotAdmin());
+
+private Predicate<User> isActiveAdultNotAdmin() {
+  return where(User::status).isEqualTo("ACTIVE")
+          .and().number(User::age).isGreaterThan(21)
+          .and().none().string(User::roles).startsWith("Admin");
+}
 ```
 
-### Using Own Predicates
+### Use Own Predicates
 
 Pass your own predicate that not present in the library:
 
 ```java
-List<User> customPredicateUsers = users.stream()
-        .filter(where(User::status).accepts(status -> status.trim().length() > 5))
-        .collect(toList());
+List<User> filteredUsers = filter(users, where(User::status).accepts(status -> status.trim().length() > 5));
 ```
