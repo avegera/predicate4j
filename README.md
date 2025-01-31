@@ -33,13 +33,13 @@ Add the following dependency to your `pom.xml` if you're using Maven:
 <dependency>
     <groupId>io.github.avegera</groupId>
     <artifactId>predicate4j</artifactId>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
 </dependency>
 ```
 For Gradle:
 
 ```groovy
-implementation 'io.github.avegera:predicate4j:0.1.0'
+implementation 'io.github.avegera:predicate4j:0.2.0'
 ```
 ## Usage
 
