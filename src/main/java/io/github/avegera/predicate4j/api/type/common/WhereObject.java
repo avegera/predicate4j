@@ -21,7 +21,11 @@ public interface WhereObject<T, R> {
 
     FluentPredicate<T> in(Collection<R> collection);
 
+    FluentPredicate<T> in(R... items);
+
     FluentPredicate<T> notIn(Collection<R> collection);
+
+    FluentPredicate<T> notIn(R... items);
 
     FluentPredicate<T> accepts(Predicate<R> predicate);
 

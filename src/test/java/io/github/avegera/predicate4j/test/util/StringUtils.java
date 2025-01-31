@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 import static java.lang.String.format;
+import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.joining;
 
 public class StringUtils {
@@ -31,6 +32,11 @@ public class StringUtils {
             if (!list.isEmpty() && list.get(0) instanceof String) {
                 return format("List.of(\"%s\")", String.join("\", \"", (List<String>) list));
             }
+        }
+
+        if (object instanceof Object[]) {
+            Object[] array = (Object[]) object;
+            return format("new %s[] {%s}", array.getClass().getComponentType().getSimpleName(), arrayToString(array));
         }
 
         return object.toString();
@@ -66,5 +72,11 @@ public class StringUtils {
         //TODO: if array of number for cases .isFalseFor(userWithBalances(asList(null, 100, null, 200L)))
         //TODO: User(roles=["Admin", "Guest", "null"])  - should be null not "null"
         return object.toString();
+    }
+
+    private static String arrayToString(Object[] array) {
+        return stream(array)
+                .map(StringUtils::getStringValue)
+                .collect(joining(", "));
     }
 }

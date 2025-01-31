@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.function.Predicate;
 
+import static java.util.Arrays.asList;
+
 /**
  * This class contains library of common java predicates.
  */
@@ -51,8 +53,18 @@ public class Predicates {
         return it -> collection != null && collection.contains(it);
     }
 
+    @SafeVarargs
+    public static <T> Predicate<T> in(T... items) {
+        return it -> items != null && items.length != 0 && asList(items).contains(it);
+    }
+
     public static <T> Predicate<T> notIn(Collection<? extends T> collection) {
         return it -> collection == null || !collection.contains(it);
+    }
+
+    @SafeVarargs
+    public static <T> Predicate<T> notIn(T... items) {
+        return it -> items == null || items.length == 0 || !asList(items).contains(it);
     }
 
     //endregion [Category: Object Predicates]

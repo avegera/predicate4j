@@ -63,8 +63,18 @@ public class WhereObjectImpl<T, M, R> implements WhereObject<T, R> {
     }
 
     @Override
+    public FluentPredicate<T> in(R... items) {
+        return getPredicate(Predicates.in(items));
+    }
+
+    @Override
     public FluentPredicate<T> notIn(Collection<R> collection) {
         return getPredicate(Predicates.notIn(collection));
+    }
+
+    @Override
+    public FluentPredicate<T> notIn(R... items) {
+        return getPredicate(Predicates.notIn(items));
     }
 
     @Override

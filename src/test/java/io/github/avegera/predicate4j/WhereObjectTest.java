@@ -191,6 +191,57 @@ public class WhereObjectTest extends PredicateScenarioTest<User> {
     @MethodSource
     @ParameterizedTest
     @CaseAs(provider = FirstArgument.class)
+    @As("_where(mapper).in(varargs)")
+    public void whereInVarargs(PredicateContext<User, String> context, String... validNames) {
+        scenario(context, where(context.mapper()).in(validNames));
+    }
+
+    static Stream<Arguments> whereInVarargs() {
+        return PredicateTest.<User, String>builder()
+                .predicate("where(mapper).in($argument1)")
+                .withMapper(User::name)
+                    .withArgument(new String[]{"John", "Jane"})
+                        .isTrueFor(userWithName("John"))
+                        .isTrueFor(userWithName("Jane"))
+                        .isFalseFor(userWithName("Doe"))
+                        .isFalseFor(userWithName(""))
+                        .isFalseFor(userWithName(null))
+                        .isFalseFor(null)
+                    .withArgument(new String[]{"Doe"})
+                        .isTrueFor(userWithName("Doe"))
+                        .isFalseFor(userWithName("John"))
+                        .isFalseFor(userWithName(""))
+                        .isFalseFor(userWithName(null))
+                        .isFalseFor(null)
+                    .withArgument(new String[]{null, ""})
+                        .isTrueFor(userWithName(null))
+                        .isTrueFor(userWithName(""))
+                        .isFalseFor(userWithName("John"))
+                        .isFalseFor(null)
+                    .withArgument(new String[]{})
+                        .isFalseFor(userWithName("John"))
+                        .isFalseFor(userWithName(""))
+                        .isFalseFor(userWithName(null))
+                        .isFalseFor(null)
+                    .withArgument(null)
+                        .isFalseFor(userWithName("John"))
+                        .isFalseFor(userWithName(""))
+                        .isFalseFor(userWithName(null))
+                        .isFalseFor(null)
+                .withMapper(null)
+                    .withArgument(new String[]{"John", "Jane"})
+                        .isFalseFor(userWithName("John"))
+                        .isFalseFor(userWithName("Jane"))
+                        .isFalseFor(userWithName("Doe"))
+                        .isFalseFor(userWithName(""))
+                        .isFalseFor(userWithName(null))
+                        .isFalseFor(null)
+                .toStream();
+    }
+
+    @MethodSource
+    @ParameterizedTest
+    @CaseAs(provider = FirstArgument.class)
     @As("_where(mapper).notIn(collection)")
     public void whereNotIn(PredicateContext<User, String> context, Collection<String> invalidNames) {
         scenario(context, where(User::name).notIn(invalidNames));
@@ -216,6 +267,58 @@ public class WhereObjectTest extends PredicateScenarioTest<User> {
                         .isTrueFor(userWithName(null))
                 .toStream();
     }
+
+    @MethodSource
+    @ParameterizedTest
+    @CaseAs(provider = FirstArgument.class)
+    @As("_where(mapper).notIn(varargs)")
+    public void whereNotInVarargs(PredicateContext<User, String> context, String... invalidNames) {
+        scenario(context, where(context.mapper()).notIn(invalidNames));
+    }
+
+    static Stream<Arguments> whereNotInVarargs() {
+        return PredicateTest.<User, String>builder()
+                .predicate("where(mapper).notIn($argument1)")
+                .withMapper(User::name)
+                    .withArgument(new String[]{"John", "Jane"})
+                        .isTrueFor(userWithName("Doe"))
+                        .isTrueFor(userWithName(""))
+                        .isTrueFor(userWithName(null))
+                        .isFalseFor(userWithName("John"))
+                        .isFalseFor(userWithName("Jane"))
+                        .isFalseFor(null)
+                    .withArgument(new String[]{"Doe"})
+                        .isTrueFor(userWithName("John"))
+                        .isTrueFor(userWithName(""))
+                        .isTrueFor(userWithName(null))
+                        .isFalseFor(userWithName("Doe"))
+                        .isFalseFor(null)
+                    .withArgument(new String[]{null, ""})
+                        .isTrueFor(userWithName("John"))
+                        .isFalseFor(userWithName(""))
+                        .isFalseFor(userWithName(null))
+                        .isFalseFor(null)
+                    .withArgument(new String[]{})
+                        .isTrueFor(userWithName("John"))
+                        .isTrueFor(userWithName(""))
+                        .isTrueFor(userWithName(null))
+                        .isFalseFor(null)
+                    .withArgument(null)
+                        .isTrueFor(userWithName("John"))
+                        .isTrueFor(userWithName(""))
+                        .isTrueFor(userWithName(null))
+                        .isFalseFor(null)
+                .withMapper(null)
+                    .withArgument(new String[]{"John", "Jane"})
+                        .isFalseFor(userWithName("John"))
+                        .isFalseFor(userWithName("Jane"))
+                        .isFalseFor(userWithName("Doe"))
+                        .isFalseFor(userWithName(""))
+                        .isFalseFor(userWithName(null))
+                        .isFalseFor(null)
+                .toStream();
+    }
+
 
     @MethodSource
     @ParameterizedTest

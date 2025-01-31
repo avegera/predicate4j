@@ -30,7 +30,7 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
 @Where("where")
-@Type("bject")
+@Type("object")
 @Quantifier("exactlyOne")
 @Description("Test predicates under where().exactlyOne(...)")
 public class WhereExactlyOneTest extends PredicateScenarioTest<User> {
